@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginRight="10dp"
+    android:background="#80E6E2E2"
+    android:outlineProvider="bounds"
+    android:outlineSpotShadowColor="#F44336">
+
+    <ImageView
+        android:id="@+id/plantRcvItem_plantImage"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/plantRcvItem_plantNameText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:fontFamily="serif"
+        android:maxLines="2"
+        android:text="Cherry Tomato"
+        android:textSize="25dp"
+        app:layout_constraintStart_toEndOf="@+id/plantRcvItem_plantImage"
+        app:layout_constraintTop_toTopOf="@+id/plantRcvItem_plantImage" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/unit_weight"
+        app:layout_constraintStart_toStartOf="@+id/plantRcvItem_plantNameText"
+        app:layout_constraintTop_toBottomOf="@+id/plantRcvItem_plantNameText" />
+
+    <TextView
+        android:id="@+id/plantRcvItem_plantUnitWeightText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="1"
+        app:layout_constraintBottom_toBottomOf="@+id/textView2"
+        app:layout_constraintStart_toEndOf="@+id/textView2"
+        app:layout_constraintTop_toTopOf="@+id/textView2" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="@string/grams"
+        app:layout_constraintBottom_toBottomOf="@+id/plantRcvItem_plantUnitWeightText"
+        app:layout_constraintStart_toEndOf="@+id/plantRcvItem_plantUnitWeightText"
+        app:layout_constraintTop_toTopOf="@+id/plantRcvItem_plantUnitWeightText" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
