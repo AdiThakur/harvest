@@ -1,17 +1,14 @@
 package com.example.harvest.plant;
 
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -72,10 +69,9 @@ public class PlantAddActivity extends AppCompatActivity
 	public void cancel(View view)
 	{
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
 		builder.setMessage("Are you sure you want to cancel?");
-		builder.setNegativeButton("No", (dialogInterface, i) -> {
-			return;
-		});
+		builder.setNegativeButton("No", (dialogInterface, i) -> {});
 		builder.setPositiveButton("Yes", (dialogInterface, i) -> {
 			finish();
 		});
@@ -86,6 +82,7 @@ public class PlantAddActivity extends AppCompatActivity
 
 	public void submit(View view)
 	{
+		// Validate plant's attributes
 		String plantName = plantNameEditText.getText().toString();
 		String plantUnitWeight = plantUnitWeightEditText.getText().toString();
 
@@ -98,10 +95,19 @@ public class PlantAddActivity extends AppCompatActivity
 			return;
 		}
 
+		// Copy selected image to internal storage; on failure, abort saving plant to DB
+		String savedFileName = copyImageToInternalStorage(selectedImageUri, plantName);
+		if (savedFileName == null) {
+			Toast.makeText(
+					this, "Image wasn't saved! Please try again.", Toast.LENGTH_SHORT
+			).show();
+			return;
+		}
+
 		boolean plantAdded = viewModel.addPlant(
 			plantName,
 			Double.parseDouble(plantUnitWeight),
-			selectedImageUri
+			savedFileName
 		);
 
 		if (plantAdded) {
@@ -110,5 +116,11 @@ public class PlantAddActivity extends AppCompatActivity
 		} else {
 			Toast.makeText(this, "Couldn't add plant", Toast.LENGTH_LONG).show();
 		}
+	}
+
+	private String copyImageToInternalStorage(Uri imageUri, String plantName)
+	{
+		Bitmap imageBitmap = Helper.convertImageToBitmap(this, imageUri);
+		return Helper.saveBitmapToImage(this, imageBitmap, plantName);
 	}
 }

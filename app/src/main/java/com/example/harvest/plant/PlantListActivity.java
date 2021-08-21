@@ -24,7 +24,7 @@ public class PlantListActivity extends AppCompatActivity
 
 	private RecyclerView recyclerView;
 	private PlantAdapter adapter;
-	private PlantListVM viewModel;
+	private PlantListVM vm;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -32,16 +32,23 @@ public class PlantListActivity extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_plant_list);
 
-		viewModel = new ViewModelProvider(this).get(PlantListVM.class);
-		viewModel.getPlants().observe(this, newPlants -> {
-			initializePlants(newPlants);
-		});
+		// When activity loads, check if a previous VM exists
+		// If it exists, load it into memory; else, create a new VM and initialize it (it will get
+		// a fresh list of plants from the DB)
+
+		vm = new ViewModelProvider(this).get(PlantListVM.class);
+		subscribe(vm);
+	}
+
+	private void subscribe(PlantListVM vm)
+	{
+		vm.getPlants().observe(this, this::initializePlants);
 	}
 
 	private void initializePlants(List<Plant> newPlants)
 	{
 		plants = newPlants;
-		adapter = new PlantAdapter(plants);
+		adapter = new PlantAdapter(this, plants);
 
 		recyclerView = findViewById(R.id.plantList_plantRcv);
 		recyclerView.setAdapter(adapter);

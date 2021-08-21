@@ -14,6 +14,7 @@ import com.example.harvest.R;
 
 import java.util.List;
 
+import common.Helper;
 import data.models.Plant;
 
 class PlantViewHolder extends RecyclerView.ViewHolder
@@ -34,10 +35,12 @@ class PlantViewHolder extends RecyclerView.ViewHolder
 
 public class PlantAdapter extends RecyclerView.Adapter<PlantViewHolder>
 {
-	private List<Plant> plants;
+	private final List<Plant> plants;
+	private final Context context;
 
-	public PlantAdapter(List<Plant> plants)
+	public PlantAdapter(Context context, List<Plant> plants)
 	{
+		this.context = context;
 		this.plants = plants;
 	}
 
@@ -58,7 +61,7 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantViewHolder>
 		Plant plant = plants.get(position);
 		holder.plantNameTextView.setText(plant.name);
 		holder.plantUnitWeightTextView.setText(String.valueOf(plant.unitWeight));
-		holder.plantImageView.setImageURI(plant.imageUri);
+		holder.plantImageView.setImageBitmap(Helper.loadBitmapFromImage(context, plant.imageFileName));
 	}
 
 	@Override

@@ -24,11 +24,11 @@ public class PlantAddVM extends AndroidViewModel
 		plantBeingAdded = new Plant();
 	}
 
-	public boolean addPlant(String name, double unitWeight, Uri imageUri)
+	public boolean addPlant(String name, double unitWeight, String imageFileName)
 	{
 		plantBeingAdded.name = name;
 		plantBeingAdded.unitWeight = unitWeight;
-		plantBeingAdded.imageUri = imageUri;
+		plantBeingAdded.imageFileName = imageFileName;
 
 		plantBeingAdded = plantBridge.insert(plantBeingAdded);
 		if (plantBeingAdded != null) {
