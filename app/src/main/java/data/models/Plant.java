@@ -18,6 +18,6 @@ public class Plant
 	@ColumnInfo(name = "unit_weight")
 	public double unitWeight;
 
-	@ColumnInfo(name = "image_uri")
-	public Uri imageUri;
+	@ColumnInfo(name = "image_filename")
+	public String imageFileName;
 }

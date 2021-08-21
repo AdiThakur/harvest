@@ -22,7 +22,7 @@ import data.models.Season;
 
 @Database(
 		entities = { Crop.class, Harvest.class, Plant.class, Season.class },
-		version = 2,
+		version = 5,
 		exportSchema = false
 )
 @TypeConverters({ Converters.class })
@@ -33,26 +33,6 @@ public abstract class HarvestDB extends RoomDatabase
 	public abstract PlantDao plantDao();
 	public abstract SeasonDao seasonDao();
 
-	static final Migration MIGRATION_1_2 = new Migration(1, 2)
-	{
-		@Override
-		public void migrate(@NonNull SupportSQLiteDatabase database)
-		{
-			database.execSQL("" +
-				"CREATE TABLE plant_backup (" +
-					"uid INTEGER, " +
-					"name TEXT, " +
-					"unit_weight DECIMAL, " +
-					"image_uri TEXT DEFAULT ('" + Helper.defaultPlantImageUriString + "')," +
-					"PRIMARY KEY (uid)" +
-				")"
-			);
-			database.execSQL("INSERT INTO plant_backup(uid, name, unit_weight) SELECT uid, name, unit_weight FROM plant");
-			database.execSQL("DROP TABLE plant");
-			database.execSQL("ALTER TABLE plant_backup RENAME TO plant");
-		}
-	};
-
 	private static final String dbName = "harvest_db";
 	private static volatile HarvestDB instance;
 
@@ -61,6 +41,7 @@ public abstract class HarvestDB extends RoomDatabase
 		if (instance == null) {
 			instance = Room.databaseBuilder(appContext, HarvestDB.class, dbName)
 				.allowMainThreadQueries()
+				.fallbackToDestructiveMigration()
 				.build();
 		}
 		return instance;
