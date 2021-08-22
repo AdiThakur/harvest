@@ -57,4 +57,15 @@ public class PlantVM extends AndroidViewModel
 		plantsSubject.setValue(plants);
 		return plantsSubject;
 	}
+
+	public boolean deletePlant(Plant plant)
+	{
+		int deleteCount = plantBridge.delete(plant);
+		if (deleteCount > 0 && plants.remove(plant)) {
+			plantsSubject.setValue(plants);
+			return true;
+		}
+
+		return false;
+	}
 }

@@ -1,12 +1,13 @@
 package com.example.harvest.plant;
 
-import android.content.Context;
+import android.app.AlertDialog;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,30 +18,32 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.harvest.OnClickListener;
 import com.example.harvest.R;
+import com.example.harvest.crop.CropVM;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import data.models.Plant;
 
-public class PlantListFragment extends Fragment
+public class PlantListFragment extends Fragment implements OnClickListener
 {
 	private RecyclerView recyclerView;
 	private PlantAdapter adapter;
 
-	private PlantVM vm;
-	private boolean allowMultiSelect = false;
+	private PlantVM plantVM;
+	private List<Plant> plants;
+	private int selectedPlantPosition = -1;
+
+	// Lifecycle overrides
 
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 
-		allowMultiSelect = requireArguments().getBoolean(PlantActivity.ALLOW_MULTISELECT);
-
-		vm = new ViewModelProvider(requireActivity()).get(PlantVM.class);
-		vm.lookupPlants();
+		plantVM = new ViewModelProvider(requireActivity()).get(PlantVM.class);
+		plantVM.lookupPlants();
 	}
 
 	@Nullable
@@ -62,11 +65,15 @@ public class PlantListFragment extends Fragment
 		recyclerView = view.findViewById(R.id.plantList_plantRcv);
 		recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
 
-		vm.lookupPlants().observe(getViewLifecycleOwner(), newPlants -> {
-			adapter = new PlantAdapter(requireActivity(), newPlants);
+		plantVM.lookupPlants().observe(getViewLifecycleOwner(), newPlants -> {
+			plants = newPlants;
+			adapter = new PlantAdapter(requireActivity(), plants, this);
 			recyclerView.setAdapter(adapter);
+			selectedPlantPosition = -1;
 		});
 	}
+
+	// Callbacks for user-generated events
 
 	public void launchPlantAddFragment()
 	{
@@ -75,5 +82,51 @@ public class PlantListFragment extends Fragment
 		transaction.replace(R.id.plant_fragmentContainerView, PlantAddFragment.class, null);
 		transaction.addToBackStack(null);
 		transaction.commit();
+	}
+
+	private void deletePlant(Plant plantToDelete)
+	{
+		String message;
+		boolean success = plantVM.deletePlant(plantToDelete);
+
+		if (success) {
+			message = plantToDelete.name + " removed!";
+		} else {
+			message = "Couldn't remove " + plantToDelete.name;
+		}
+
+		Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show();
+	}
+
+	// OnClickListener interface overrides for PlantAdapter
+
+	@Override
+	public void onClick(View row, int position)
+	{
+		// Clear previously selected row
+		if (selectedPlantPosition != -1) {
+			PlantViewHolder oldViewHolder =
+				(PlantViewHolder) recyclerView.findViewHolderForAdapterPosition(selectedPlantPosition);
+			if (oldViewHolder != null) {
+				oldViewHolder.row.setBackgroundColor(Color.parseColor("#80E6E2E2"));
+			}
+		}
+
+		row.setBackgroundColor(Color.parseColor("#d6e7ff"));
+		selectedPlantPosition = position;
+	}
+
+	@Override
+	public void onLongClick(View row, int position)
+	{
+		Plant plantToDelete = plants.get(position);
+		AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+
+		builder.setMessage("Are you sure you want to delete " + plantToDelete.name + " ?");
+		builder.setNegativeButton("No", (dialogInterface, i) -> {});
+		builder.setPositiveButton("Yes", (dialogInterface, i) -> deletePlant(plantToDelete));
+
+		AlertDialog dialog = builder.create();
+		dialog.show();
 	}
 }

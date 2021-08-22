@@ -19,28 +19,28 @@ public class CropListActivity extends AppCompatActivity
 
 	private RecyclerView recyclerView;
 	private CropAdapter adapter;
-	private CropListVM viewModel;
+	private CropVM viewModel;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_crop_list);
-
-		// Setup AddCropViewModel and observers
-		viewModel = new ViewModelProvider(this).get(CropListVM.class);
-		viewModel.getCrops().observe(this, newCrops -> {
-			initializeCrops(newCrops);
-		});
-	}
-
-	private void initializeCrops(List<Crop> newCrops)
-	{
-		crops = newCrops;
-		adapter = new CropAdapter(crops);
-
-		recyclerView = findViewById(R.id.cropList_cropRcv);
-		recyclerView.setAdapter(adapter);
-		recyclerView.setLayoutManager(new LinearLayoutManager(this));
-	}
+//	@Override
+//	protected void onCreate(Bundle savedInstanceState)
+//	{
+//		super.onCreate(savedInstanceState);
+//		setContentView(R.layout.activity_crop_list);
+//
+//		// Setup AddCropViewModel and observers
+//		viewModel = new ViewModelProvider(this).get(CropVM.class);
+//		viewModel.getCrops().observe(this, newCrops -> {
+//			initializeCrops(newCrops);
+//		});
+//	}
+//
+//	private void initializeCrops(List<Crop> newCrops)
+//	{
+//		crops = newCrops;
+//		adapter = new CropAdapter(crops);
+//
+//		recyclerView = findViewById(R.id.cropList_cropRcv);
+//		recyclerView.setAdapter(adapter);
+//		recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//	}
 }

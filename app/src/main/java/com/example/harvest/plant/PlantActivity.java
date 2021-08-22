@@ -22,16 +22,11 @@ public class PlantActivity extends AppCompatActivity
 
 		// On startup, show plant list activity
 		if (savedInstanceState == null) {
-			Bundle bundle = new Bundle();
-			bundle.putBoolean(
-					ALLOW_MULTISELECT,
-					getIntent().getBooleanExtra(ALLOW_MULTISELECT, false)
-			);
 			getSupportFragmentManager()
-					.beginTransaction()
-					.setReorderingAllowed(true)
-					.add(R.id.plant_fragmentContainerView, PlantListFragment.class, bundle)
-					.commit();
+				.beginTransaction()
+				.setReorderingAllowed(true)
+				.add(R.id.plant_fragmentContainerView, PlantListFragment.class, null)
+				.commit();
 		}
 	}
 }
