@@ -25,7 +25,7 @@ public class Helper
 
 	/**
 	 *	Formats a Date object into a short string.
-	 * 
+	 *
 	 * @param date			Date object to convert into a short and sweet String.
 	 * @return				String representing the specified date; formatted like 21 Aug, 2021
 	 */

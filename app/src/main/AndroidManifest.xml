@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.harvest"
->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.harvest">
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Harvest">
         <activity
-            android:name=".plant.PlantAddActivity"
+            android:name=".plant.PlantActivity"
             android:exported="true" />
         <activity
             android:name=".plant.PlantListActivity"
