@@ -29,4 +29,9 @@ public class PlantActivity extends AppCompatActivity
 				.commit();
 		}
 	}
+
+	protected void setActionBarTitle(String title)
+	{
+		setActionBarTitle(title);
+	}
 }

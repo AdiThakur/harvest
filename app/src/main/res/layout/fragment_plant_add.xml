@@ -23,6 +23,8 @@
             android:importantForAutofill="no"
             android:inputType="textPersonName"
             android:minHeight="48dp"
+            android:outlineProvider="none"
+            android:padding="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -33,6 +35,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
+
             android:ems="10"
             android:hint="@string/unit_weight"
             android:importantForAutofill="no"
@@ -48,7 +51,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
-            android:background="#F3E5F5"
+            android:background="@color/card_grey"
             app:layout_constraintEnd_toEndOf="@+id/plantAdd_plantUnitWeightEditText"
             app:layout_constraintStart_toStartOf="@+id/plantAdd_plantUnitWeightEditText"
             app:layout_constraintTop_toBottomOf="@+id/plantAdd_plantUnitWeightEditText">
@@ -91,18 +94,15 @@
             android:layout_marginBottom="30dp"
             android:text="@string/cancel"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/plantAdd_SubmitButton"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="@+id/constraintLayout" />
 
         <Button
             android:id="@+id/plantAdd_SubmitButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/submit"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/plantAdd_CancelButton"
+            app:layout_constraintBottom_toBottomOf="@+id/plantAdd_CancelButton"
+            app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
             app:layout_constraintTop_toTopOf="@+id/plantAdd_CancelButton" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

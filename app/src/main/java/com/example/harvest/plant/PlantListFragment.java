@@ -18,12 +18,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.harvest.OnClickListener;
-import com.example.harvest.R;
-import com.example.harvest.crop.CropVM;
-
 import java.util.List;
 
+import com.example.harvest.OnClickListener;
+import com.example.harvest.R;
 import data.models.Plant;
 
 public class PlantListFragment extends Fragment implements OnClickListener
@@ -42,6 +40,7 @@ public class PlantListFragment extends Fragment implements OnClickListener
 	{
 		super.onCreate(savedInstanceState);
 
+		getActivity().setTitle("My Plants");
 		plantVM = new ViewModelProvider(requireActivity()).get(PlantVM.class);
 		plantVM.lookupPlants();
 	}
@@ -108,11 +107,11 @@ public class PlantListFragment extends Fragment implements OnClickListener
 			PlantViewHolder oldViewHolder =
 				(PlantViewHolder) recyclerView.findViewHolderForAdapterPosition(selectedPlantPosition);
 			if (oldViewHolder != null) {
-				oldViewHolder.row.setBackgroundColor(Color.parseColor("#80E6E2E2"));
+				oldViewHolder.row.setBackgroundColor(getResources().getColor(R.color.card_grey));
 			}
 		}
 
-		row.setBackgroundColor(Color.parseColor("#d6e7ff"));
+		row.setBackgroundColor(getResources().getColor(R.color.card_selected_blue));
 		selectedPlantPosition = position;
 	}
 

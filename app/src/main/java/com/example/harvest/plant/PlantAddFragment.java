@@ -15,6 +15,8 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -35,6 +37,13 @@ public class PlantAddFragment extends Fragment
 	private EditText plantUnitWeightEditText;
 	private ImageView plantImage;
 	private Uri selectedImageUri = Uri.parse(Helper.defaultPlantImageUriString);
+
+	@Override
+	public void onCreate(@Nullable Bundle savedInstanceState)
+	{
+		super.onCreate(savedInstanceState);
+		getActivity().setTitle("Add New Plant");
+	}
 
 	@Nullable
 	@Override
@@ -134,7 +143,6 @@ public class PlantAddFragment extends Fragment
 		);
 
 		if (plantAdded) {
-			Toast.makeText(requireActivity(), "Plant added!", Toast.LENGTH_LONG).show();
 			finish();
 		} else {
 			Toast.makeText(requireActivity(), "Couldn't add plant", Toast.LENGTH_LONG).show();
