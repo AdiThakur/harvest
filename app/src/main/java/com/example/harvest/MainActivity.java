@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.example.harvest.R;
-import com.example.harvest.crop.CropAddActivity;
 import com.example.harvest.plant.PlantActivity;
 
 import data.bridges.SeasonBridge;

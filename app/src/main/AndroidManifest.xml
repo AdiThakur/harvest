@@ -18,9 +18,6 @@
             android:name=".plant.PlantListActivity"
             android:exported="true" />
         <activity
-            android:name=".crop.CropAddActivity"
-            android:exported="true" />
-        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
