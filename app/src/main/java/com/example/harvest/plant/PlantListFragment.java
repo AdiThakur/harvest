@@ -83,7 +83,7 @@ public class PlantListFragment extends Fragment implements OnClickListener
 	{
 		FragmentManager fragmentManager = getParentFragmentManager();
 		FragmentTransaction transaction = fragmentManager.beginTransaction();
-		transaction.replace(R.id.plant_fragmentContainerView, PlantAddFragment.class, null);
+		transaction.replace(R.id.main_fragmentContainerView, PlantAddFragment.class, null);
 		transaction.addToBackStack(null);
 		transaction.commit();
 	}

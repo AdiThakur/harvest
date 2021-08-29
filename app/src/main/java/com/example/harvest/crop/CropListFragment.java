@@ -20,6 +20,7 @@ import com.example.harvest.OnClickListener;
 import com.example.harvest.R;
 import com.example.harvest.plant.PlantAdapter;
 import com.example.harvest.plant.PlantAddFragment;
+import com.example.harvest.plant.PlantListFragment;
 
 import java.util.List;
 
@@ -79,13 +80,11 @@ public class CropListFragment extends Fragment implements OnClickListener
 
 	public void launchCropAddFragment()
 	{
-//		FragmentManager fragmentManager = getParentFragmentManager();
-//		FragmentTransaction transaction = fragmentManager.beginTransaction();
-//		transaction.replace(R.id.crop_fragmentContainerView, CropAddFragment.class, null);
-//		transaction.addToBackStack(null);
-//		transaction.commit();
-
-		new CropAddFragment().show(getChildFragmentManager(), "CropAddDialog");
+		getParentFragmentManager()
+			.beginTransaction()
+			.setReorderingAllowed(true)
+			.add(R.id.main_fragmentContainerView, CropAddFragment.class, null)
+			.commit();
 	}
 
 	@Override
