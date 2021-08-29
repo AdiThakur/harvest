@@ -30,12 +30,12 @@ class PlantViewHolder extends RecyclerView.ViewHolder
 		super(plantRowItem);
 
 		row = plantRowItem;
-		plantImageView =  plantRowItem.findViewById(R.id.plantRcvItem_plantImage);
-		plantNameTextView =  plantRowItem.findViewById(R.id.plantRcvItem_plantNameText);
-		plantUnitWeightTextView = plantRowItem.findViewById(R.id.plantRcvItem_plantUnitWeightText);
+		plantImageView =  row.findViewById(R.id.plantRcvItem_plantImage);
+		plantNameTextView =  row.findViewById(R.id.plantRcvItem_plantNameText);
+		plantUnitWeightTextView = row.findViewById(R.id.plantRcvItem_plantUnitWeightText);
 
-		plantRowItem.setOnClickListener(view -> listener.onClick(view, getAdapterPosition()));
-		plantRowItem.setOnLongClickListener(view -> {
+		row.setOnClickListener(view -> listener.onClick(view, getAdapterPosition()));
+		row.setOnLongClickListener(view -> {
 			listener.onLongClick(view, getAdapterPosition());
 			return true;
 		});

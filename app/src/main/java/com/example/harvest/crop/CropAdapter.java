@@ -1,5 +1,6 @@
 package com.example.harvest.crop;
 
+import com.example.harvest.OnClickListener;
 import com.example.harvest.R;
 
 import android.content.Context;
@@ -16,32 +17,45 @@ import java.util.List;
 
 import common.Helper;
 import data.models.Crop;
+import data.models.Plant;
 
 class CropViewHolder extends RecyclerView.ViewHolder
 {
-	public ImageView plantImageView;
-	public TextView plantNameTextView;
-	public TextView plantCountTextView;
-	public TextView plantedDateTextView;
+	public View row;
+	public ImageView cropImageView;
+	public TextView cropNameTextView;
+	public TextView cropCountTextView;
+	public TextView cropPlantedDateTextView;
 
-	CropViewHolder(@NonNull View plantRowItem)
+	CropViewHolder(@NonNull View cropRowItem, OnClickListener listener)
 	{
-		super(plantRowItem);
+		super(cropRowItem);
 
-		plantImageView =  plantRowItem.findViewById(R.id.cropRcvItem_cropImage);
-		plantNameTextView =  plantRowItem.findViewById(R.id.cropRcvItem_cropNameText);
-		plantCountTextView =  plantRowItem.findViewById(R.id.cropRcvItem_cropCountText);
-		plantedDateTextView =  plantRowItem.findViewById(R.id.cropRcvItem_cropDatePlantedtext);
+		row = cropRowItem;
+		cropImageView =  row.findViewById(R.id.cropRcvItem_cropImage);
+		cropNameTextView =  row.findViewById(R.id.cropRcvItem_cropNameText);
+		cropCountTextView =  row.findViewById(R.id.cropRcvItem_cropCountText);
+		cropPlantedDateTextView =  row.findViewById(R.id.cropRcvItem_cropDatePlantedtext);
+
+		row.setOnClickListener(view -> listener.onClick(view, getAdapterPosition()));
+		row.setOnLongClickListener(view -> {
+			listener.onLongClick(view, getAdapterPosition());
+			return true;
+		});
 	}
 }
 
 public class CropAdapter extends RecyclerView.Adapter<CropViewHolder>
 {
-	private List<Crop> crops;
+	private final List<Crop> crops;
+	private final Context context;
+	private final OnClickListener listener;
 
-	public CropAdapter(List<Crop> crops)
+	public CropAdapter(Context context, List<Crop> crops, OnClickListener listener)
 	{
+		this.context = context;
 		this.crops = crops;
+		this.listener = listener;
 	}
 
 	@NonNull
@@ -52,18 +66,17 @@ public class CropAdapter extends RecyclerView.Adapter<CropViewHolder>
 		LayoutInflater inflater = LayoutInflater.from(context);
 		View plantRowItem = inflater.inflate(R.layout.add_crop_rcv_item, parent, false);
 
-		return new CropViewHolder(plantRowItem);
+		return new CropViewHolder(plantRowItem, listener);
 	}
 
 	@Override
 	public void onBindViewHolder(@NonNull CropViewHolder holder, int position)
 	{
 		Crop crop = crops.get(position);
-		// TODO: Set the image of the plant dynamically
-		holder.plantImageView.setImageResource(R.drawable.tomato);
-		holder.plantNameTextView.setText(crop.plant.name);
-		holder.plantCountTextView.setText(String.valueOf(crop.numberOfPlants));
-		holder.plantedDateTextView.setText(Helper.shortFormatOfDate(crop.datePlanted));
+		holder.cropImageView.setImageBitmap(Helper.loadBitmapFromImage(context, crop.plant.imageFileName));
+		holder.cropNameTextView.setText(crop.plant.name);
+		holder.cropCountTextView.setText(String.valueOf(crop.numberOfPlants));
+		holder.cropPlantedDateTextView.setText(Helper.shortFormatOfDate(crop.datePlanted));
 	}
 
 	@Override

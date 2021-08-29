@@ -1,5 +1,6 @@
 package com.example.harvest.plant;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -42,7 +43,11 @@ public class PlantAddFragment extends Fragment
 	public void onCreate(@Nullable Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		getActivity().setTitle("Add New Plant");
+
+		Activity activity = getActivity();
+		if (activity != null) {
+			activity.setTitle("Add New Plant");
+		}
 	}
 
 	@Nullable

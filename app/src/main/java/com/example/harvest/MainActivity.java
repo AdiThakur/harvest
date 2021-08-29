@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.harvest.crop.CropActivity;
 import com.example.harvest.plant.PlantActivity;
 
 import data.bridges.SeasonBridge;
@@ -23,8 +24,8 @@ public class MainActivity extends AppCompatActivity
 
 	public void test(View view)
 	{
-		Intent intent = new Intent(getApplicationContext(), PlantActivity.class);
-		intent.putExtra(PlantActivity.ALLOW_MULTISELECT, false);
+		Intent intent = new Intent(getApplicationContext(), CropActivity.class);
+//		intent.putExtra(PlantActivity.ALLOW_MULTISELECT, false);
 		startActivity(intent);
 	}
 }

@@ -1,5 +1,6 @@
 package com.example.harvest.plant;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -40,7 +41,11 @@ public class PlantListFragment extends Fragment implements OnClickListener
 	{
 		super.onCreate(savedInstanceState);
 
-		getActivity().setTitle("My Plants");
+		Activity activity = getActivity();
+		if (activity != null) {
+			activity.setTitle("My Plants");
+		}
+
 		plantVM = new ViewModelProvider(requireActivity()).get(PlantVM.class);
 		plantVM.lookupPlants();
 	}

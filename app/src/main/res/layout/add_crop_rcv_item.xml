@@ -4,6 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginRight="10dp"
     android:background="#80E6E2E2"
     android:outlineProvider="bounds"
     android:outlineSpotShadowColor="#F44336">
@@ -24,23 +27,23 @@
         android:id="@+id/cropRcvItem_cropNameText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginStart="25dp"
         android:fontFamily="serif"
         android:maxLines="2"
         android:text="Cherry Tomato"
         android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/textView6"
         app:layout_constraintStart_toEndOf="@+id/cropRcvItem_cropImage"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/cropRcvItem_cropImage" />
 
     <TextView
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:fontFamily="sans-serif-condensed"
         android:text="Count"
         android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/textView8"
         app:layout_constraintStart_toStartOf="@+id/cropRcvItem_cropNameText"
         app:layout_constraintTop_toBottomOf="@+id/cropRcvItem_cropNameText" />
 
@@ -59,12 +62,10 @@
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
         android:fontFamily="sans-serif-condensed"
         android:text="Date Planted"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/cropRcvItem_cropImage"
         app:layout_constraintStart_toStartOf="@+id/textView6"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
 

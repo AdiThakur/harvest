@@ -20,7 +20,7 @@ public class PlantActivity extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_plant);
 
-		// On startup, show plant list activity
+		// On startup, show PlantList fragment
 		if (savedInstanceState == null) {
 			getSupportFragmentManager()
 				.beginTransaction()

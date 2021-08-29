@@ -28,7 +28,7 @@
         android:id="@+id/plantRcvItem_plantNameText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="25dp"
         android:fontFamily="serif"
         android:maxLines="2"
         android:text="Cherry Tomato"

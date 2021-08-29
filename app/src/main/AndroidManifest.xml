@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Harvest">
         <activity
+            android:name=".crop.CropActivity"
+            android:exported="true" />
+        <activity
             android:name=".plant.PlantActivity"
             android:exported="true" />
         <activity
