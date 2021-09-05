@@ -1,7 +1,11 @@
 package com.example.harvest;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -20,13 +24,5 @@ public class MainActivity extends AppCompatActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
-		if (savedInstanceState == null) {
-			getSupportFragmentManager()
-				.beginTransaction()
-				.setReorderingAllowed(true)
-				.add(R.id.main_fragmentContainerView, CropListFragment.class, null)
-				.commit();
-		}
 	}
 }

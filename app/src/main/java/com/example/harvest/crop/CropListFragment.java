@@ -10,23 +10,20 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.harvest.OnClickListener;
 import com.example.harvest.R;
-import com.example.harvest.plant.PlantAdapter;
-import com.example.harvest.plant.PlantAddFragment;
-import com.example.harvest.plant.PlantListFragment;
 
 import java.util.List;
 
+import common.BaseFragment;
 import data.models.Crop;
 
-public class CropListFragment extends Fragment implements OnClickListener
+public class CropListFragment extends BaseFragment implements OnClickListener
 {
 	private RecyclerView recyclerView;
 	private CropAdapter adapter;
@@ -40,14 +37,8 @@ public class CropListFragment extends Fragment implements OnClickListener
 	public void onCreate(@Nullable Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-
-		Activity activity = getActivity();
-		if (activity != null) {
-			activity.setTitle("My Crops");
-		}
-
 		cropVM = (new ViewModelProvider(requireActivity())).get(CropVM.class);
-		cropVM.lookupCrops();
+		cropVM.getCrops();
 	}
 
 	@Nullable
@@ -65,11 +56,12 @@ public class CropListFragment extends Fragment implements OnClickListener
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
 	{
 		super.onViewCreated(view, savedInstanceState);
+		setTitle("My Crops");
 
 		recyclerView = view.findViewById(R.id.cropList_cropRcv);
 		recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
 
-		cropVM.lookupCrops().observe(getViewLifecycleOwner(), newCrops -> {
+		cropVM.cropsObservable.observe(getViewLifecycleOwner(), newCrops -> {
 			crops = newCrops;
 			adapter = new CropAdapter(requireActivity(), crops, this);
 			recyclerView.setAdapter(adapter);
@@ -80,11 +72,7 @@ public class CropListFragment extends Fragment implements OnClickListener
 
 	public void launchCropAddFragment()
 	{
-		getParentFragmentManager()
-			.beginTransaction()
-			.setReorderingAllowed(true)
-			.add(R.id.main_fragmentContainerView, CropAddFragment.class, null)
-			.commit();
+		NavHostFragment.findNavController(this).navigate(R.id.add_crop_graph);
 	}
 
 	@Override

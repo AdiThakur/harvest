@@ -18,8 +18,14 @@ import data.models.Plant;
 public class CropVM extends AndroidViewModel
 {
 	private final CropBridge cropBridge;
-	private final List<Crop> crops;
+
+	private List<Crop> crops;
 	private MutableLiveData<List<Crop>> cropsSubject;
+	public LiveData<List<Crop>> cropsObservable;
+
+	private Plant selectedPlant;
+	private MutableLiveData<Plant> selectedPlantSubject;
+	public LiveData<Plant> selectedPlantObservable;
 
 	public CropVM(@NonNull Application application)
 	{
@@ -29,20 +35,26 @@ public class CropVM extends AndroidViewModel
 		cropBridge = bridgeFactory.getCropBridge();
 
 		crops = new ArrayList<>();
-		crops.addAll(cropBridge.getAll());
+		cropsSubject = new MutableLiveData<>();
+		cropsObservable = cropsSubject;
+
+		selectedPlantSubject = new MutableLiveData<>();
+		selectedPlantObservable = selectedPlantSubject;
+	}
+
+	public void setSelectedPlant(Plant plant)
+	{
+		this.selectedPlant = plant;
+		selectedPlantSubject.setValue(selectedPlant);
 	}
 
 	public boolean addCrop() {
 		return false;
 	}
 
-	public LiveData<List<Crop>> lookupCrops()
+	public void getCrops()
 	{
-		if (cropsSubject == null) {
-			cropsSubject = new MutableLiveData<>();
-		}
-
+		crops.addAll(cropBridge.getAll());
 		cropsSubject.setValue(crops);
-		return cropsSubject;
 	}
 }

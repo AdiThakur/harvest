@@ -13,6 +13,8 @@
     <!--Common-->
     <string name="submit">Submit</string>
     <string name="cancel">Cancel</string>
+    <string name="select">Select</string>
+    <string name="confirm">Confirm</string>
 
     <string name="add_crop">Add Crop</string>
     <string name="add_plant">Add Plant</string>

@@ -1,6 +1,5 @@
 package com.example.harvest.plant;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -10,14 +9,9 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -27,9 +21,10 @@ import android.widget.Toast;
 
 import com.example.harvest.R;
 
+import common.BaseFragment;
 import common.Helper;
 
-public class PlantAddFragment extends Fragment
+public class PlantAddFragment extends BaseFragment
 {
 	private PlantVM vm;
 	private ActivityResultLauncher<String> getContent;
@@ -43,11 +38,8 @@ public class PlantAddFragment extends Fragment
 	public void onCreate(@Nullable Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-
-		Activity activity = getActivity();
-		if (activity != null) {
-			activity.setTitle("Add New Plant");
-		}
+//		vm = (new ViewModelProvider(getStoreOwner(R.id.select_plant_graph))).get(PlantVM.class);
+		vm = (new ViewModelProvider(requireActivity())).get(PlantVM.class);
 	}
 
 	@Nullable
@@ -67,6 +59,7 @@ public class PlantAddFragment extends Fragment
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
 	{
 		super.onViewCreated(view, savedInstanceState);
+		setTitle("Add a New Plant");
 
 		// Initialize Views
 		plantNameEditText = view.findViewById(R.id.plantAdd_plantNameEditText);
@@ -110,7 +103,7 @@ public class PlantAddFragment extends Fragment
 		builder.setMessage("Are you sure you want to cancel?");
 		builder.setNegativeButton("No", (dialogInterface, i) -> {});
 		builder.setPositiveButton("Yes", (dialogInterface, i) -> {
-			finish();
+			navigateTo(R.id.plantAddFragment, R.id.action_plantAddFragment_to_plantListFragment);
 		});
 
 		AlertDialog dialog = builder.create();
@@ -148,7 +141,7 @@ public class PlantAddFragment extends Fragment
 		);
 
 		if (plantAdded) {
-			finish();
+			navigateTo(R.id.plantAddFragment, R.id.action_plantAddFragment_to_plantListFragment);
 		} else {
 			Toast.makeText(requireActivity(), "Couldn't add plant", Toast.LENGTH_LONG).show();
 		}
@@ -158,10 +151,5 @@ public class PlantAddFragment extends Fragment
 	{
 		Bitmap imageBitmap = Helper.convertImageToBitmap(requireActivity(), imageUri);
 		return Helper.saveBitmapToImage(requireActivity(), imageBitmap, plantName);
-	}
-
-	private void finish()
-	{
-		getParentFragmentManager().popBackStack();
 	}
 }

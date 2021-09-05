@@ -1,6 +1,8 @@
 package com.example.harvest.plant;
 
 import android.app.Application;
+import android.util.Pair;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -9,6 +11,7 @@ import androidx.lifecycle.MutableLiveData;
 import java.util.ArrayList;
 import java.util.List;
 
+import common.Helper;
 import data.bridges.BridgeFactory;
 import data.bridges.PlantBridge;
 import data.models.Plant;
@@ -16,8 +19,14 @@ import data.models.Plant;
 public class PlantVM extends AndroidViewModel
 {
 	private final PlantBridge plantBridge;
+
+	public int selectedPlantPosition;
+	private final MutableLiveData<Pair<Integer, Integer>> selectedPlantSubject;
+	public final LiveData<Pair<Integer, Integer>> selectedPlantObservable;
+
 	private final List<Plant> plants;
-	private MutableLiveData<List<Plant>> plantsSubject;
+	private final MutableLiveData<List<Plant>> plantsSubject;
+	public final LiveData<List<Plant>> plantsObservable;
 
 	public PlantVM(@NonNull Application application)
 	{
@@ -26,8 +35,13 @@ public class PlantVM extends AndroidViewModel
 		BridgeFactory bridgeFactory = new BridgeFactory(application.getApplicationContext());
 		plantBridge = bridgeFactory.getPlantBridge();
 
+		selectedPlantPosition = -1;
+		selectedPlantSubject = new MutableLiveData<>();
+		selectedPlantObservable = selectedPlantSubject;
+
 		plants = new ArrayList<>();
-		plants.addAll(plantBridge.getAll());
+		plantsSubject = new MutableLiveData<>();
+		plantsObservable = plantsSubject;
 	}
 
 	public boolean addPlant(String name, double unitWeight, String imageFileName)
@@ -47,14 +61,27 @@ public class PlantVM extends AndroidViewModel
 		return false;
 	}
 
-	public LiveData<List<Plant>> lookupPlants()
+	public void addTestPlant()
 	{
-		if (plantsSubject == null) {
-			plantsSubject = new MutableLiveData<>();
-		}
-
+		Plant newPlant = new Plant();
+		newPlant.name = "Test";
+		newPlant.unitWeight = 1;
+		newPlant.imageFileName = "retardo";
+		plantBridge.insert(newPlant);
+		plants.add(newPlant);
 		plantsSubject.setValue(plants);
-		return plantsSubject;
+	}
+
+//	public void getPlants()
+//	{
+//		plants.addAll(plantBridge.getAll());
+//		plantsSubject.setValue(plants);
+//	}
+
+	public List<Plant> getPlants()
+	{
+		plants.addAll(plantBridge.getAll());
+		return plants;
 	}
 
 	public boolean deletePlant(Plant plant)
@@ -66,5 +93,12 @@ public class PlantVM extends AndroidViewModel
 		}
 
 		return false;
+	}
+
+	public void setSelectedPlant(int position)
+	{
+		int oldPosition = selectedPlantPosition;
+		selectedPlantPosition = position;
+		selectedPlantSubject.setValue(new Pair<>(oldPosition, position));
 	}
 }

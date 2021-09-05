@@ -44,7 +44,7 @@ class PlantViewHolder extends RecyclerView.ViewHolder
 
 public class PlantAdapter extends RecyclerView.Adapter<PlantViewHolder>
 {
-	private final List<Plant> plants;
+	private List<Plant> plants;
 	private final Context context;
 	private final OnClickListener listener;
 
@@ -76,8 +76,7 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantViewHolder>
 	}
 
 	@Override
-	public int getItemCount()
-	{
+	public int getItemCount() {
 		return plants.size();
 	}
 }
