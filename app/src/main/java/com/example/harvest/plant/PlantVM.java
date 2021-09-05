@@ -20,13 +20,11 @@ public class PlantVM extends AndroidViewModel
 {
 	private final PlantBridge plantBridge;
 
+	private final List<Plant> plants;
+
 	public int selectedPlantPosition;
 	private final MutableLiveData<Pair<Integer, Integer>> selectedPlantSubject;
 	public final LiveData<Pair<Integer, Integer>> selectedPlantObservable;
-
-	private final List<Plant> plants;
-	private final MutableLiveData<List<Plant>> plantsSubject;
-	public final LiveData<List<Plant>> plantsObservable;
 
 	public PlantVM(@NonNull Application application)
 	{
@@ -34,14 +32,11 @@ public class PlantVM extends AndroidViewModel
 
 		BridgeFactory bridgeFactory = new BridgeFactory(application.getApplicationContext());
 		plantBridge = bridgeFactory.getPlantBridge();
+		plants = plantBridge.getAll();
 
 		selectedPlantPosition = -1;
 		selectedPlantSubject = new MutableLiveData<>();
 		selectedPlantObservable = selectedPlantSubject;
-
-		plants = new ArrayList<>();
-		plantsSubject = new MutableLiveData<>();
-		plantsObservable = plantsSubject;
 	}
 
 	public boolean addPlant(String name, double unitWeight, String imageFileName)
@@ -54,45 +49,21 @@ public class PlantVM extends AndroidViewModel
 		newPlant = plantBridge.insert(newPlant);
 		if (newPlant.uid != 0) {
 			plants.add(newPlant);
-			plantsSubject.setValue(plants);
 			return true;
 		}
 
 		return false;
 	}
 
-	public void addTestPlant()
-	{
-		Plant newPlant = new Plant();
-		newPlant.name = "Test";
-		newPlant.unitWeight = 1;
-		newPlant.imageFileName = "retardo";
-		plantBridge.insert(newPlant);
-		plants.add(newPlant);
-		plantsSubject.setValue(plants);
-	}
-
-//	public void getPlants()
-//	{
-//		plants.addAll(plantBridge.getAll());
-//		plantsSubject.setValue(plants);
-//	}
-
 	public List<Plant> getPlants()
 	{
-		plants.addAll(plantBridge.getAll());
 		return plants;
 	}
 
 	public boolean deletePlant(Plant plant)
 	{
 		int deleteCount = plantBridge.delete(plant);
-		if (deleteCount > 0 && plants.remove(plant)) {
-			plantsSubject.setValue(plants);
-			return true;
-		}
-
-		return false;
+		return (deleteCount > 0) && (plants.remove(plant));
 	}
 
 	public void setSelectedPlant(int position)

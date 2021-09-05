@@ -26,7 +26,7 @@ import common.Helper;
 
 public class PlantAddFragment extends BaseFragment
 {
-	private PlantVM vm;
+	private PlantVM plantVM;
 	private ActivityResultLauncher<String> getContent;
 
 	private EditText plantNameEditText;
@@ -34,22 +34,21 @@ public class PlantAddFragment extends BaseFragment
 	private ImageView plantImage;
 	private Uri selectedImageUri = Uri.parse(Helper.defaultPlantImageUriString);
 
+	// Lifecycle Overrides
+
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-//		vm = (new ViewModelProvider(getStoreOwner(R.id.select_plant_graph))).get(PlantVM.class);
-		vm = (new ViewModelProvider(requireActivity())).get(PlantVM.class);
+		plantVM = (new ViewModelProvider(getStoreOwner(R.id.select_plant_graph))).get(PlantVM.class);
 	}
 
 	@Nullable
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
 	{
-		vm = new ViewModelProvider(requireActivity()).get(PlantVM.class);
 		getContent = registerForActivityResult(
-			new ActivityResultContracts.GetContent(),
-			this::applySelectedImage
+			new ActivityResultContracts.GetContent(), this::applySelectedImage
 		);
 
 		return inflater.inflate(R.layout.fragment_plant_add, container, false);
@@ -70,49 +69,22 @@ public class PlantAddFragment extends BaseFragment
 		Button chooseImage = view.findViewById(R.id.plantAdd_ChooseImageButton);
 		chooseImage.setOnClickListener(v -> { chooseImage(); });
 
-		Button cancel = view.findViewById(R.id.plantAdd_CancelButton);
-		cancel.setOnClickListener(v -> { cancel(); });
-
 		Button submit = view.findViewById(R.id.plantAdd_SubmitButton);
 		submit.setOnClickListener(v -> { submit(); });
+
+		Button cancel = view.findViewById(R.id.plantAdd_CancelButton);
+		cancel.setOnClickListener(v -> { cancel(); });
 	}
+
+	// Callbacks for user-generated events
 
 	public void chooseImage()
 	{
 		getContent.launch("image/*");
 	}
 
-	public void applySelectedImage(Uri result)
-	{
-		if (result == null) {
-			Toast toast = Toast.makeText(
-				requireActivity(), "No image selected; using default", Toast.LENGTH_LONG
-			);
-			toast.show();
-			return;
-		}
-
-		selectedImageUri = result;
-		plantImage.setImageURI(selectedImageUri);
-	}
-
-	public void cancel()
-	{
-		AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
-
-		builder.setMessage("Are you sure you want to cancel?");
-		builder.setNegativeButton("No", (dialogInterface, i) -> {});
-		builder.setPositiveButton("Yes", (dialogInterface, i) -> {
-			navigateTo(R.id.plantAddFragment, R.id.action_plantAddFragment_to_plantListFragment);
-		});
-
-		AlertDialog dialog = builder.create();
-		dialog.show();
-	}
-
 	public void submit()
 	{
-		// Validate plant's attributes
 		String plantName = plantNameEditText.getText().toString();
 		String plantUnitWeight = plantUnitWeightEditText.getText().toString();
 
@@ -129,22 +101,58 @@ public class PlantAddFragment extends BaseFragment
 		String savedFileName = copyImageToInternalStorage(selectedImageUri, plantName);
 		if (savedFileName == null) {
 			Toast.makeText(
-				requireActivity(), "Image wasn't saved! Please try again.", Toast.LENGTH_SHORT
+				requireActivity(),
+				"Image wasn't saved! Please try again.",
+				Toast.LENGTH_SHORT
 			).show();
 			return;
 		}
 
-		boolean plantAdded = vm.addPlant(
+		boolean plantAdded = plantVM.addPlant(
 			plantName,
 			Double.parseDouble(plantUnitWeight),
 			savedFileName
 		);
 
 		if (plantAdded) {
-			navigateTo(R.id.plantAddFragment, R.id.action_plantAddFragment_to_plantListFragment);
+			navigateUp();
 		} else {
-			Toast.makeText(requireActivity(), "Couldn't add plant", Toast.LENGTH_LONG).show();
+			Toast.makeText(
+				requireActivity(),
+				"Couldn't add plant",
+				Toast.LENGTH_LONG
+			).show();
 		}
+	}
+
+	public void cancel()
+	{
+		AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+
+		builder.setMessage("Are you sure you want to cancel?");
+		builder.setNegativeButton("No", (dialogInterface, i) -> {});
+		builder.setPositiveButton("Yes", (dialogInterface, i) -> {
+			navigateUp();
+		});
+
+		AlertDialog dialog = builder.create();
+		dialog.show();
+	}
+
+	// Helpers
+
+	private void applySelectedImage(Uri result)
+	{
+		if (result == null) {
+			Toast toast = Toast.makeText(
+				requireActivity(), "No image selected; using default", Toast.LENGTH_LONG
+			);
+			toast.show();
+			return;
+		}
+
+		selectedImageUri = result;
+		plantImage.setImageURI(selectedImageUri);
 	}
 
 	private String copyImageToInternalStorage(Uri imageUri, String plantName)

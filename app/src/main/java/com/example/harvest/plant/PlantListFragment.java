@@ -1,9 +1,7 @@
 package com.example.harvest.plant;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -11,35 +9,26 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavBackStackEntry;
-import androidx.navigation.NavController;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.List;
 
 import com.example.harvest.OnClickListener;
 import com.example.harvest.R;
 import com.example.harvest.crop.CropVM;
 
 import common.BaseFragment;
-import common.Helper;
 import data.models.Plant;
 
 public class PlantListFragment extends BaseFragment implements OnClickListener
 {
 	private PlantVM plantVM;
 	private CropVM cropVM;
-	private List<Plant> plants;
 
 	private RecyclerView recyclerView;
 	private PlantAdapter adapter;
@@ -54,7 +43,7 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 		setHasOptionsMenu(true);
 
 		cropVM = (new ViewModelProvider(getStoreOwner(R.id.add_crop_graph))).get(CropVM.class);
-		plantVM = (new ViewModelProvider(requireActivity())).get(PlantVM.class);
+		plantVM = (new ViewModelProvider(getStoreOwner(R.id.select_plant_graph))).get(PlantVM.class);
 	}
 
 	@Nullable
@@ -72,17 +61,15 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 
 		confirmButton = view.findViewById(R.id.plantList_confirmButton);
 		confirmButton.setEnabled(false);
-		confirmButton.setOnClickListener((v) -> {
-			confirmSelection(true);
-		});
-		Button cancelButton = view.findViewById(R.id.plantList_cancelButton);
-		cancelButton.setOnClickListener((v) -> {
-			confirmSelection(false);
-		});
+		confirmButton.setOnClickListener((v) -> confirmSelection(true));
 
+		Button cancelButton = view.findViewById(R.id.plantList_cancelButton);
+		cancelButton.setOnClickListener((v) -> confirmSelection(false));
+
+		adapter = new PlantAdapter(getContext(), plantVM.getPlants(), this);
 		recyclerView = view.findViewById(R.id.plantList_plantRcv);
 		recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
-		adapter = new PlantAdapter(getContext(), plantVM.getPlants(), this);
+		recyclerView.setAdapter(adapter);
 
 		plantVM.selectedPlantObservable.observe(
 			getViewLifecycleOwner(), this::plantSelectedObserver
@@ -115,22 +102,22 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 		int oldPos = positions.first;
 		int newPos = positions.second;
 
-		// Clear previously selected row
+		// Clear previously selected row's style
 		if (oldPos != -1) {
 			PlantViewHolder oldViewHolder =
-					(PlantViewHolder) recyclerView.findViewHolderForAdapterPosition(oldPos);
+				(PlantViewHolder) recyclerView.findViewHolderForAdapterPosition(oldPos);
 			if (oldViewHolder != null) {
 				oldViewHolder.row.setBackgroundColor(
-						getResources().getColor(R.color.card_grey)
+					getResources().getColor(R.color.card_grey)
 				);
 			}
 		}
 
 		PlantViewHolder newViewHolder =
-				(PlantViewHolder) recyclerView.findViewHolderForAdapterPosition(newPos);
+			(PlantViewHolder) recyclerView.findViewHolderForAdapterPosition(newPos);
 		if (newViewHolder != null) {
 			newViewHolder.row.setBackgroundColor(
-					getResources().getColor(R.color.card_selected_blue)
+				getResources().getColor(R.color.card_selected_blue)
 			);
 		}
 
@@ -139,32 +126,32 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 
 	// Callbacks for user-generated events
 
-	public void launchPlantAddFragment()
+	private void launchPlantAddFragment()
 	{
 		navigateTo(R.id.plantListFragment, R.id.action_plantListFragment_to_plantAddFragment);
 	}
 
-	private void deletePlant(Plant plantToDelete)
+	private void deletePlant(Plant plantToDelete, int position)
 	{
-		String message;
 		boolean success = plantVM.deletePlant(plantToDelete);
 
 		if (success) {
-			message = plantToDelete.name + " removed!";
-		} else {
-			message = "Couldn't remove " + plantToDelete.name;
+			adapter.notifyItemRemoved(position);
+			return;
 		}
 
+		String message = "Couldn't remove " + plantToDelete.name;
 		Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show();
 	}
 
-	public void confirmSelection(boolean confirmed)
+	private void confirmSelection(boolean confirmed)
 	{
 		if (confirmed) {
-			cropVM.setSelectedPlant(plants.get(plantVM.selectedPlantPosition));
+			Plant selectedPlant = plantVM.getPlants().get(plantVM.selectedPlantPosition);
+			cropVM.setSelectedPlant(selectedPlant);
 		}
 
-		navigateTo(R.id.plantListFragment, R.id.action_global_cropAddFragment);
+		navigateUp();
 	}
 
 	// OnClickListener interface overrides for PlantAdapter
@@ -178,12 +165,14 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 	@Override
 	public void onLongClick(View row, int position)
 	{
-		Plant plantToDelete = plants.get(position);
+		Plant plantToDelete = plantVM.getPlants().get(position);
 		AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
 
 		builder.setMessage("Are you sure you want to delete " + plantToDelete.name + " ?");
 		builder.setNegativeButton("No", (dialogInterface, i) -> {});
-		builder.setPositiveButton("Yes", (dialogInterface, i) -> deletePlant(plantToDelete));
+		builder.setPositiveButton("Yes", (dialogInterface, i) ->
+			deletePlant(plantToDelete, position)
+		);
 
 		AlertDialog dialog = builder.create();
 		dialog.show();
