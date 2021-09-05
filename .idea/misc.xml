@@ -12,10 +12,11 @@
         <entry key="..\:/Users/adity/Desktop/harvest/app/src/main/res/layout/activity_plant.xml" value="0.4302536231884058" />
         <entry key="..\:/Users/adity/Desktop/harvest/app/src/main/res/layout/activity_plant_add.xml" value="0.478713768115942" />
         <entry key="..\:/Users/adity/Desktop/harvest/app/src/main/res/layout/activity_plant_list.xml" value="0.5" />
+        <entry key="..\:/Users/adity/Desktop/harvest/app/src/main/res/layout/add_crop_empty_item.xml" value="0.33" />
         <entry key="..\:/Users/adity/Desktop/harvest/app/src/main/res/layout/add_crop_rcv_item.xml" value="0.48596014492753625" />
         <entry key="..\:/Users/adity/Desktop/harvest/app/src/main/res/layout/add_plant_rcv_item.xml" value="0.5144927536231884" />
         <entry key="..\:/Users/adity/Desktop/harvest/app/src/main/res/layout/dialog_crop_add.xml" value="0.5328125" />
-        <entry key="..\:/Users/adity/Desktop/harvest/app/src/main/res/layout/fragment_crop_add.xml" value="0.5171875" />
+        <entry key="..\:/Users/adity/Desktop/harvest/app/src/main/res/layout/fragment_crop_add.xml" value="0.33" />
         <entry key="..\:/Users/adity/Desktop/harvest/app/src/main/res/layout/fragment_crop_list.xml" value="0.31296296296296294" />
         <entry key="..\:/Users/adity/Desktop/harvest/app/src/main/res/layout/fragment_plant_add.xml" value="0.5" />
         <entry key="..\:/Users/adity/Desktop/harvest/app/src/main/res/layout/fragment_plant_list.xml" value="0.3642241379310345" />

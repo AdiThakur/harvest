@@ -30,4 +30,14 @@ public class Crop
 
 	@Ignore
 	public Plant plant;
+
+	public Crop() {}
+
+	public Crop(long seasonId, LocalDateTime datePlanted, int numberOfPlants, Plant plant)
+	{
+		this.seasonId = seasonId;
+		this.datePlanted = datePlanted;
+		this.numberOfPlants = numberOfPlants;
+		this.plant = plant;
+	}
 }

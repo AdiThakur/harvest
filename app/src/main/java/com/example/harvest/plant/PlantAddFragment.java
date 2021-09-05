@@ -116,13 +116,14 @@ public class PlantAddFragment extends BaseFragment
 
 		if (plantAdded) {
 			navigateUp();
-		} else {
-			Toast.makeText(
-				requireActivity(),
-				"Couldn't add plant",
-				Toast.LENGTH_LONG
-			).show();
+			return;
 		}
+
+		Toast.makeText(
+			requireActivity(),
+			"Couldn't add plant",
+			Toast.LENGTH_LONG
+		).show();
 	}
 
 	public void cancel()

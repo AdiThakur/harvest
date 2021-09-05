@@ -41,7 +41,6 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 	{
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-
 		cropVM = (new ViewModelProvider(getStoreOwner(R.id.add_crop_graph))).get(CropVM.class);
 		plantVM = (new ViewModelProvider(getStoreOwner(R.id.select_plant_graph))).get(PlantVM.class);
 	}
@@ -88,7 +87,7 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 	{
 		int id = item.getItemId();
 
-		if (id == R.id.plantList_addPlantButton) {
+		if (id == R.id.addMenu_addButton) {
 			launchPlantAddFragment();
 		}
 

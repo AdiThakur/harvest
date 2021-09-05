@@ -15,6 +15,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 
@@ -32,6 +33,13 @@ public class Helper
 	public static String shortFormatOfDate(LocalDateTime date)
 	{
 		return date.format(DateTimeFormatter.ofPattern("d MMM yyyy"));
+	}
+
+	public static LocalDateTime dateFromSeconds(long seconds)
+	{
+		 return LocalDateTime.ofEpochSecond(
+			seconds, 0, OffsetDateTime.now().getOffset()
+	 	);
 	}
 
 	/**

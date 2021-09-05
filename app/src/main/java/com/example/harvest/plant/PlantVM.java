@@ -41,12 +41,9 @@ public class PlantVM extends AndroidViewModel
 
 	public boolean addPlant(String name, double unitWeight, String imageFileName)
 	{
-		Plant newPlant = new Plant();
-		newPlant.name = name;
-		newPlant.unitWeight = unitWeight;
-		newPlant.imageFileName = imageFileName;
-
+		Plant newPlant = new Plant(name, unitWeight, imageFileName);
 		newPlant = plantBridge.insert(newPlant);
+
 		if (newPlant.uid != 0) {
 			plants.add(newPlant);
 			return true;

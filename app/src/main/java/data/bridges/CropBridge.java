@@ -19,6 +19,7 @@ public class CropBridge implements IBridge<Crop>
 	@Override
 	public Crop insert(Crop crop)
 	{
+		crop.plantId = crop.plant.uid;
 		crop.uid = cropDao.insert(crop);
 		return crop;
 	}

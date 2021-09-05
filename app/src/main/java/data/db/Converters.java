@@ -14,6 +14,8 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
+import common.Helper;
+
 public class Converters
 {
 	@TypeConverter
@@ -23,9 +25,7 @@ public class Converters
 			return null;
 		}
 
-		LocalDateTime date =
-				LocalDateTime.ofEpochSecond(value, 0, OffsetDateTime.now().getOffset());
-		return date;
+		return Helper.dateFromSeconds(value);
 	}
 
 	@TypeConverter

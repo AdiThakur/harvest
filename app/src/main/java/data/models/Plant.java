@@ -20,4 +20,13 @@ public class Plant
 
 	@ColumnInfo(name = "image_filename")
 	public String imageFileName;
+
+	public Plant() {}
+
+	public Plant(String name, double unitWeight, String imageFileName)
+	{
+		this.name = name;
+		this.unitWeight = unitWeight;
+		this.imageFileName = imageFileName;
+	}
 }

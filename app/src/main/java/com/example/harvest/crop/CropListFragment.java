@@ -1,17 +1,19 @@
 package com.example.harvest.crop;
 
-import android.app.Activity;
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,11 +27,10 @@ import data.models.Crop;
 
 public class CropListFragment extends BaseFragment implements OnClickListener
 {
+	private CropVM cropVM;
+
 	private RecyclerView recyclerView;
 	private CropAdapter adapter;
-
-	private CropVM cropVM;
-	private List<Crop> crops;
 
 	// Lifecycle overrides
 
@@ -37,19 +38,15 @@ public class CropListFragment extends BaseFragment implements OnClickListener
 	public void onCreate(@Nullable Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
 		cropVM = (new ViewModelProvider(requireActivity())).get(CropVM.class);
-		cropVM.getCrops();
 	}
 
 	@Nullable
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
 	{
-		View view = inflater.inflate(R.layout.fragment_crop_list, container, false);
-		Button addPlant = view.findViewById(R.id.cropList_addCropButton);
-		addPlant.setOnClickListener((v) -> launchCropAddFragment());
-
-		return view;
+		return inflater.inflate(R.layout.fragment_crop_list, container, false);
 	}
 
 	@Override
@@ -58,30 +55,69 @@ public class CropListFragment extends BaseFragment implements OnClickListener
 		super.onViewCreated(view, savedInstanceState);
 		setTitle("My Crops");
 
+		adapter = new CropAdapter(getContext(), cropVM.getCrops(), this);
 		recyclerView = view.findViewById(R.id.cropList_cropRcv);
 		recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
+		recyclerView.setAdapter(adapter);
+	}
 
-		cropVM.cropsObservable.observe(getViewLifecycleOwner(), newCrops -> {
-			crops = newCrops;
-			adapter = new CropAdapter(requireActivity(), crops, this);
-			recyclerView.setAdapter(adapter);
-		});
+	@Override
+	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater)
+	{
+		super.onCreateOptionsMenu(menu, inflater);
+		inflater.inflate(R.menu.fragment_add_menu , menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(@NonNull MenuItem item)
+	{
+		int id = item.getItemId();
+
+		if (id == R.id.addMenu_addButton) {
+			launchCropAddFragment();
+		}
+
+		return true;
+	}
+
+	// Callbacks for user-generated events
+
+	private void launchCropAddFragment()
+	{
+		navigateTo(R.id.cropListFragment, R.id.add_crop_graph);
+	}
+
+	private void deleteCrop(Crop cropToDelete, int position)
+	{
+		boolean success = cropVM.deleteCrop(cropToDelete);
+
+		if (success) {
+			adapter.notifyItemRemoved(position);
+			return;
+		}
+
+		String message = "Couldn't remove " + cropToDelete.plant.name;
+		Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show();
 	}
 
 	// OnClickListener interface overrides for CropAdapter
 
-	public void launchCropAddFragment()
+	@Override
+	public void onClick(View row, int position) {}
+
+	@Override
+	public void onLongClick(View row, int position)
 	{
-		NavHostFragment.findNavController(this).navigate(R.id.add_crop_graph);
-	}
+		Crop cropToDelete = cropVM.getCrops().get(position);
+		AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
 
-	@Override
-	public void onClick(View row, int position) {
+		builder.setMessage("Are you sure you want to delete " + cropToDelete.plant.name + " crop ?");
+		builder.setNegativeButton("No", (dialogInterface, i) -> {});
+		builder.setPositiveButton("Yes", (dialogInterface, i) ->
+			deleteCrop(cropToDelete, position)
+		);
 
-	}
-
-	@Override
-	public void onLongClick(View row, int position) {
-
+		AlertDialog dialog = builder.create();
+		dialog.show();
 	}
 }
