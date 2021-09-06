@@ -56,7 +56,7 @@ public class CropAddFragment extends BaseFragment
 	{
 		View view = inflater.inflate(R.layout.fragment_crop_add, container, false);
 		plantContainer = view.findViewById(R.id.cropAdd_SelectedPlantContainer);
-		plantContainer.setOnClickListener((v) -> launchCropListFragment());
+		plantContainer.setOnClickListener((v) -> launchPlantListFragment());
 
 		plantImageView = plantContainer.findViewById(R.id.plantRcvItem_plantImage);
 		plantNameTextView = plantContainer.findViewById(R.id.plantRcvItem_plantNameText);
@@ -98,9 +98,9 @@ public class CropAddFragment extends BaseFragment
 
 	// Callbacks for user-generated events
 
-	private void launchCropListFragment()
+	private void launchPlantListFragment()
 	{
-		NavHostFragment.findNavController(this).navigate(R.id.select_plant_graph);
+		navigateTo(R.id.cropAddFragment, R.id.select_plant_graph);
 	}
 
 	private void  submit()

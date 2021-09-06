@@ -5,6 +5,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,8 +18,6 @@ import data.bridges.SeasonBridge;
 
 public class MainActivity extends AppCompatActivity
 {
-	SeasonBridge seasonBridge;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{

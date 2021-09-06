@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/cropListFragment">
+    app:startDestination="@id/homeFragment">
 
     <fragment
         android:id="@+id/cropListFragment"
@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_cropListFragment_to_add_crop_graph"
             app:destination="@id/add_crop_graph" />
+        <action
+            android:id="@+id/action_cropListFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
     <navigation android:id="@+id/add_crop_graph"
         app:startDestination="@id/cropAddFragment">
@@ -53,4 +56,14 @@
                 app:destination="@id/cropAddFragment" />
         </navigation>
     </navigation>
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.harvest.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_cropListFragment"
+            app:destination="@id/cropListFragment" />
+    </fragment>
+    <fragment android:id="@+id/placeholder" />
 </navigation>
