@@ -49,7 +49,7 @@ public class HomeFragment extends BaseFragment
 
 		Button plantsButton = view.findViewById(R.id.home_plantsButton);
 		plantsButton.setOnClickListener((v) -> {
-//			launch(R.id.action_homeFragment_to_plantListFragment2);
+			launch(R.id.action_homeFragment_to_plant_nav_graph);
 		});
 
 	}

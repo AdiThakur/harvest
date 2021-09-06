@@ -6,6 +6,7 @@ import androidx.annotation.IdRes;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
+import androidx.navigation.NavBackStackEntry;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.fragment.NavHostFragment;
@@ -47,6 +48,17 @@ public class BaseFragment extends Fragment
 			NavHostFragment.findNavController(this).getCurrentDestination();
 		if (currentDestination != null && currentDestination.getId() == source) {
 			NavHostFragment.findNavController(this).navigate(action);
+		}
+	}
+
+	protected String getCaller()
+	{
+		try {
+			NavController controller = NavHostFragment.findNavController(this);
+			NavBackStackEntry entry = controller.getPreviousBackStackEntry();
+			return entry.getDestination().getLabel().toString();
+		} catch (NullPointerException e) {
+			return "";
 		}
 	}
 }

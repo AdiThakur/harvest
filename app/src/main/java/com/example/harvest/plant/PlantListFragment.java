@@ -2,6 +2,7 @@ package com.example.harvest.plant;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,6 +16,9 @@ import android.widget.Toast;
 import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.navigation.NavBackStackEntry;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -41,12 +45,15 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 	{
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-		// getParentFragment() should never result in an NPE because PlantListFragment is NEVER
-		// hosted directly in an Activity
-//		NavController controller = NavHostFragment.findNavController(this);
-//		NavBackStackEntry entry = controller.getPreviousBackStackEntry();
-//		Log.println(Log.DEBUG, "PlantList", entry.getDestination().toString());
-		cropAddVM = getProvider(R.id.crop_add_graph).get(CropAddVM.class);
+
+		// TODO: Create two separate fragments (PlantSelectList and PlantViewList) that both inherit common logic from PlantList; more robust option for conditional rendering
+		String caller = getCaller();
+		if (caller.equals("fragment_crop_add")) {
+			cropAddVM = getProvider(R.id.crop_add_graph).get(CropAddVM.class);
+		} else {
+			cropAddVM = getProvider(R.id.plant_nav_graph).get(CropAddVM.class);
+		}
+
 		plantVM = getProvider(R.id.plant_nav_graph).get(PlantVM.class);
 	}
 
