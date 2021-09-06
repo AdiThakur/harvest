@@ -8,7 +8,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,14 +19,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.harvest.OnClickListener;
 import com.example.harvest.R;
 
-import java.util.List;
-
 import common.BaseFragment;
 import data.models.Crop;
 
 public class CropListFragment extends BaseFragment implements OnClickListener
 {
-	private CropVM cropVM;
+	private CropListVM cropListVM;
 
 	private RecyclerView recyclerView;
 	private CropAdapter adapter;
@@ -39,7 +36,7 @@ public class CropListFragment extends BaseFragment implements OnClickListener
 	{
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-		cropVM = (new ViewModelProvider(requireActivity())).get(CropVM.class);
+		cropListVM = (new ViewModelProvider(requireActivity())).get(CropListVM.class);
 	}
 
 	@Nullable
@@ -55,7 +52,7 @@ public class CropListFragment extends BaseFragment implements OnClickListener
 		super.onViewCreated(view, savedInstanceState);
 		setTitle("My Crops");
 
-		adapter = new CropAdapter(getContext(), cropVM.getCrops(), this);
+		adapter = new CropAdapter(getContext(), cropListVM.getCrops(), this);
 		recyclerView = view.findViewById(R.id.cropList_cropRcv);
 		recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
 		recyclerView.setAdapter(adapter);
@@ -89,7 +86,7 @@ public class CropListFragment extends BaseFragment implements OnClickListener
 
 	private void deleteCrop(Crop cropToDelete, int position)
 	{
-		boolean success = cropVM.deleteCrop(cropToDelete);
+		boolean success = cropListVM.deleteCrop(cropToDelete);
 
 		if (success) {
 			adapter.notifyItemRemoved(position);
@@ -108,7 +105,7 @@ public class CropListFragment extends BaseFragment implements OnClickListener
 	@Override
 	public void onLongClick(View row, int position)
 	{
-		Crop cropToDelete = cropVM.getCrops().get(position);
+		Crop cropToDelete = cropListVM.getCrops().get(position);
 		AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
 
 		builder.setMessage("Are you sure you want to delete " + cropToDelete.plant.name + " crop ?");

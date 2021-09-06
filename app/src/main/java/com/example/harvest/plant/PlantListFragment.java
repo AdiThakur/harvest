@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.harvest.OnClickListener;
 import com.example.harvest.R;
-import com.example.harvest.crop.CropVM;
+import com.example.harvest.crop.CropAddVM;
 
 import common.BaseFragment;
 import data.models.Plant;
@@ -28,7 +28,7 @@ import data.models.Plant;
 public class PlantListFragment extends BaseFragment implements OnClickListener
 {
 	private PlantVM plantVM;
-	private CropVM cropVM;
+	private CropAddVM cropAddVM;
 
 	private RecyclerView recyclerView;
 	private PlantAdapter adapter;
@@ -41,7 +41,7 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 	{
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-		cropVM = (new ViewModelProvider(getStoreOwner(R.id.add_crop_graph))).get(CropVM.class);
+		cropAddVM = (new ViewModelProvider(getStoreOwner(R.id.add_crop_graph))).get(CropAddVM.class);
 		plantVM = (new ViewModelProvider(getStoreOwner(R.id.select_plant_graph))).get(PlantVM.class);
 	}
 
@@ -147,7 +147,7 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 	{
 		if (confirmed) {
 			Plant selectedPlant = plantVM.getPlants().get(plantVM.selectedPlantPosition);
-			cropVM.setSelectedPlant(selectedPlant);
+			cropAddVM.setSelectedPlant(selectedPlant);
 		}
 
 		navigateUp();
@@ -158,7 +158,7 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 	@Override
 	public void onClick(View row, int position)
 	{
-		plantVM.setSelectedPlant(position);
+		plantVM.setSelectedPlantPosition(position);
 	}
 
 	@Override

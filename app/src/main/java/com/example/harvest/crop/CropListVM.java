@@ -17,27 +17,18 @@ import data.bridges.CropBridge;
 import data.models.Crop;
 import data.models.Plant;
 
-public class CropVM extends AndroidViewModel
+public class CropListVM extends AndroidViewModel
 {
 	private final CropBridge cropBridge;
-
 	private List<Crop> crops;
-	public GregorianCalendar storedDate;
 
-	public Plant selectedPlant;
-	private MutableLiveData<Plant> selectedPlantSubject;
-	public LiveData<Plant> selectedPlantObservable;
-
-	public CropVM(@NonNull Application application)
+	public CropListVM(@NonNull Application application)
 	{
 		super(application);
 
 		BridgeFactory bridgeFactory = new BridgeFactory(application.getApplicationContext());
 		cropBridge = bridgeFactory.getCropBridge();
 		crops = cropBridge.getAll();
-
-		selectedPlantSubject = new MutableLiveData<>();
-		selectedPlantObservable = selectedPlantSubject;
 	}
 
 	public boolean addCrop(long seasonId, LocalDateTime datePlanted, int numberOfPlants, Plant plant)
@@ -62,11 +53,5 @@ public class CropVM extends AndroidViewModel
 	{
 		int deleteCount = cropBridge.delete(crop);
 		return (deleteCount > 0) && (crops.remove(crop));
-	}
-
-	public void setSelectedPlant(Plant plant)
-	{
-		this.selectedPlant = plant;
-		selectedPlantSubject.setValue(selectedPlant);
 	}
 }

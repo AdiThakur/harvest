@@ -7,7 +7,6 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,8 +28,8 @@ import data.models.Plant;
 
 public class CropAddFragment extends BaseFragment
 {
-	private CropVM cropAddVM;
-	private CropVM cropListVM;
+	private CropAddVM cropAddVM;
+	private CropListVM cropListVM;
 
 	private View plantContainer;
 	private ImageView plantImageView;
@@ -46,9 +45,9 @@ public class CropAddFragment extends BaseFragment
 	public void onCreate(@Nullable Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		// TODO: Create two seperate VM classes
-		cropAddVM = new ViewModelProvider(getStoreOwner(R.id.add_crop_graph)).get(CropVM.class);
-		cropListVM = (new ViewModelProvider(requireActivity())).get(CropVM.class);
+		cropAddVM = new ViewModelProvider(getStoreOwner(R.id.add_crop_graph)).get(CropAddVM.class);
+		// TODO: Update CropListVM so that it is scoped to a nested graph, and not the activity
+		cropListVM = (new ViewModelProvider(requireActivity())).get(CropListVM.class);
 	}
 
 	@Nullable
@@ -106,7 +105,7 @@ public class CropAddFragment extends BaseFragment
 
 	private void  submit()
 	{
-		Plant selectedPlant = cropAddVM.selectedPlant;
+		Plant selectedPlant = cropAddVM.getSelectedPlant();
 		String numberOfPlants = numberOfPlantsEditText.getText().toString();
 		LocalDateTime datePlanted = cropAddVM.storedDate.toZonedDateTime().toLocalDateTime();
 

@@ -63,7 +63,7 @@ public class PlantVM extends AndroidViewModel
 		return (deleteCount > 0) && (plants.remove(plant));
 	}
 
-	public void setSelectedPlant(int position)
+	public void setSelectedPlantPosition(int position)
 	{
 		int oldPosition = selectedPlantPosition;
 		selectedPlantPosition = position;
