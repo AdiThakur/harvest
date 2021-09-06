@@ -16,7 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.harvest.OnClickListener;
+import common.OnClickListener;
 import com.example.harvest.R;
 
 import common.BaseFragment;

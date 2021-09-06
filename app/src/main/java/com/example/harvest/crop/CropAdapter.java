@@ -1,6 +1,6 @@
 package com.example.harvest.crop;
 
-import com.example.harvest.OnClickListener;
+import common.OnClickListener;
 import com.example.harvest.R;
 
 import android.content.Context;
@@ -17,7 +17,6 @@ import java.util.List;
 
 import common.Helper;
 import data.models.Crop;
-import data.models.Plant;
 
 class CropViewHolder extends RecyclerView.ViewHolder
 {

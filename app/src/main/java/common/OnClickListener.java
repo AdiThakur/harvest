@@ -1,4 +1,4 @@
-package com.example.harvest;
+package common;
 
 import android.view.View;
 

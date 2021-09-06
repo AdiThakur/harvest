@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.harvest.OnClickListener;
+import common.OnClickListener;
 import com.example.harvest.R;
 
 import java.util.List;
