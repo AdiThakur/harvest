@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import androidx.annotation.IdRes;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
@@ -11,6 +12,12 @@ import androidx.navigation.fragment.NavHostFragment;
 
 public class BaseFragment extends Fragment
 {
+	private ViewModelStoreOwner getStoreOwner(@IdRes int id)
+	{
+		NavController controller = NavHostFragment.findNavController(this);
+		return controller.getViewModelStoreOwner(id);
+	}
+
 	protected void setTitle(String title)
 	{
 		Activity activity = getActivity();
@@ -19,10 +26,14 @@ public class BaseFragment extends Fragment
 		}
 	}
 
-	protected ViewModelStoreOwner getStoreOwner(@IdRes int id)
+	protected ViewModelProvider getProvider(@IdRes int id)
 	{
-		NavController controller = NavHostFragment.findNavController(this);
-		return controller.getViewModelStoreOwner(id);
+		return (new ViewModelProvider(getStoreOwner(id)));
+	}
+
+	protected ViewModelProvider getProvider(ViewModelStoreOwner owner)
+	{
+		return (new ViewModelProvider(owner));
 	}
 
 	protected void navigateUp()

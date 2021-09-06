@@ -42,14 +42,14 @@ public class HomeFragment extends BaseFragment
 
 		Button cropsButton = view.findViewById(R.id.home_cropsButton);
 		cropsButton.setOnClickListener((v) -> {
-			launch(R.id.action_homeFragment_to_cropListFragment);
+			launch(R.id.action_homeFragment_to_crop_nav_graph);
 		});
 
 		// TODO: Factor out the flow of viewing a list of plants + adding new plants into its own graph resource; then it can easily be reused
 
 		Button plantsButton = view.findViewById(R.id.home_plantsButton);
 		plantsButton.setOnClickListener((v) -> {
-			launch(R.id.action_homeFragment_to_plantListFragment2);
+//			launch(R.id.action_homeFragment_to_plantListFragment2);
 		});
 
 	}

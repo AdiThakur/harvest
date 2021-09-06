@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,7 +35,7 @@ public class CropListFragment extends BaseFragment implements OnClickListener
 	{
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-		cropListVM = (new ViewModelProvider(requireActivity())).get(CropListVM.class);
+		cropListVM = getProvider(R.id.crop_nav_graph).get(CropListVM.class);
 	}
 
 	@Nullable
@@ -81,7 +80,7 @@ public class CropListFragment extends BaseFragment implements OnClickListener
 
 	private void launchCropAddFragment()
 	{
-		navigateTo(R.id.cropListFragment, R.id.add_crop_graph);
+		navigateTo(R.id.cropListFragment, R.id.action_cropListFragment_to_crop_add_graph);
 	}
 
 	private void deleteCrop(Crop cropToDelete, int position)

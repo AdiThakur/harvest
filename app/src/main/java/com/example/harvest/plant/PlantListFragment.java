@@ -12,9 +12,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -41,8 +41,13 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 	{
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-		cropAddVM = (new ViewModelProvider(getStoreOwner(R.id.add_crop_graph))).get(CropAddVM.class);
-		plantVM = (new ViewModelProvider(getStoreOwner(R.id.select_plant_graph))).get(PlantVM.class);
+		// getParentFragment() should never result in an NPE because PlantListFragment is NEVER
+		// hosted directly in an Activity
+//		NavController controller = NavHostFragment.findNavController(this);
+//		NavBackStackEntry entry = controller.getPreviousBackStackEntry();
+//		Log.println(Log.DEBUG, "PlantList", entry.getDestination().toString());
+		cropAddVM = getProvider(R.id.crop_add_graph).get(CropAddVM.class);
+		plantVM = getProvider(R.id.plant_nav_graph).get(PlantVM.class);
 	}
 
 	@Nullable
@@ -85,9 +90,7 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 	@Override
 	public boolean onOptionsItemSelected(@NonNull MenuItem item)
 	{
-		int id = item.getItemId();
-
-		if (id == R.id.addMenu_addButton) {
+		if (item.getItemId() == R.id.addMenu_addButton) {
 			launchPlantAddFragment();
 		}
 
@@ -98,28 +101,8 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 
 	public void plantSelectedObserver(Pair<Integer, Integer> positions)
 	{
-		int oldPos = positions.first;
-		int newPos = positions.second;
-
-		// Clear previously selected row's style
-		if (oldPos != -1) {
-			PlantViewHolder oldViewHolder =
-				(PlantViewHolder) recyclerView.findViewHolderForAdapterPosition(oldPos);
-			if (oldViewHolder != null) {
-				oldViewHolder.row.setBackgroundColor(
-					getResources().getColor(R.color.card_grey)
-				);
-			}
-		}
-
-		PlantViewHolder newViewHolder =
-			(PlantViewHolder) recyclerView.findViewHolderForAdapterPosition(newPos);
-		if (newViewHolder != null) {
-			newViewHolder.row.setBackgroundColor(
-				getResources().getColor(R.color.card_selected_blue)
-			);
-		}
-
+		paintRow(positions.first, R.color.card_grey);
+		paintRow(positions.second, R.color.card_selected_blue);
 		confirmButton.setEnabled(true);
 	}
 
@@ -175,5 +158,22 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 
 		AlertDialog dialog = builder.create();
 		dialog.show();
+	}
+
+	// Helpers
+
+	private void paintRow(int position, @ColorRes int color)
+	{
+		if (position == -1) {
+			return;
+		}
+
+		PlantViewHolder viewHolder =
+			(PlantViewHolder) recyclerView.findViewHolderForAdapterPosition(position);
+		if (viewHolder != null) {
+			viewHolder.row.setBackgroundColor(
+				getResources().getColor(color)
+			);
+		}
 	}
 }

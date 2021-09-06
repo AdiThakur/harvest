@@ -45,9 +45,8 @@ public class CropAddFragment extends BaseFragment
 	public void onCreate(@Nullable Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		cropAddVM = new ViewModelProvider(getStoreOwner(R.id.add_crop_graph)).get(CropAddVM.class);
-		// TODO: Update CropListVM so that it is scoped to a nested graph, and not the activity
-		cropListVM = (new ViewModelProvider(requireActivity())).get(CropListVM.class);
+		cropAddVM = getProvider(R.id.crop_add_graph).get(CropAddVM.class);
+		cropListVM = getProvider(R.id.crop_nav_graph).get(CropListVM.class);
 	}
 
 	@Nullable
@@ -100,7 +99,7 @@ public class CropAddFragment extends BaseFragment
 
 	private void launchPlantListFragment()
 	{
-		navigateTo(R.id.cropAddFragment, R.id.select_plant_graph);
+		navigateTo(R.id.cropAddFragment, R.id.action_cropAddFragment_to_plant_nav_graph);
 	}
 
 	private void  submit()
@@ -111,6 +110,7 @@ public class CropAddFragment extends BaseFragment
 
 		if (numberOfPlants.isEmpty()) {
 			numberOfPlantsEditText.setError("Please specify an amount!");
+			return;
 		}
 
 		boolean cropAdded = cropListVM.addCrop(

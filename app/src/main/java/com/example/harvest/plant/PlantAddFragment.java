@@ -40,7 +40,7 @@ public class PlantAddFragment extends BaseFragment
 	public void onCreate(@Nullable Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		plantVM = (new ViewModelProvider(getStoreOwner(R.id.select_plant_graph))).get(PlantVM.class);
+		plantVM = getProvider(R.id.plant_nav_graph).get(PlantVM.class);
 	}
 
 	@Nullable
