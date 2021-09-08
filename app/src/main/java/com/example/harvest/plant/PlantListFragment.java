@@ -16,6 +16,8 @@ import android.widget.Toast;
 import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.navigation.NavBackStackEntry;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -33,6 +35,7 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 {
 	private PlantVM plantVM;
 	private CropAddVM cropAddVM;
+	private boolean allowSelection;
 
 	private RecyclerView recyclerView;
 	private PlantAdapter adapter;
@@ -46,12 +49,14 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 
-		// TODO: Create two separate fragments (PlantSelectList and PlantViewList) that both inherit common logic from PlantList; more robust option for conditional rendering
+		// TODO: Pass some basic data to this fragment that enables/disables the selection feature
 		String caller = getCaller();
 		if (caller.equals("fragment_crop_add")) {
 			cropAddVM = getProvider(R.id.crop_add_graph).get(CropAddVM.class);
+			allowSelection = true;
 		} else {
 			cropAddVM = getProvider(R.id.plant_nav_graph).get(CropAddVM.class);
+			allowSelection = false;
 		}
 
 		plantVM = getProvider(R.id.plant_nav_graph).get(PlantVM.class);
@@ -70,17 +75,31 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 		super.onViewCreated(view, savedInstanceState);
 		setTitle("My Plants");
 
-		confirmButton = view.findViewById(R.id.plantList_confirmButton);
-		confirmButton.setEnabled(false);
-		confirmButton.setOnClickListener((v) -> confirmSelection(true));
-
-		Button cancelButton = view.findViewById(R.id.plantList_cancelButton);
-		cancelButton.setOnClickListener((v) -> confirmSelection(false));
-
 		adapter = new PlantAdapter(getContext(), plantVM.getPlants(), this);
 		recyclerView = view.findViewById(R.id.plantList_plantRcv);
 		recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
 		recyclerView.setAdapter(adapter);
+
+		confirmButton = view.findViewById(R.id.plantList_confirmButton);
+		Button cancelButton = view.findViewById(R.id.plantList_cancelButton);
+
+		if (allowSelection) {
+			confirmButton.setEnabled(false);
+			confirmButton.setOnClickListener((v) -> confirmSelection(true));
+			cancelButton.setOnClickListener((v) -> confirmSelection(false));
+		} else {
+			confirmButton.setVisibility(View.GONE);
+			cancelButton.setVisibility(View.GONE);
+
+			// Force RecyclerView to take up entire screen
+			ConstraintLayout constraintLayout = view.findViewById(R.id.plantList_constraintView);
+			ConstraintSet constraintSet = new ConstraintSet();
+			constraintSet.clone(constraintLayout);
+			constraintSet.connect(
+				R.id.plantList_plantRcv, ConstraintSet.BOTTOM,
+				R.id.plantList_constraintView, ConstraintSet.BOTTOM,0);
+			constraintSet.applyTo(constraintLayout);
+		}
 
 		plantVM.selectedPlantObservable.observe(
 			getViewLifecycleOwner(), this::plantSelectedObserver
