@@ -24,6 +24,6 @@ public interface PlantDao
 	@Query("SELECT * FROM plant")
 	public List<Plant> getAll();
 
-	@Delete
-	public int delete(Plant plant);
+	@Query("DELETE FROM plant WHERE uid = :plantUid AND NOT EXISTS (SELECT * FROM crop WHERE crop.plant_id = :plantUid)")
+	public int delete(long plantUid);
 }

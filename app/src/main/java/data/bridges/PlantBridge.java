@@ -3,6 +3,7 @@ package data.bridges;
 import java.util.List;
 
 import data.daos.PlantDao;
+import data.db.HarvestDB;
 import data.models.Plant;
 
 public class PlantBridge implements IBridge<Plant>
@@ -36,7 +37,7 @@ public class PlantBridge implements IBridge<Plant>
 	@Override
 	public int delete(Plant plant)
 	{
-		return plantDao.delete(plant);
+		return plantDao.delete(plant.uid);
 	}
 
 	public Plant get(String plantName)

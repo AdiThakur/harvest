@@ -8,10 +8,8 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import common.Helper;
 import data.bridges.BridgeFactory;
 import data.bridges.PlantBridge;
 import data.models.Plant;
@@ -26,6 +24,12 @@ public class PlantVM extends AndroidViewModel
 	private final MutableLiveData<Pair<Integer, Integer>> selectedPlantSubject;
 	public final LiveData<Pair<Integer, Integer>> selectedPlantObservable;
 
+	private MutableLiveData<Integer> deletePlantSuccessSubject;
+	public LiveData<Integer> deletePlantSuccess;
+
+	private MutableLiveData<String> deletePlantErrorSubject;
+	public LiveData<String> deletePlantError;
+
 	public PlantVM(@NonNull Application application)
 	{
 		super(application);
@@ -37,6 +41,12 @@ public class PlantVM extends AndroidViewModel
 		selectedPlantPosition = -1;
 		selectedPlantSubject = new MutableLiveData<>();
 		selectedPlantObservable = selectedPlantSubject;
+
+		deletePlantSuccessSubject = new MutableLiveData<>();
+		deletePlantSuccess = deletePlantSuccessSubject;
+
+		deletePlantErrorSubject = new MutableLiveData<>();
+		deletePlantError = deletePlantErrorSubject;
 	}
 
 	public boolean addPlant(String name, double unitWeight, String imageFileName)
@@ -57,10 +67,18 @@ public class PlantVM extends AndroidViewModel
 		return plants;
 	}
 
-	public boolean deletePlant(Plant plant)
+	public void deletePlant(Plant plant, int position)
 	{
 		int deleteCount = plantBridge.delete(plant);
-		return (deleteCount > 0) && (plants.remove(plant));
+
+		if (deleteCount > 0) {
+			plants.remove(plant);
+			deletePlantSuccessSubject.setValue(position);
+		} else {
+			String errorMessage =
+				"Plant " + plant.name + " couldn't be deleted; it is needed by 1 or more crops!";
+			deletePlantErrorSubject.setValue(errorMessage);
+		}
 	}
 
 	public void setSelectedPlantPosition(int position)

@@ -2,7 +2,6 @@ package com.example.harvest.plant;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,9 +17,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
-import androidx.navigation.NavBackStackEntry;
-import androidx.navigation.NavController;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -104,6 +100,12 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 		plantVM.selectedPlantObservable.observe(
 			getViewLifecycleOwner(), this::plantSelectedObserver
 		);
+		plantVM.deletePlantSuccess.observe(
+			getViewLifecycleOwner(), this::plantDeleteSuccessObserver
+		);
+		plantVM.deletePlantError.observe(
+			getViewLifecycleOwner(), this::plantDeleteErrorObserver
+		);
 	}
 
 	@Override
@@ -125,11 +127,22 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 
 	// Observers
 
-	public void plantSelectedObserver(Pair<Integer, Integer> positions)
+	private void plantSelectedObserver(Pair<Integer, Integer> positions)
 	{
 		paintRow(positions.first, R.color.card_grey);
 		paintRow(positions.second, R.color.card_selected_blue);
 		confirmButton.setEnabled(true);
+	}
+
+	private void plantDeleteSuccessObserver(int position)
+	{
+		adapter.notifyItemRemoved(position);
+	}
+
+	private void plantDeleteErrorObserver(String errorMessage)
+	{
+		// TODO: Replace most, if not all, toasts with Snackbars
+		Toast.makeText(requireActivity(), errorMessage, Toast.LENGTH_LONG).show();
 	}
 
 	// Callbacks for user-generated events
@@ -137,19 +150,6 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 	private void launchPlantAddFragment()
 	{
 		navigateTo(R.id.plantListFragment, R.id.action_plantListFragment_to_plantAddFragment);
-	}
-
-	private void deletePlant(Plant plantToDelete, int position)
-	{
-		boolean success = plantVM.deletePlant(plantToDelete);
-
-		if (success) {
-			adapter.notifyItemRemoved(position);
-			return;
-		}
-
-		String message = "Couldn't remove " + plantToDelete.name;
-		Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show();
 	}
 
 	private void confirmSelection(boolean confirmed)
@@ -160,6 +160,21 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 		}
 
 		navigateUp();
+	}
+
+	// Helpers
+
+	private void paintRow(int position, @ColorRes int color)
+	{
+		if (position == -1) {
+			return;
+		}
+
+		PlantViewHolder viewHolder =
+			(PlantViewHolder) recyclerView.findViewHolderForAdapterPosition(position);
+		if (viewHolder != null) {
+			viewHolder.row.setBackgroundColor(getResources().getColor(color));
+		}
 	}
 
 	// OnClickListener interface overrides for PlantAdapter
@@ -179,27 +194,10 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 		builder.setMessage("Are you sure you want to delete " + plantToDelete.name + " ?");
 		builder.setNegativeButton("No", (dialogInterface, i) -> {});
 		builder.setPositiveButton("Yes", (dialogInterface, i) ->
-			deletePlant(plantToDelete, position)
+			plantVM.deletePlant(plantToDelete, position)
 		);
 
 		AlertDialog dialog = builder.create();
 		dialog.show();
-	}
-
-	// Helpers
-
-	private void paintRow(int position, @ColorRes int color)
-	{
-		if (position == -1) {
-			return;
-		}
-
-		PlantViewHolder viewHolder =
-			(PlantViewHolder) recyclerView.findViewHolderForAdapterPosition(position);
-		if (viewHolder != null) {
-			viewHolder.row.setBackgroundColor(
-				getResources().getColor(color)
-			);
-		}
 	}
 }
