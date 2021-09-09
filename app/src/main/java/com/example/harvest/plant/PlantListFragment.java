@@ -1,5 +1,6 @@
 package com.example.harvest.plant;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Pair;
@@ -28,7 +29,7 @@ import data.models.Plant;
 
 public class PlantListFragment extends BaseFragment implements OnClickListener
 {
-	private PlantVM plantVM;
+	private PlantListVM plantListVM;
 	private CropAddVM cropAddVM;
 	private boolean allowSelection;
 
@@ -54,7 +55,7 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 			allowSelection = false;
 		}
 
-		plantVM = getProvider(R.id.plant_nav_graph).get(PlantVM.class);
+		plantListVM = getProvider(R.id.plant_nav_graph).get(PlantListVM.class);
 	}
 
 	@Nullable
@@ -64,13 +65,14 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 		return inflater.inflate(R.layout.fragment_plant_list, container, false);
 	}
 
+	@SuppressLint("FragmentLiveDataObserve")
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
 	{
 		super.onViewCreated(view, savedInstanceState);
 		setTitle("My Plants");
 
-		adapter = new PlantAdapter(getContext(), plantVM.getPlants(), this);
+		adapter = new PlantAdapter(getContext(), plantListVM.getPlants(), this);
 		recyclerView = view.findViewById(R.id.plantList_plantRcv);
 		recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
 		recyclerView.setAdapter(adapter);
@@ -96,9 +98,9 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 			constraintSet.applyTo(constraintLayout);
 		}
 
-		plantVM.selectedPlant$.observe(getViewLifecycleOwner(), this::plantSelectedObserver);
-		plantVM.deletePlant$.observe(getViewLifecycleOwner(), this::plantDeletedObserver);
-		plantVM.error$.observe(getViewLifecycleOwner(), this::displayError);
+		plantListVM.selectedPlant$.observe(getViewLifecycleOwner(), this::plantSelectedObserver);
+		plantListVM.deletePlant$.observe(getViewLifecycleOwner(), this::plantDeletedObserver);
+		plantListVM.error$.observe(this, this::displayError);
 	}
 
 	@Override
@@ -142,7 +144,7 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 	private void confirmSelection(boolean confirmed)
 	{
 		if (confirmed) {
-			Plant selectedPlant = plantVM.getPlants().get(plantVM.selectedPlantPosition);
+			Plant selectedPlant = plantListVM.getPlants().get(plantListVM.selectedPlantPosition);
 			cropAddVM.setSelectedPlant(selectedPlant);
 		}
 
@@ -169,19 +171,19 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 	@Override
 	public void onClick(View row, int position)
 	{
-		plantVM.setSelectedPlantPosition(position);
+		plantListVM.setSelectedPlantPosition(position);
 	}
 
 	@Override
 	public void onLongClick(View row, int position)
 	{
-		Plant plantToDelete = plantVM.getPlants().get(position);
+		Plant plantToDelete = plantListVM.getPlants().get(position);
 		AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
 
 		builder.setMessage("Are you sure you want to delete " + plantToDelete.name + " ?");
 		builder.setNegativeButton("No", (dialogInterface, i) -> {});
 		builder.setPositiveButton("Yes", (dialogInterface, i) ->
-			plantVM.deletePlant(plantToDelete, position)
+			plantListVM.deletePlant(plantToDelete, position)
 		);
 
 		AlertDialog dialog = builder.create();

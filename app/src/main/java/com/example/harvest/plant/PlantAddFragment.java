@@ -22,7 +22,8 @@ import common.BaseFragment;
 
 public class PlantAddFragment extends BaseFragment
 {
-	private PlantVM plantVM;
+	private PlantAddVM plantAddVM;
+	private PlantListVM plantListVM;
 	private ActivityResultLauncher<String> getContent;
 
 	private EditText plantNameEditText;
@@ -35,8 +36,8 @@ public class PlantAddFragment extends BaseFragment
 	public void onCreate(@Nullable Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		// TODO: Narrow plantVM's scope
-		plantVM = getProvider(R.id.plant_nav_graph).get(PlantVM.class);
+		plantAddVM = getProvider(this).get(PlantAddVM.class);
+		plantListVM = getProvider(R.id.plant_nav_graph).get(PlantListVM.class);
 	}
 
 	@Nullable
@@ -50,8 +51,8 @@ public class PlantAddFragment extends BaseFragment
 					this.displayError("No image selected; using default");
 					return;
 				}
-				plantVM.selectedImageUri = result;
-				plantImage.setImageURI(plantVM.selectedImageUri);
+				plantAddVM.selectedImageUri = result;
+				plantImage.setImageURI(plantAddVM.selectedImageUri);
 			}
 		);
 
@@ -67,7 +68,7 @@ public class PlantAddFragment extends BaseFragment
 		plantNameEditText = view.findViewById(R.id.plantAdd_plantNameEditText);
 		plantUnitWeightEditText = view.findViewById(R.id.plantAdd_plantUnitWeightEditText);
 		plantImage = view.findViewById(R.id.plantAdd_plantImage);
-		plantImage.setImageURI(plantVM.selectedImageUri);
+		plantImage.setImageURI(plantAddVM.selectedImageUri);
 
 		Button chooseImage = view.findViewById(R.id.plantAdd_ChooseImageButton);
 		chooseImage.setOnClickListener(v -> chooseImage());
@@ -77,8 +78,6 @@ public class PlantAddFragment extends BaseFragment
 
 		Button cancel = view.findViewById(R.id.plantAdd_CancelButton);
 		cancel.setOnClickListener(v -> cancel());
-
-		plantVM.error$.observe(getViewLifecycleOwner(), this::displayError);
 	}
 
 	// Callbacks for user-generated events
@@ -102,12 +101,10 @@ public class PlantAddFragment extends BaseFragment
 			return;
 		}
 
-		// Copy selected image to internal storage; on success, save plant to DB
-		plantVM.saveImage(plantName);
-		plantVM.saveImage$.observe(getViewLifecycleOwner(), (fileName) -> {
-			plantVM.addPlant(plantName, Double.parseDouble(plantUnitWeight), fileName);
-		});
-		plantVM.addPlant$.observe(getViewLifecycleOwner(), (success) -> {
+		plantListVM.addPlant(
+			plantName, Double.parseDouble(plantUnitWeight), plantAddVM.selectedImageUri
+		);
+		plantListVM.addPlant$.observe(getViewLifecycleOwner(), (success) -> {
 			navigateUp();
 		});
 	}

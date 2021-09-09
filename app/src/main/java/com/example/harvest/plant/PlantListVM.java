@@ -18,11 +18,10 @@ import data.bridges.BridgeFactory;
 import data.bridges.PlantBridge;
 import data.models.Plant;
 
-public class PlantVM extends AndroidViewModel
+public class PlantListVM extends AndroidViewModel
 {
 	private final PlantBridge plantBridge;
 	private final List<Plant> plants;
-	public Uri selectedImageUri;
 
 	public int selectedPlantPosition;
 	private final MutableLiveData<Pair<Integer, Integer>> selectedPlant;
@@ -34,14 +33,10 @@ public class PlantVM extends AndroidViewModel
 	private final MutableLiveData<Integer> deletePlant;
 	public LiveData<Integer> deletePlant$;
 
-	private final MutableLiveData<String> saveImage;
-	public LiveData<String> saveImage$;
-
 	private final MutableLiveData<String> error;
 	public LiveData<String> error$;
 
-	// TODO: PlantVM is getting quite chonky; split it up into PlantAdd and PlantList VMs
-	public PlantVM(@NonNull Application application)
+	public PlantListVM(@NonNull Application application)
 	{
 		super(application);
 
@@ -49,28 +44,36 @@ public class PlantVM extends AndroidViewModel
 		plantBridge = bridgeFactory.getPlantBridge();
 
 		plants = plantBridge.getAll();
-		selectedImageUri = Uri.parse(Helper.defaultPlantImageUriString);
 
 		selectedPlantPosition = -1;
 		selectedPlant = new MutableLiveData<>();
 		selectedPlant$ = selectedPlant;
 
-		deletePlant = new MutableLiveData<>();
-		deletePlant$ = deletePlant;
-
 		addPlant = new MutableLiveData<>();
 		addPlant$ = addPlant;
 
-		saveImage = new MutableLiveData<>();
-		saveImage$ = saveImage;
+		deletePlant = new MutableLiveData<>();
+		deletePlant$ = deletePlant;
 
 		error = new MutableLiveData<>();
 		error$ = error;
 	}
 
-	public void addPlant(String name, double unitWeight, String imageFileName)
+	public List<Plant> getPlants()
 	{
-		Plant newPlant = new Plant(name, unitWeight, imageFileName);
+		return plants;
+	}
+
+	public void addPlant(String name, double unitWeight, Uri imageUri)
+	{
+		String fileName = saveImage(imageUri, name);
+
+		if (fileName == null) {
+			error.setValue("Image wasn't saved! Please try again!");
+			return;
+		}
+
+		Plant newPlant = new Plant(name, unitWeight, fileName);
 		newPlant = plantBridge.insert(newPlant);
 
 		if (newPlant.uid != 0) {
@@ -81,24 +84,20 @@ public class PlantVM extends AndroidViewModel
 		}
 	}
 
-	public List<Plant> getPlants()
-	{
-		return plants;
-	}
-
-	// TODO: When deleting a plant, also delete its corresponding image from app-specific internal storage (it a non-default image was used)
+	// TODO: If a Plant is selected to be added as a Crop, then that Plant is deleted, the CropAddFragment is not updated
+	// TODO: Ensure that any messages passed view the error subject is only consumed ONCE
 	public void deletePlant(Plant plant, int position)
 	{
 		int deleteCount = plantBridge.delete(plant);
 
-		if (deleteCount > 0) {
-			plants.remove(plant);
-			deletePlant.setValue(position);
-		} else {
-			String errorMessage =
-				plant.name + " couldn't be deleted; it is needed by 1 or more crops!";
-			error.setValue(errorMessage);
+		if (deleteCount == 0) {
+			error.setValue(plant.name + " couldn't be deleted; it is needed by 1 or more crops!");
+			return;
 		}
+
+		getApplication().getApplicationContext().deleteFile(plant.imageFileName);
+		plants.remove(plant);
+		deletePlant.setValue(position);
 	}
 
 	public void setSelectedPlantPosition(int position)
@@ -108,16 +107,10 @@ public class PlantVM extends AndroidViewModel
 		selectedPlant.setValue(new Pair<>(oldPosition, position));
 	}
 
-	public void saveImage(String plantName)
+	private String saveImage(Uri imageUri, String plantName)
 	{
 		Context context = getApplication().getApplicationContext();
-		Bitmap imageBitmap = Helper.convertImageToBitmap(context, selectedImageUri);
-		String fileName = Helper.saveBitmapToImage(context, imageBitmap, plantName);
-
-		if (fileName != null) {
-			saveImage.setValue(fileName);
-		} else {
-			error.setValue("Image wasn't saved! Please try again!");
-		}
+		Bitmap imageBitmap = Helper.convertImageToBitmap(context, imageUri);
+		return Helper.saveBitmapToImage(context, imageBitmap, plantName);
 	}
 }
