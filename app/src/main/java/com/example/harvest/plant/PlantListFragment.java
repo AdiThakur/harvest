@@ -10,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
@@ -97,15 +96,9 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 			constraintSet.applyTo(constraintLayout);
 		}
 
-		plantVM.selectedPlantObservable.observe(
-			getViewLifecycleOwner(), this::plantSelectedObserver
-		);
-		plantVM.deletePlantSuccess.observe(
-			getViewLifecycleOwner(), this::plantDeleteSuccessObserver
-		);
-		plantVM.deletePlantError.observe(
-			getViewLifecycleOwner(), this::plantDeleteErrorObserver
-		);
+		plantVM.selectedPlant$.observe(getViewLifecycleOwner(), this::plantSelectedObserver);
+		plantVM.deletePlant$.observe(getViewLifecycleOwner(), this::plantDeletedObserver);
+		plantVM.error$.observe(getViewLifecycleOwner(), this::displayError);
 	}
 
 	@Override
@@ -134,15 +127,9 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 		confirmButton.setEnabled(true);
 	}
 
-	private void plantDeleteSuccessObserver(int position)
+	private void plantDeletedObserver(int position)
 	{
 		adapter.notifyItemRemoved(position);
-	}
-
-	private void plantDeleteErrorObserver(String errorMessage)
-	{
-		// TODO: Replace most, if not all, toasts with Snackbars
-		Toast.makeText(requireActivity(), errorMessage, Toast.LENGTH_LONG).show();
 	}
 
 	// Callbacks for user-generated events

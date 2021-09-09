@@ -1,6 +1,7 @@
 package common;
 
 import android.app.Activity;
+import android.widget.Toast;
 
 import androidx.annotation.IdRes;
 import androidx.fragment.app.Fragment;
@@ -60,5 +61,11 @@ public class BaseFragment extends Fragment
 		} catch (NullPointerException e) {
 			return "";
 		}
+	}
+
+	protected void displayError(String errorMessage)
+	{
+		// TODO: Replace most, if not all, toasts with Snackbars
+		Toast.makeText(requireActivity(), errorMessage, Toast.LENGTH_LONG).show();
 	}
 }
