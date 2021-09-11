@@ -131,6 +131,7 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 
 	private void plantDeletedObserver(int position)
 	{
+		cropAddVM.setSelectedPlant(null);
 		adapter.notifyItemRemoved(position);
 	}
 

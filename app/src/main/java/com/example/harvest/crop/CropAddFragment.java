@@ -82,16 +82,20 @@ public class CropAddFragment extends BaseFragment
 
 		cropAddVM.selectedPlantObservable.observe(getViewLifecycleOwner(), selectedPlant ->
 		{
-			plantContainer.findViewById(R.id.noPlantSelected).setVisibility(View.GONE);
-			plantContainer.findViewById(R.id.selectedPlantItem).setVisibility(View.VISIBLE);
-
-			plantNameTextView.setText(selectedPlant.name);
-			plantWeightTextView.setText(String.valueOf(selectedPlant.unitWeight));
-			plantImageView.setImageBitmap(
+			if (selectedPlant == null) {
+				plantContainer.findViewById(R.id.noPlantSelected).setVisibility(View.VISIBLE);
+				plantContainer.findViewById(R.id.selectedPlantItem).setVisibility(View.GONE);
+				submitButton.setEnabled(false);
+			} else {
+				plantContainer.findViewById(R.id.noPlantSelected).setVisibility(View.GONE);
+				plantContainer.findViewById(R.id.selectedPlantItem).setVisibility(View.VISIBLE);
+				submitButton.setEnabled(true);
+				plantNameTextView.setText(selectedPlant.name);
+				plantWeightTextView.setText(String.valueOf(selectedPlant.unitWeight));
+				plantImageView.setImageBitmap(
 					Helper.loadBitmapFromImage(requireContext(), selectedPlant.imageFileName)
-			);
-
-			submitButton.setEnabled(true);
+				);
+			}
 		});
 	}
 

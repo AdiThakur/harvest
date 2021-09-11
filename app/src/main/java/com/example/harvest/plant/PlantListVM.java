@@ -87,7 +87,6 @@ public class PlantListVM extends AndroidViewModel
 		}
 	}
 
-	// TODO: If a Plant is selected to be added as a Crop, then that Plant is deleted, the CropAddFragment is not updated
 	public void deletePlant(Plant plant, int position)
 	{
 		int deleteCount = plantBridge.delete(plant);
