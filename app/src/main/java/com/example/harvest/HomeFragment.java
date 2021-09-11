@@ -1,11 +1,9 @@
 package com.example.harvest;
 
-import android.app.ActionBar;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 
 import androidx.annotation.IdRes;
@@ -37,14 +35,13 @@ public class HomeFragment extends BaseFragment
 
 		Button harvestsButton = view.findViewById(R.id.home_harvestsButton);
 		harvestsButton.setOnClickListener((v) -> {
-//			launch(R.id.action_homeFragment_to_cropListFragment);
+			launch(R.id.action_homeFragment_to_harvestListFragment);
 		});
 
 		Button cropsButton = view.findViewById(R.id.home_cropsButton);
 		cropsButton.setOnClickListener((v) -> {
 			launch(R.id.action_homeFragment_to_crop_nav_graph);
 		});
-
 
 		Button plantsButton = view.findViewById(R.id.home_plantsButton);
 		plantsButton.setOnClickListener((v) -> {

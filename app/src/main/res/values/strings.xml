@@ -19,6 +19,7 @@
     <string name="harvests">Harvests</string>
     <string name="crops">Crops</string>
     <string name="plants">Plants</string>
+    <string name="gram">g</string>
 
     <string name="add_crop">Add Crop</string>
     <string name="add_plant">Add Plant</string>
@@ -27,4 +28,11 @@
     <string name="plant_name">Plant Name</string>
     <string name="choose_image">Choose Image</string>
     <string name="plant_image">Plant Image</string>
+
+    <!-- Harvest -->
+    <string name="units_harvested">Units Harvested</string>
+    <string name="total_weight">Total Weight</string>
+    <string name="estimated_total_weight">Estimated Total Weight</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="0dp"
+    android:layout_marginTop="0dp"
+    android:layout_marginRight="0dp"
+    android:background="@color/card_grey"
+    android:outlineProvider="bounds"
+    android:outlineSpotShadowColor="#F44336">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/harvestRcvItem_InfoContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/harvestRcvItem_cropImage"
+        app:layout_constraintEnd_toStartOf="@+id/harvestRcv_countContainer"
+        app:layout_constraintStart_toEndOf="@+id/harvestRcvItem_cropImage"
+        app:layout_constraintTop_toTopOf="@+id/harvestRcvItem_cropImage">
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:text="@string/total_weight"
+            app:layout_constraintStart_toStartOf="@+id/harvestRcvItem_cropDatePlantedText"
+            app:layout_constraintTop_toBottomOf="@+id/harvestRcvItem_cropDatePlantedText" />
+
+        <TextView
+            android:id="@+id/harvestRcvItem_TotalWeightText"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="10dp"
+            android:fontFamily="sans-serif-condensed"
+            android:text="1800"
+            app:layout_constraintBottom_toBottomOf="@+id/textView10"
+            app:layout_constraintStart_toEndOf="@+id/textView10"
+            app:layout_constraintTop_toBottomOf="@+id/harvestRcvItem_cropDatePlantedText" />
+
+        <TextView
+            android:id="@+id/harvestRcvItem_cropDatePlantedText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:text="2021/08/06"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/harvestRcvItem_cropNameText"
+            app:layout_constraintTop_toBottomOf="@+id/harvestRcvItem_cropNameText" />
+
+        <TextView
+            android:id="@+id/harvestRcvItem_cropNameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="serif"
+            android:maxLines="2"
+            android:text="Cherry Tomato"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="5dp"
+            android:gravity="top"
+            android:text="@string/gram"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/harvestRcvItem_TotalWeightText"
+            app:layout_constraintTop_toTopOf="@+id/harvestRcvItem_TotalWeightText" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/harvestRcvItem_cropImage"
+        android:layout_width="75dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="@+id/harvestRcv_countContainer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/harvestRcv_countContainer"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/harvestRcv_countContainer"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:text="@string/units_harvested"
+            android:textAlignment="center"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/harvestRcvItem_TotalCountText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="250"
+            android:textAlignment="center"
+            android:textSize="40sp"
+            app:layout_constraintBottom_toTopOf="@+id/textView6"
+            app:layout_constraintEnd_toEndOf="@+id/textView6"
+            app:layout_constraintStart_toStartOf="@+id/textView6"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
