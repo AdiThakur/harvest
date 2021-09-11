@@ -30,7 +30,7 @@
     <string name="plant_image">Plant Image</string>
 
     <!-- Harvest -->
-    <string name="units_harvested">Units Harvested</string>
+    <string name="units_harvested">units</string>
     <string name="total_weight">Total Weight</string>
     <string name="estimated_total_weight">Estimated Total Weight</string>
     <!-- TODO: Remove or change this placeholder text -->

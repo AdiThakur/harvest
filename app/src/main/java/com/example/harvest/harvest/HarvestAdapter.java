@@ -22,28 +22,26 @@ import data.models.Harvest;
 
 class HarvestViewHolder extends RecyclerView.ViewHolder
 {
+	public TextView dateHarvestedTextView;
 	public ImageView cropImageView;
 	public TextView cropNameTextView;
-	public TextView harvestDateTextView;
 	public TextView unitsHarvestedTextView;
 	public TextView totalWeightTextView;
 
-	public HarvestViewHolder(@NonNull View harvestRowItem, OnClickListener listener)
+	public HarvestViewHolder(@NonNull View row, OnClickListener listener)
 	{
-		super(harvestRowItem);
+		super(row);
 
-		cropImageView = harvestRowItem.findViewById(R.id.harvestRcvItem_cropImage);
+		ConstraintLayout dateContainer = row.findViewById(R.id.harvestRcvItem_dateContainer);
+		dateHarvestedTextView = dateContainer.findViewById(R.id.harvestRcvItem_dateHarvestedTextView);
 
-		ConstraintLayout infoContainer = harvestRowItem.findViewById(R.id.harvestRcvItem_InfoContainer);
-		cropNameTextView = infoContainer.findViewById(R.id.harvestRcvItem_cropNameText);
-		harvestDateTextView = infoContainer.findViewById(R.id.harvestRcvItem_cropDatePlantedText);
-		totalWeightTextView = infoContainer.findViewById(R.id.harvestRcvItem_TotalWeightText);
+		cropImageView = row.findViewById(R.id.harvestRcvItem_cropImage);
+		cropNameTextView = row.findViewById(R.id.harvestRcvItem_cropNameTextView);
+		totalWeightTextView = row.findViewById(R.id.harvestRcvItem_totalWeightTextView);
+		unitsHarvestedTextView = row.findViewById(R.id.harvestRcvItem_unitsHarvestedTextView);
 
-		ConstraintLayout countContainer = harvestRowItem.findViewById(R.id.harvestRcv_countContainer);
-		unitsHarvestedTextView = countContainer.findViewById(R.id.harvestRcvItem_TotalCountText);
-
-		harvestRowItem.setOnClickListener(view -> listener.onClick(view, getAdapterPosition()));
-		harvestRowItem.setOnLongClickListener(view -> {
+		row.setOnClickListener(view -> listener.onClick(view, getAdapterPosition()));
+		row.setOnLongClickListener(view -> {
 			listener.onLongClick(view, getAdapterPosition());
 			return true;
 		});
@@ -78,18 +76,17 @@ public class HarvestAdapter extends RecyclerView.Adapter<HarvestViewHolder>
 	public void onBindViewHolder(@NonNull HarvestViewHolder holder, int position)
 	{
 		Harvest harvest = harvests.get(position);
-
-		holder.cropImageView.setImageBitmap(
-			Helper.loadBitmapFromImage(context, harvest.crop.plant.imageFileName)
-		);
-		holder.cropNameTextView.setText(harvest.crop.plant.name);
-		holder.harvestDateTextView.setText(Helper.shortFormatOfDate(harvest.dateHarvested));
-
+		String filename = harvest.crop.plant.imageFileName;
 		double totalWeight = harvest.count * harvest.crop.plant.unitWeight;
 		DecimalFormat df = new DecimalFormat("#.00");
-		holder.totalWeightTextView.setText(df.format(totalWeight));
 
-		holder.unitsHarvestedTextView.setText(String.valueOf(harvest.count));
+		holder.dateHarvestedTextView.setText(Helper.shortFormatOfDate(harvest.dateHarvested));
+		holder.cropImageView.setImageBitmap(Helper.loadBitmapFromImage(context, filename));
+		holder.cropNameTextView.setText(harvest.crop.plant.name);
+		// TODO: use placeholder string resources
+		// TODO: update UI of other cards (Plant, Crop, etc) to match HarvestList card
+		holder.totalWeightTextView.setText(df.format(totalWeight) + " grams");
+		holder.unitsHarvestedTextView.setText(String.valueOf(harvest.count) + " units");
 	}
 
 	@Override

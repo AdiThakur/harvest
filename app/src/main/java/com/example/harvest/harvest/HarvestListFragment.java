@@ -40,7 +40,7 @@ public class HarvestListFragment extends BaseFragment implements OnClickListener
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
 	{
 		super.onViewCreated(view, savedInstanceState);
-		setTitle("Harvests");
+		setTitle("My Harvests");
 
 		adapter = new HarvestAdapter(getContext(), harvestListVM.getHarvests(), this);
 		recyclerView = view.findViewById(R.id.harvestList_harvestRcv);
