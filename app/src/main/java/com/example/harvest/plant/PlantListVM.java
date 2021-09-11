@@ -13,6 +13,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
 
+import common.Event;
 import common.Helper;
 import data.bridges.BridgeFactory;
 import data.bridges.PlantBridge;
@@ -33,8 +34,8 @@ public class PlantListVM extends AndroidViewModel
 	private final MutableLiveData<Integer> deletePlant;
 	public LiveData<Integer> deletePlant$;
 
-	private final MutableLiveData<String> error;
-	public LiveData<String> error$;
+	private final MutableLiveData<Event<String>> error;
+	public LiveData<Event<String>> error$;
 
 	public PlantListVM(@NonNull Application application)
 	{
@@ -69,7 +70,8 @@ public class PlantListVM extends AndroidViewModel
 		String fileName = saveImage(imageUri, name);
 
 		if (fileName == null) {
-			error.setValue("Image wasn't saved! Please try again!");
+			String message = "Image wasn't saved! Please try again!";
+			error.setValue(new Event<>(message));
 			return;
 		}
 
@@ -80,18 +82,19 @@ public class PlantListVM extends AndroidViewModel
 			plants.add(newPlant);
 			addPlant.setValue(true);
 		} else {
-			error.setValue(newPlant.name + " couldn't be saved!");
+			String message = newPlant.name + " couldn't be saved!";
+			error.setValue(new Event<>(message));
 		}
 	}
 
 	// TODO: If a Plant is selected to be added as a Crop, then that Plant is deleted, the CropAddFragment is not updated
-	// TODO: Ensure that any messages passed view the error subject is only consumed ONCE
 	public void deletePlant(Plant plant, int position)
 	{
 		int deleteCount = plantBridge.delete(plant);
 
 		if (deleteCount == 0) {
-			error.setValue(plant.name + " couldn't be deleted; it is needed by 1 or more crops!");
+			String message = plant.name + " couldn't be deleted; it is needed by 1 or more crops!";
+			error.setValue(new Event<>(message));
 			return;
 		}
 

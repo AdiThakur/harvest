@@ -63,9 +63,16 @@ public class BaseFragment extends Fragment
 		}
 	}
 
-	protected void displayError(String errorMessage)
+	protected void displayError(String error)
+	{
+		Toast.makeText(requireActivity(), error, Toast.LENGTH_LONG).show();
+	}
+
+	protected void displayError(Event<String> error)
 	{
 		// TODO: Replace most, if not all, toasts with Snackbars
-		Toast.makeText(requireActivity(), errorMessage, Toast.LENGTH_LONG).show();
+		if (error.isFreshPiece()) {
+			displayError(error.get());
+		}
 	}
 }
