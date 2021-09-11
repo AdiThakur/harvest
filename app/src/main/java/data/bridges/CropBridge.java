@@ -46,7 +46,7 @@ public class CropBridge implements IBridge<Crop>
 	@Override
 	public int delete(Crop crop)
 	{
-		return cropDao.delete(crop);
+		return cropDao.delete(crop.uid);
 	}
 
 	public List<Crop> getAllBySeason(long seasonId)

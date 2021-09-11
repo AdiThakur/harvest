@@ -24,6 +24,6 @@ public interface CropDao
 	@Query("SELECT * FROM crop")
 	public List<Crop> getAll();
 
-	@Delete
-	public int delete(Crop Crop);
+	@Query("DELETE FROM crop WHERE uid = :cropUid AND NOT EXISTS (SELECT * FROM harvest WHERE harvest.crop_id = :cropUid)")
+	public int delete(long cropUid);
 }

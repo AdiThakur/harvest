@@ -53,6 +53,13 @@ public class CropListVM extends AndroidViewModel
 	{
 		// TODO: Add validation logic to delete query; a Crop shouldn't be deleted if it is used by one or more Harvest instances
 		int deleteCount = cropBridge.delete(crop);
-		return (deleteCount > 0) && (crops.remove(crop));
+
+		if (deleteCount == 0) {
+			// TODO: Set error to inform user of failed deletion
+			return false;
+		}
+
+		crops.remove(crop);
+		return true;
 	}
 }
