@@ -19,6 +19,7 @@ public class HarvestBridge implements IBridge<Harvest>
 	@Override
 	public Harvest insert(Harvest harvest)
 	{
+		harvest.cropId = harvest.crop.uid;
 		harvest.uid = harvestDao.insert(harvest);
 		return harvest;
 	}

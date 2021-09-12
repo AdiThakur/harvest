@@ -77,7 +77,8 @@ public class HarvestAdapter extends RecyclerView.Adapter<HarvestViewHolder>
 	{
 		Harvest harvest = harvests.get(position);
 		String filename = harvest.crop.plant.imageFileName;
-		double totalWeight = harvest.count * harvest.crop.plant.unitWeight;
+		// TODO: Update weight calculcation logic; it is possible that a harvest's EXACT weight is saved
+		double totalWeight = harvest.unitsHarvested * harvest.crop.plant.unitWeight;
 		DecimalFormat df = new DecimalFormat("#.00");
 
 		holder.dateHarvestedTextView.setText(Helper.shortFormatOfDate(harvest.dateHarvested));
@@ -86,7 +87,7 @@ public class HarvestAdapter extends RecyclerView.Adapter<HarvestViewHolder>
 		// TODO: use placeholder string resources
 		// TODO: update UI of other cards (Plant, Crop, etc) to match HarvestList card
 		holder.totalWeightTextView.setText(df.format(totalWeight) + " grams");
-		holder.unitsHarvestedTextView.setText(String.valueOf(harvest.count) + " units");
+		holder.unitsHarvestedTextView.setText(String.valueOf(harvest.unitsHarvested) + " units");
 	}
 
 	@Override

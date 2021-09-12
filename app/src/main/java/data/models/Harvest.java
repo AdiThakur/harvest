@@ -6,7 +6,6 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity(tableName = "harvest")
 public class Harvest
@@ -26,8 +25,23 @@ public class Harvest
 	public LocalDateTime dateHarvested;
 
 	@ColumnInfo(name = "count")
-	public int count;
+	public int unitsHarvested;
+
+	@ColumnInfo(name ="weight")
+	public double totalWeight;
 
 	@Ignore
 	public Crop crop;
+
+	public Harvest() {}
+
+	public Harvest(
+		long seasonId, int unitsHarvested, double totalWeight, LocalDateTime dateHarvested, Crop crop)
+	{
+		this.seasonId = seasonId;
+		this.unitsHarvested = unitsHarvested;
+		this.totalWeight = totalWeight;
+		this.dateHarvested = dateHarvested;
+		this.crop = crop;
+	}
 }

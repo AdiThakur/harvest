@@ -13,13 +13,16 @@ public class CropAddVM extends ViewModel
 	private Plant selectedPlant;
 	private MutableLiveData<Plant> selectedPlantSubject;
 	public LiveData<Plant> selectedPlantObservable;
-	public GregorianCalendar storedDate = new GregorianCalendar();
+
+	public GregorianCalendar storedDate;
 
 	public CropAddVM()
 	{
 		super();
 		selectedPlantSubject = new MutableLiveData<>();
 		selectedPlantObservable = selectedPlantSubject;
+
+		storedDate = new GregorianCalendar();
 	}
 
 	public Plant getSelectedPlant()

@@ -2,13 +2,13 @@ package com.example.harvest.crop;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import common.OnClickListener;
 import com.example.harvest.R;
+import com.example.harvest.harvest.HarvestAddVM;
 
 import common.BaseFragment;
 import data.models.Crop;
@@ -24,6 +25,7 @@ import data.models.Crop;
 public class CropListFragment extends BaseFragment implements OnClickListener
 {
 	private CropListVM cropListVM;
+	private HarvestAddVM harvestAddVM;
 
 	private RecyclerView recyclerView;
 	private CropAdapter adapter;
@@ -35,6 +37,13 @@ public class CropListFragment extends BaseFragment implements OnClickListener
 	{
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
+
+		// TODO: Pass some basic data to this fragment that enables/disables the selection feature
+		String caller = getCaller();
+		if (caller.equals("fragment_harvest_add")) {
+			harvestAddVM = getProvider(R.id.harvest_add_nav_graph).get(HarvestAddVM.class);
+		}
+
 		cropListVM = getProvider(R.id.crop_nav_graph).get(CropListVM.class);
 	}
 
@@ -55,6 +64,9 @@ public class CropListFragment extends BaseFragment implements OnClickListener
 		recyclerView = view.findViewById(R.id.cropList_cropRcv);
 		recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
 		recyclerView.setAdapter(adapter);
+
+		cropListVM.deleteCrop$.observe(getViewLifecycleOwner(), this::cropDeletedObserver);
+		cropListVM.error$.observe(getViewLifecycleOwner(), this::displayError);
 	}
 
 	@Override
@@ -76,6 +88,17 @@ public class CropListFragment extends BaseFragment implements OnClickListener
 		return true;
 	}
 
+	 // Observers
+
+	// TODO: Rework deletion logic
+	private void cropDeletedObserver(int position)
+	{
+		if (harvestAddVM != null) {
+			harvestAddVM.setSelectedCrop(null);
+		}
+		adapter.notifyItemRemoved(position);
+	}
+
 	// Callbacks for user-generated events
 
 	private void launchCropAddFragment()
@@ -83,23 +106,17 @@ public class CropListFragment extends BaseFragment implements OnClickListener
 		navigateTo(R.id.cropListFragment, R.id.action_cropListFragment_to_crop_add_graph);
 	}
 
-	private void deleteCrop(Crop cropToDelete, int position)
-	{
-		boolean success = cropListVM.deleteCrop(cropToDelete);
-
-		if (success) {
-			adapter.notifyItemRemoved(position);
-			return;
-		}
-
-		String message = "Couldn't remove " + cropToDelete.plant.name;
-		Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show();
-	}
-
 	// OnClickListener interface overrides for CropAdapter
 
 	@Override
-	public void onClick(View row, int position) {}
+	public void onClick(View row, int position) {
+		Crop cropSelected = cropListVM.getCrops().get(position);
+		if (harvestAddVM != null) {
+			harvestAddVM.setSelectedCrop(cropSelected);
+			Log.println(Log.DEBUG, "CropListFrag", cropSelected.plant.name);
+		}
+		navigateUp();
+	}
 
 	@Override
 	public void onLongClick(View row, int position)
@@ -110,7 +127,7 @@ public class CropListFragment extends BaseFragment implements OnClickListener
 		builder.setMessage("Are you sure you want to delete " + cropToDelete.plant.name + " crop ?");
 		builder.setNegativeButton("No", (dialogInterface, i) -> {});
 		builder.setPositiveButton("Yes", (dialogInterface, i) ->
-			deleteCrop(cropToDelete, position)
+			cropListVM.deleteCrop(cropToDelete, position)
 		);
 
 		AlertDialog dialog = builder.create();

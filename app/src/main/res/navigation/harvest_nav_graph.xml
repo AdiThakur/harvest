@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/harvest_nav_graph"
+    app:startDestination="@id/harvestListFragment">
+    <fragment
+        android:id="@+id/harvestListFragment"
+        android:name="com.example.harvest.harvest.HarvestListFragment"
+        tools:layout="@layout/fragment_harvest_list"
+        android:label="HarvestListFragment">
+        <action
+            android:id="@+id/action_harvestListFragment_to_harvest_add_nav_graph"
+            app:destination="@id/harvest_add_nav_graph" />
+    </fragment>
+    <navigation android:id="@+id/harvest_add_nav_graph"
+        app:startDestination="@id/harvestAddFragment">
+        <include app:graph="@navigation/crop_nav_graph" />
+        <fragment
+            android:id="@+id/harvestAddFragment"
+            android:name="com.example.harvest.harvest.HarvestAddFragment"
+            android:label="fragment_harvest_add"
+            tools:layout="@layout/fragment_harvest_add">
+            <action
+                android:id="@+id/action_harvestAddFragment_to_crop_nav_graph"
+                app:destination="@id/crop_nav_graph" />
+        </fragment>
+        <action
+            android:id="@+id/action_global_harvestListFragment"
+            app:destination="@id/harvestListFragment" />
+    </navigation>
+</navigation>

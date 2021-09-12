@@ -100,7 +100,7 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 
 		plantListVM.selectedPlant$.observe(getViewLifecycleOwner(), this::plantSelectedObserver);
 		plantListVM.deletePlant$.observe(getViewLifecycleOwner(), this::plantDeletedObserver);
-		plantListVM.error$.observe(this, this::displayError);
+		plantListVM.error$.observe(getViewLifecycleOwner(), this::displayError);
 	}
 
 	@Override
@@ -129,6 +129,7 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 		confirmButton.setEnabled(true);
 	}
 
+	// TODO: Rework deletion logic; currently, the selected plant in CropAdd fragment is cleared when ANY plant is deleted
 	private void plantDeletedObserver(int position)
 	{
 		cropAddVM.setSelectedPlant(null);

@@ -1,6 +1,7 @@
 package com.example.harvest.crop;
 
 import android.app.Application;
+import android.util.Pair;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -8,10 +9,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.List;
 
+import common.Event;
 import data.bridges.BridgeFactory;
 import data.bridges.CropBridge;
 import data.models.Crop;
@@ -22,6 +22,12 @@ public class CropListVM extends AndroidViewModel
 	private final CropBridge cropBridge;
 	private List<Crop> crops;
 
+	private final MutableLiveData<Integer> deleteCrop;
+	public LiveData<Integer> deleteCrop$;
+
+	private final MutableLiveData<Event<String>> error;
+	public LiveData<Event<String>> error$;
+
 	public CropListVM(@NonNull Application application)
 	{
 		super(application);
@@ -29,6 +35,12 @@ public class CropListVM extends AndroidViewModel
 		BridgeFactory bridgeFactory = new BridgeFactory(application.getApplicationContext());
 		cropBridge = bridgeFactory.getCropBridge();
 		crops = cropBridge.getAll();
+
+		deleteCrop = new MutableLiveData<>();
+		deleteCrop$ = deleteCrop;
+
+		error = new MutableLiveData<>();
+		error$ = error;
 	}
 
 	public boolean addCrop(long seasonId, LocalDateTime datePlanted, int numberOfPlants, Plant plant)
@@ -49,17 +61,18 @@ public class CropListVM extends AndroidViewModel
 		return crops;
 	}
 
-	public boolean deleteCrop(Crop crop)
+	public void deleteCrop(Crop crop, int position)
 	{
-		// TODO: Add validation logic to delete query; a Crop shouldn't be deleted if it is used by one or more Harvest instances
 		int deleteCount = cropBridge.delete(crop);
 
 		if (deleteCount == 0) {
-			// TODO: Set error to inform user of failed deletion
-			return false;
+			String message =
+				crop.plant.name + " couldn't be deleted; it is needed by 1 or more harvests!";
+			error.setValue(new Event<>(message));
+			return;
 		}
 
 		crops.remove(crop);
-		return true;
+		deleteCrop.setValue(position);
 	}
 }

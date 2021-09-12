@@ -78,7 +78,7 @@ public class CropAddFragment extends BaseFragment
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
 	{
 		super.onViewCreated(view, savedInstanceState);
-		setTitle("Add a New Crop");
+		setTitle("New Crop");
 
 		cropAddVM.selectedPlantObservable.observe(getViewLifecycleOwner(), selectedPlant ->
 		{

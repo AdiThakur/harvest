@@ -35,7 +35,7 @@ public class HomeFragment extends BaseFragment
 
 		Button harvestsButton = view.findViewById(R.id.home_harvestsButton);
 		harvestsButton.setOnClickListener((v) -> {
-			launch(R.id.action_homeFragment_to_harvestListFragment);
+			launch(R.id.action_homeFragment_to_harvest_nav_graph);
 		});
 
 		Button cropsButton = view.findViewById(R.id.home_cropsButton);
