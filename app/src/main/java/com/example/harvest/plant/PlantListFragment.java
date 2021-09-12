@@ -3,6 +3,7 @@ package com.example.harvest.plant;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -89,13 +90,17 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 
 	// Observers
 
-	// TODO: Rework deletion logic; currently, the selected plant in CropAdd fragment is cleared when ANY plant is deleted
-	private void plantDeletedObserver(int position)
+	private void plantDeletedObserver(Pair<Long, Integer> deletedPlantInfo)
 	{
-		if (cropAddVM != null) {
+		long deletedPlantUid = deletedPlantInfo.first;
+		int deletedPlantPosition = deletedPlantInfo.second;
+
+		// Only reset CropAddVM's selectedPlant Plant if it was deleted.
+		if (cropAddVM != null && deletedPlantUid == cropAddVM.getSelectedPlant().uid) {
 			cropAddVM.setSelectedPlant(null);
 		}
-		adapter.notifyItemRemoved(position);
+
+		adapter.notifyItemRemoved(deletedPlantPosition);
 	}
 
 	// Callbacks for user-generated events

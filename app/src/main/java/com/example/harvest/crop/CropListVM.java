@@ -22,8 +22,8 @@ public class CropListVM extends AndroidViewModel
 	private final CropBridge cropBridge;
 	private List<Crop> crops;
 
-	private final MutableLiveData<Integer> deleteCrop;
-	public LiveData<Integer> deleteCrop$;
+	private final MutableLiveData<Pair<Long, Integer>> deleteCrop;
+	public LiveData<Pair<Long, Integer>> deleteCrop$;
 
 	private final MutableLiveData<Event<String>> error;
 	public LiveData<Event<String>> error$;
@@ -74,6 +74,6 @@ public class CropListVM extends AndroidViewModel
 		}
 
 		crops.remove(crop);
-		deleteCrop.setValue(position);
+		deleteCrop.setValue(new Pair<>(crop.uid, position));
 	}
 }

@@ -3,6 +3,7 @@ package com.example.harvest.crop;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -90,13 +91,15 @@ public class CropListFragment extends BaseFragment implements OnClickListener
 
 	 // Observers
 
-	// TODO: Rework deletion logic
-	private void cropDeletedObserver(int position)
+	private void cropDeletedObserver(Pair<Long, Integer> deletedCropInfo)
 	{
-		if (harvestAddVM != null) {
+		long deletedCropUid = deletedCropInfo.first;
+		int deletedCropPosition = deletedCropInfo.second;
+
+		if (harvestAddVM != null && deletedCropUid == harvestAddVM.getSelectedCrop().uid) {
 			harvestAddVM.setSelectedCrop(null);
 		}
-		adapter.notifyItemRemoved(position);
+		adapter.notifyItemRemoved(deletedCropPosition);
 	}
 
 	// Callbacks for user-generated events

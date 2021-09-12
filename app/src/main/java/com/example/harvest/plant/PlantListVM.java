@@ -27,8 +27,8 @@ public class PlantListVM extends AndroidViewModel
 	private final MutableLiveData<Boolean> addPlant;
 	public LiveData<Boolean> addPlant$;
 
-	private final MutableLiveData<Integer> deletePlant;
-	public LiveData<Integer> deletePlant$;
+	private final MutableLiveData<Pair<Long, Integer>> deletePlant;
+	public LiveData<Pair<Long, Integer>> deletePlant$;
 
 	private final MutableLiveData<Event<String>> error;
 	public LiveData<Event<String>> error$;
@@ -91,7 +91,7 @@ public class PlantListVM extends AndroidViewModel
 
 		getApplication().getApplicationContext().deleteFile(plant.imageFileName);
 		plants.remove(plant);
-		deletePlant.setValue(position);
+		deletePlant.setValue(new Pair<>(plant.uid, position));
 	}
 
 	private String saveImage(Uri imageUri, String plantName)
