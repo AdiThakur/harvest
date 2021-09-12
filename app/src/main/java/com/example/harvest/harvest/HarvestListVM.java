@@ -21,6 +21,9 @@ public class HarvestListVM extends AndroidViewModel
 	private final HarvestBridge bridge;
 	private List<Harvest> harvests;
 
+	private final MutableLiveData<Integer> deleteHarvest;
+	public final LiveData<Integer> deleteHarvest$;
+
 	private final MutableLiveData<Event<String>> error;
 	public LiveData<Event<String>> error$;
 
@@ -31,6 +34,9 @@ public class HarvestListVM extends AndroidViewModel
 		BridgeFactory bridgeFactory = new BridgeFactory(application.getApplicationContext());
 		bridge = bridgeFactory.getHarvestBridge();
 		harvests = bridge.getAll();
+
+		deleteHarvest = new MutableLiveData<>();
+		deleteHarvest$ = deleteHarvest;
 
 		error = new MutableLiveData<>();
 		error$ = error;
@@ -54,5 +60,19 @@ public class HarvestListVM extends AndroidViewModel
 		} else {
 			error.setValue(new Event<>("Couldn't save harvest!"));
 		}
+	}
+
+	public void deleteHarvest(Harvest harvest, int position)
+	{
+		int deleteCount = bridge.delete(harvest);
+
+		if (deleteCount == 0) {
+			String message = "Harvest couldn't be deleted.";
+			error.setValue(new Event<>(message));
+			return;
+		}
+
+		harvests.remove(harvest);
+		deleteHarvest.setValue(position);
 	}
 }

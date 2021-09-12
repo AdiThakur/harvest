@@ -1,5 +1,6 @@
 package com.example.harvest.harvest;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,7 +17,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.harvest.R;
 
 import common.BaseFragment;
+import common.Helper;
 import common.OnClickListener;
+import data.models.Harvest;
+import data.models.Plant;
 
 public class HarvestListFragment extends BaseFragment implements OnClickListener
 {
@@ -32,7 +36,7 @@ public class HarvestListFragment extends BaseFragment implements OnClickListener
 	{
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-		harvestListVM = getProvider(this).get(HarvestListVM.class);
+		harvestListVM = getProvider(R.id.harvest_nav_graph).get(HarvestListVM.class);
 	}
 
 	@Nullable
@@ -53,6 +57,7 @@ public class HarvestListFragment extends BaseFragment implements OnClickListener
 		recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
 		recyclerView.setAdapter(adapter);
 
+		harvestListVM.deleteHarvest$.observe(getViewLifecycleOwner(), this::harvestDeletedObserver);
 		harvestListVM.error$.observe(getViewLifecycleOwner(), this::displayError);
 	}
 
@@ -75,6 +80,13 @@ public class HarvestListFragment extends BaseFragment implements OnClickListener
 		return true;
 	}
 
+	// Observers
+
+	private void harvestDeletedObserver(int position)
+	{
+		adapter.notifyItemRemoved(position);
+	}
+
 	// Callbacks for user-generated events
 
 	private void launchHarvestAddFragment()
@@ -85,12 +97,26 @@ public class HarvestListFragment extends BaseFragment implements OnClickListener
 	// OnClickListener interface overrides for HarvestAdapter
 
 	@Override
-	public void onClick(View row, int position) {
-
-	}
+	public void onClick(View row, int position) {}
 
 	@Override
-	public void onLongClick(View row, int position) {
+	public void onLongClick(View row, int position)
+	{
+		Harvest harvestToDelete = harvestListVM.getHarvests().get(position);
+		AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
 
+		String message =
+			"Are you sure you want to delete the harvest of crop " +
+			harvestToDelete.crop.plant.name +
+			" that occurred on " +
+			Helper.shortFormatOfDate(harvestToDelete.dateHarvested) + " ?";
+		builder.setMessage(message);
+		builder.setNegativeButton("No", (dialogInterface, i) -> {});
+		builder.setPositiveButton("Yes", (dialogInterface, i) ->
+			harvestListVM.deleteHarvest(harvestToDelete, position)
+		);
+
+		AlertDialog dialog = builder.create();
+		dialog.show();
 	}
 }

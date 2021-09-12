@@ -100,7 +100,7 @@ public class HarvestAddFragment extends BaseFragment
 	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater)
 	{
 		super.onCreateOptionsMenu(menu, inflater);
-		inflater.inflate(R.menu.add_new_item_menu, menu);
+		inflater.inflate(R.menu.crop_add_menu, menu);
 	}
 
 	@Override
@@ -123,6 +123,7 @@ public class HarvestAddFragment extends BaseFragment
 		navigateTo(R.id.harvestAddFragment, R.id.action_harvestAddFragment_to_crop_nav_graph);
 	}
 
+	// TODO: add validation logic for the date of harvest; harvest cannot occur before the day that the crop was planted
 	private void submit()
 	{
 		Crop selectedCrop = harvestAddVM.getSelectedCrop();
