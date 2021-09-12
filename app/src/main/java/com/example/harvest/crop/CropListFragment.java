@@ -110,8 +110,8 @@ public class CropListFragment extends BaseFragment implements OnClickListener
 
 	@Override
 	public void onClick(View row, int position) {
-		Crop cropSelected = cropListVM.getCrops().get(position);
 		if (harvestAddVM != null) {
+			Crop cropSelected = cropListVM.getCrops().get(position);
 			harvestAddVM.setSelectedCrop(cropSelected);
 			navigateUp();
 		}

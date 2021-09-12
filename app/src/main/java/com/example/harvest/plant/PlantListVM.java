@@ -24,10 +24,6 @@ public class PlantListVM extends AndroidViewModel
 	private final PlantBridge plantBridge;
 	private final List<Plant> plants;
 
-	public int selectedPlantPosition;
-	private final MutableLiveData<Pair<Integer, Integer>> selectedPlant;
-	public final LiveData<Pair<Integer, Integer>> selectedPlant$;
-
 	private final MutableLiveData<Boolean> addPlant;
 	public LiveData<Boolean> addPlant$;
 
@@ -45,10 +41,6 @@ public class PlantListVM extends AndroidViewModel
 		plantBridge = bridgeFactory.getPlantBridge();
 
 		plants = plantBridge.getAll();
-
-		selectedPlantPosition = -1;
-		selectedPlant = new MutableLiveData<>();
-		selectedPlant$ = selectedPlant;
 
 		addPlant = new MutableLiveData<>();
 		addPlant$ = addPlant;
@@ -100,13 +92,6 @@ public class PlantListVM extends AndroidViewModel
 		getApplication().getApplicationContext().deleteFile(plant.imageFileName);
 		plants.remove(plant);
 		deletePlant.setValue(position);
-	}
-
-	public void setSelectedPlantPosition(int position)
-	{
-		int oldPosition = selectedPlantPosition;
-		selectedPlantPosition = position;
-		selectedPlant.setValue(new Pair<>(oldPosition, position));
 	}
 
 	private String saveImage(Uri imageUri, String plantName)

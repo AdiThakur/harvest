@@ -3,20 +3,15 @@ package com.example.harvest.plant;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.os.Bundle;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
-import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,11 +26,9 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 {
 	private PlantListVM plantListVM;
 	private CropAddVM cropAddVM;
-	private boolean allowSelection;
 
 	private RecyclerView recyclerView;
 	private PlantAdapter adapter;
-	private Button confirmButton;
 
 	// Lifecycle overrides
 
@@ -49,10 +42,6 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 		String caller = getCaller();
 		if (caller.equals("fragment_crop_add")) {
 			cropAddVM = getProvider(R.id.crop_add_graph).get(CropAddVM.class);
-			allowSelection = true;
-		} else {
-			cropAddVM = getProvider(R.id.plant_nav_graph).get(CropAddVM.class);
-			allowSelection = false;
 		}
 
 		plantListVM = getProvider(R.id.plant_nav_graph).get(PlantListVM.class);
@@ -77,28 +66,6 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 		recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
 		recyclerView.setAdapter(adapter);
 
-		confirmButton = view.findViewById(R.id.plantList_confirmButton);
-		Button cancelButton = view.findViewById(R.id.plantList_cancelButton);
-
-		if (allowSelection) {
-			confirmButton.setEnabled(false);
-			confirmButton.setOnClickListener((v) -> confirmSelection(true));
-			cancelButton.setOnClickListener((v) -> confirmSelection(false));
-		} else {
-			confirmButton.setVisibility(View.GONE);
-			cancelButton.setVisibility(View.GONE);
-
-			// Force RecyclerView to take up entire screen
-			ConstraintLayout constraintLayout = view.findViewById(R.id.plantList_constraintView);
-			ConstraintSet constraintSet = new ConstraintSet();
-			constraintSet.clone(constraintLayout);
-			constraintSet.connect(
-				R.id.plantList_plantRcv, ConstraintSet.BOTTOM,
-				R.id.plantList_constraintView, ConstraintSet.BOTTOM,0);
-			constraintSet.applyTo(constraintLayout);
-		}
-
-		plantListVM.selectedPlant$.observe(getViewLifecycleOwner(), this::plantSelectedObserver);
 		plantListVM.deletePlant$.observe(getViewLifecycleOwner(), this::plantDeletedObserver);
 		plantListVM.error$.observe(getViewLifecycleOwner(), this::displayError);
 	}
@@ -122,17 +89,12 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 
 	// Observers
 
-	private void plantSelectedObserver(Pair<Integer, Integer> positions)
-	{
-		paintRow(positions.first, R.color.card_grey);
-		paintRow(positions.second, R.color.card_selected_blue);
-		confirmButton.setEnabled(true);
-	}
-
 	// TODO: Rework deletion logic; currently, the selected plant in CropAdd fragment is cleared when ANY plant is deleted
 	private void plantDeletedObserver(int position)
 	{
-		cropAddVM.setSelectedPlant(null);
+		if (cropAddVM != null) {
+			cropAddVM.setSelectedPlant(null);
+		}
 		adapter.notifyItemRemoved(position);
 	}
 
@@ -143,37 +105,16 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 		navigateTo(R.id.plantListFragment, R.id.action_plantListFragment_to_plantAddFragment);
 	}
 
-	private void confirmSelection(boolean confirmed)
-	{
-		if (confirmed) {
-			Plant selectedPlant = plantListVM.getPlants().get(plantListVM.selectedPlantPosition);
-			cropAddVM.setSelectedPlant(selectedPlant);
-		}
-
-		navigateUp();
-	}
-
-	// Helpers
-
-	private void paintRow(int position, @ColorRes int color)
-	{
-		if (position == -1) {
-			return;
-		}
-
-		PlantViewHolder viewHolder =
-			(PlantViewHolder) recyclerView.findViewHolderForAdapterPosition(position);
-		if (viewHolder != null) {
-			viewHolder.row.setBackgroundColor(getResources().getColor(color));
-		}
-	}
-
 	// OnClickListener interface overrides for PlantAdapter
 
 	@Override
 	public void onClick(View row, int position)
 	{
-		plantListVM.setSelectedPlantPosition(position);
+		if (cropAddVM != null) {
+			Plant selectedPlant = plantListVM.getPlants().get(position);
+			cropAddVM.setSelectedPlant(selectedPlant);
+			navigateUp();
+		}
 	}
 
 	@Override
