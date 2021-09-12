@@ -75,7 +75,7 @@ public class CropListVM extends AndroidViewModel
 
 		if (deleteCount == 0) {
 			String message =
-				crop.plant.name + " couldn't be deleted; it is needed by 1 or more Harvests!";
+				crop.plant.name + " couldn't be deleted. It is needed by 1 or more Harvests!";
 			error.setValue(new Event<>(message));
 			return;
 		}

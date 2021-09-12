@@ -131,7 +131,8 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 		Plant plantToDelete = plantListVM.getPlants().get(position);
 		AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
 
-		builder.setMessage("Are you sure you want to delete " + plantToDelete.name + " ?");
+		builder.setTitle("Delete " + plantToDelete.name + " Plant?");
+		builder.setMessage("This cannot be undone!");
 		builder.setNegativeButton("No", (dialogInterface, i) -> {});
 		builder.setPositiveButton("Yes", (dialogInterface, i) ->
 			plantListVM.deletePlant(plantToDelete, position)

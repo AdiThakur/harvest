@@ -129,7 +129,10 @@ public class CropListFragment extends BaseFragment implements OnClickListener
 		Crop cropToDelete = cropListVM.getCrops().get(position);
 		AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
 
-		builder.setMessage("Are you sure you want to delete " + cropToDelete.plant.name + " crop ?");
+		builder.setTitle("Delete " + cropToDelete.plant.name + " Crop?");
+		String message =
+			"This will only remove the " + cropToDelete.plant.name + " Crop for this Season. ";
+		builder.setMessage(message);
 		builder.setNegativeButton("No", (dialogInterface, i) -> {});
 		builder.setPositiveButton("Yes", (dialogInterface, i) ->
 			cropListVM.deleteCrop(cropToDelete, position)

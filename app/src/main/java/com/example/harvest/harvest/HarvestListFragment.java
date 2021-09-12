@@ -108,11 +108,10 @@ public class HarvestListFragment extends BaseFragment implements OnClickListener
 		Harvest harvestToDelete = harvestListVM.getHarvests().get(position);
 		AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
 
+		builder.setTitle("Delete Harvest?");
 		String message =
-			"Are you sure you want to delete the harvest of crop " +
-			harvestToDelete.crop.plant.name +
-			" that occurred on " +
-			Helper.shortFormatOfDate(harvestToDelete.dateHarvested) + " ?";
+			"Information about the Harvest of " + harvestToDelete.crop.plant.name +
+			" on " + Helper.shortFormatOfDate(harvestToDelete.dateHarvested) + " will be lost!";
 		builder.setMessage(message);
 		builder.setNegativeButton("No", (dialogInterface, i) -> {});
 		builder.setPositiveButton("Yes", (dialogInterface, i) ->
