@@ -129,7 +129,7 @@ public class CropAddFragment extends BaseFragment
 		LocalDateTime datePlanted = cropAddVM.storedDate.toZonedDateTime().toLocalDateTime();
 
 		if (selectedPlant == null) {
-			this.displayError("Please select a Crop!");
+			this.displayError("Please select a Plant!");
 			return;
 		}
 		if (numberOfPlants.isEmpty()) {

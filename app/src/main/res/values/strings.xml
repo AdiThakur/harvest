@@ -33,6 +33,9 @@
     <string name="choose_image">Choose Image</string>
     <string name="plant_image">Plant Image</string>
 
+    <!-- Plant -->
+    <string name="open_gallery">Open Gallery</string>
+
     <!-- Crop -->
     <string name="selected_plant">Selected Plant</string>
     <string name="number_of_plants">Number of Plants</string>

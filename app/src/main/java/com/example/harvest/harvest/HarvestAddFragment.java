@@ -6,6 +6,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -41,6 +44,7 @@ public class HarvestAddFragment extends BaseFragment
 	public void onCreate(@Nullable Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
 		harvestListVM = getProvider(R.id.harvest_nav_graph).get(HarvestListVM.class);
 		harvestAddVM = getProvider(R.id.harvest_add_nav_graph).get(HarvestAddVM.class);
 	}
@@ -65,10 +69,6 @@ public class HarvestAddFragment extends BaseFragment
 			harvestAddVM.storedDate = new GregorianCalendar(year, month, day);
 		});
 
-		submitButton = view.findViewById(R.id.harvestAdd_submitButton);
-		submitButton.setOnClickListener((v) -> submit());
-		submitButton.setEnabled(false);
-
 		return view;
 	}
 
@@ -83,11 +83,9 @@ public class HarvestAddFragment extends BaseFragment
 			if (selectedCrop == null) {
 				cropContainer.findViewById(R.id.noPlantSelected).setVisibility(View.VISIBLE);
 				cropContainer.findViewById(R.id.selectedCropItem).setVisibility(View.GONE);
-				submitButton.setEnabled(false);
 			} else {
 				cropContainer.findViewById(R.id.noPlantSelected).setVisibility(View.GONE);
 				cropContainer.findViewById(R.id.selectedCropItem).setVisibility(View.VISIBLE);
-				submitButton.setEnabled(true);
 				cropNameTextView.setText(selectedCrop.plant.name);
 				cropCountTextView.setText(String.valueOf(selectedCrop.numberOfPlants));
 				cropImageView.setImageBitmap(
@@ -96,6 +94,26 @@ public class HarvestAddFragment extends BaseFragment
 				cropPlantedDateTextView.setText(Helper.shortFormatOfDate(selectedCrop.datePlanted));
 			}
 		});
+	}
+
+	@Override
+	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater)
+	{
+		super.onCreateOptionsMenu(menu, inflater);
+		inflater.inflate(R.menu.add_new_item_menu, menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(@NonNull MenuItem item)
+	{
+		int id = item.getItemId();
+
+		if (id == R.id.crop_add_menu_saveButton) {
+			submit();
+		}
+
+		return true;
+
 	}
 
 	// Callbacks for user-generated events
@@ -112,6 +130,11 @@ public class HarvestAddFragment extends BaseFragment
 		String unitsHarvestedString = unitsHarvestedEditText.getText().toString();
 		String totalWeightString = totalWeightEditText.getText().toString();
 		LocalDateTime dateHarvested = harvestAddVM.storedDate.toZonedDateTime().toLocalDateTime();
+
+		if (selectedCrop == null) {
+			displayError("Please select a Crop!");
+			return;
+		}
 
 		if (unitsHarvestedString.isEmpty() && totalWeightString.isEmpty()) {
 			displayError("At least one of Units Harvested and Total Weight must be specified");

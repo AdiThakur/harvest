@@ -11,50 +11,74 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            android:background="@color/card_light_purple"
+            android:fontFamily="sans-serif-condensed-light"
+            android:padding="5dp"
+            android:text="@string/choose_image"
+            android:textSize="@dimen/subtitle_font_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:background="@color/card_light_purple"
+            android:fontFamily="sans-serif-condensed-light"
+            android:padding="5dp"
+            android:text="@string/unit_weight"
+            android:textSize="@dimen/subtitle_font_size"
+            app:layout_constraintEnd_toEndOf="@+id/plantAdd_plantNameEditText"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/plantAdd_plantNameEditText"
+            app:layout_constraintTop_toBottomOf="@+id/plantAdd_plantNameEditText" />
+
         <EditText
             android:id="@+id/plantAdd_plantNameEditText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="30dp"
             android:ems="10"
-            android:hint="@string/plant_name"
             android:importantForAutofill="no"
             android:inputType="textPersonName"
             android:minHeight="48dp"
             android:outlineProvider="none"
             android:padding="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/textView11"
+            app:layout_constraintStart_toStartOf="@+id/textView11"
+            app:layout_constraintTop_toBottomOf="@+id/textView11"
             tools:ignore="TextContrastCheck" />
 
         <EditText
             android:id="@+id/plantAdd_plantUnitWeightEditText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
 
             android:ems="10"
-            android:hint="@string/unit_weight"
             android:importantForAutofill="no"
             android:inputType="numberDecimal"
             android:minHeight="48dp"
-            app:layout_constraintEnd_toEndOf="@+id/plantAdd_plantNameEditText"
-            app:layout_constraintStart_toStartOf="@+id/plantAdd_plantNameEditText"
-            app:layout_constraintTop_toBottomOf="@+id/plantAdd_plantNameEditText"
+            app:layout_constraintEnd_toEndOf="@+id/textView12"
+            app:layout_constraintStart_toStartOf="@+id/textView12"
+            app:layout_constraintTop_toBottomOf="@+id/textView12"
             tools:ignore="TextContrastCheck" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:background="@color/card_grey"
-            app:layout_constraintEnd_toEndOf="@+id/plantAdd_plantUnitWeightEditText"
-            app:layout_constraintStart_toStartOf="@+id/plantAdd_plantUnitWeightEditText"
-            app:layout_constraintTop_toBottomOf="@+id/plantAdd_plantUnitWeightEditText">
+            android:background="@color/card_lightest_purple"
+            app:layout_constraintEnd_toEndOf="@+id/textView13"
+            app:layout_constraintStart_toStartOf="@+id/textView13"
+            app:layout_constraintTop_toBottomOf="@+id/textView13">
 
             <ImageView
                 android:id="@+id/plantAdd_plantImage"
@@ -78,7 +102,7 @@
                 android:id="@+id/plantAdd_ChooseImageButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/choose_image"
+                android:text="@string/open_gallery"
                 app:layout_constraintBottom_toBottomOf="@+id/plantAdd_plantImage"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.478"
@@ -87,23 +111,21 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <Button
-            android:id="@+id/plantAdd_CancelButton"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
-            android:text="@string/cancel"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/constraintLayout" />
-
-        <Button
-            android:id="@+id/plantAdd_SubmitButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/submit"
-            app:layout_constraintBottom_toBottomOf="@+id/plantAdd_CancelButton"
-            app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
-            app:layout_constraintTop_toTopOf="@+id/plantAdd_CancelButton" />
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            android:background="@color/card_light_purple"
+            android:fontFamily="sans-serif-condensed-light"
+            android:padding="5dp"
+            android:text="@string/plant_name"
+            android:textSize="@dimen/subtitle_font_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

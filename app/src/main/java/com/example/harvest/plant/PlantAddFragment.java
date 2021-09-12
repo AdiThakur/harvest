@@ -1,6 +1,5 @@
 package com.example.harvest.plant;
 
-import android.app.AlertDialog;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -10,6 +9,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -36,6 +38,7 @@ public class PlantAddFragment extends BaseFragment
 	public void onCreate(@Nullable Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
 		plantAddVM = getProvider(this).get(PlantAddVM.class);
 		plantListVM = getProvider(R.id.plant_nav_graph).get(PlantListVM.class);
 	}
@@ -72,12 +75,25 @@ public class PlantAddFragment extends BaseFragment
 
 		Button chooseImage = view.findViewById(R.id.plantAdd_ChooseImageButton);
 		chooseImage.setOnClickListener(v -> chooseImage());
+	}
 
-		Button submit = view.findViewById(R.id.plantAdd_SubmitButton);
-		submit.setOnClickListener(v -> submit());
+	@Override
+	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater)
+	{
+		super.onCreateOptionsMenu(menu, inflater);
+		inflater.inflate(R.menu.crop_add_menu, menu);
+	}
 
-		Button cancel = view.findViewById(R.id.plantAdd_CancelButton);
-		cancel.setOnClickListener(v -> cancel());
+	@Override
+	public boolean onOptionsItemSelected(@NonNull MenuItem item)
+	{
+		int id = item.getItemId();
+
+		if (id == R.id.crop_add_menu_saveButton) {
+			submit();
+		}
+
+		return true;
 	}
 
 	// Callbacks for user-generated events
@@ -107,17 +123,5 @@ public class PlantAddFragment extends BaseFragment
 		plantListVM.addPlant$.observe(getViewLifecycleOwner(), (success) -> {
 			navigateUp();
 		});
-	}
-
-	public void cancel()
-	{
-		AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
-
-		builder.setMessage("Are you sure you want to cancel?");
-		builder.setNegativeButton("No", (dialogInterface, i) -> {});
-		builder.setPositiveButton("Yes", (dialogInterface, i) -> navigateUp());
-
-		AlertDialog dialog = builder.create();
-		dialog.show();
 	}
 }
