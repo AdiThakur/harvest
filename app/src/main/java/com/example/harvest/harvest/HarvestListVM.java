@@ -58,7 +58,7 @@ public class HarvestListVM extends AndroidViewModel
 		if (newHarvest.uid != 0) {
 			harvests.add(newHarvest);
 		} else {
-			error.setValue(new Event<>("Couldn't save harvest!"));
+			error.setValue(new Event<>("Couldn't add harvest!"));
 		}
 	}
 

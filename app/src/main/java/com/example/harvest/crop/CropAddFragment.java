@@ -16,8 +16,6 @@ import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.example.harvest.R;
 
@@ -129,7 +127,7 @@ public class CropAddFragment extends BaseFragment
 		LocalDateTime datePlanted = cropAddVM.storedDate.toZonedDateTime().toLocalDateTime();
 
 		if (selectedPlant == null) {
-			this.displayError("Please select a Plant!");
+			displayWarning("Please select a Plant!");
 			return;
 		}
 		if (numberOfPlantsString.isEmpty()) {

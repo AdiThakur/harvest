@@ -15,12 +15,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.harvest.R;
+import com.google.android.material.snackbar.Snackbar;
 
 import common.BaseFragment;
+import common.Event;
 import common.Helper;
 import common.OnClickListener;
 import data.models.Harvest;
-import data.models.Plant;
 
 public class HarvestListFragment extends BaseFragment implements OnClickListener
 {
@@ -58,7 +59,9 @@ public class HarvestListFragment extends BaseFragment implements OnClickListener
 		recyclerView.setAdapter(adapter);
 
 		harvestListVM.deleteHarvest$.observe(getViewLifecycleOwner(), this::harvestDeletedObserver);
-		harvestListVM.error$.observe(getViewLifecycleOwner(), this::displayError);
+		harvestListVM.error$.observe(getViewLifecycleOwner(), (Event<String> e) -> {
+			this.displayError(view, e);
+		});
 	}
 
 	@Override

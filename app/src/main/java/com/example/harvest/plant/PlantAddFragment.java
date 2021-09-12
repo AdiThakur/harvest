@@ -51,7 +51,7 @@ public class PlantAddFragment extends BaseFragment
 			new ActivityResultContracts.GetContent(),
 			(Uri result) -> {
 				if (result == null) {
-					this.displayError("No image selected; using default");
+					displayWarning("No image selected; using default");
 					return;
 				}
 				plantAddVM.selectedImageUri = result;

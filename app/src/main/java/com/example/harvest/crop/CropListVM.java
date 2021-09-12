@@ -49,7 +49,7 @@ public class CropListVM extends AndroidViewModel
 		boolean cropExistsForPlant = crops.stream().anyMatch(crop -> crop.plantId == plant.uid);
 
 		if (cropExistsForPlant) {
-			String message = plant.name + " already has a crop associated to it!";
+			String message = plant.name + " already has a Crop associated to it!";
 			error.setValue(new Event<>(message));
 			return;
 		}
@@ -75,7 +75,7 @@ public class CropListVM extends AndroidViewModel
 
 		if (deleteCount == 0) {
 			String message =
-				crop.plant.name + " couldn't be deleted; it is needed by 1 or more harvests!";
+				crop.plant.name + " couldn't be deleted; it is needed by 1 or more Harvests!";
 			error.setValue(new Event<>(message));
 			return;
 		}

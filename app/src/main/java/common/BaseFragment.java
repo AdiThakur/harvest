@@ -1,6 +1,7 @@
 package common;
 
 import android.app.Activity;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.IdRes;
@@ -11,6 +12,8 @@ import androidx.navigation.NavBackStackEntry;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.fragment.NavHostFragment;
+
+import com.google.android.material.snackbar.Snackbar;
 
 public class BaseFragment extends Fragment
 {
@@ -63,16 +66,26 @@ public class BaseFragment extends Fragment
 		}
 	}
 
-	protected void displayError(String error)
+	protected void displayWarning(String error)
 	{
 		Toast.makeText(requireActivity(), error, Toast.LENGTH_LONG).show();
 	}
 
-	protected void displayError(Event<String> error)
+	protected void displayError(View root, Event<String> error, int duration)
 	{
-		// TODO: Replace most, if not all, toasts with Snackbars
-		if (error.isFreshPiece()) {
-			displayError(error.get());
+		if (!error.isFreshPiece()) {
+			return;
 		}
+
+		Snackbar scoobySnacks = Snackbar.make(root, error.get(), duration);
+		scoobySnacks.setAction("Ok", view -> {
+			scoobySnacks.dismiss();
+		});
+		scoobySnacks.show();
+	}
+
+	protected void displayError(View root, Event<String> error)
+	{
+		displayError(root, error, Snackbar.LENGTH_INDEFINITE);
 	}
 }

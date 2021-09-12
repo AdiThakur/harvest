@@ -133,17 +133,19 @@ public class HarvestAddFragment extends BaseFragment
 		LocalDateTime dateHarvested = harvestAddVM.storedDate.toZonedDateTime().toLocalDateTime();
 
 		if (selectedCrop == null) {
-			displayError("Please select a Crop!");
+			displayWarning("Please select a Crop!");
 			return;
 		}
 
 		if (unitsHarvestedString.isEmpty() && totalWeightString.isEmpty()) {
-			displayError("At least one of Units Harvested and Total Weight must be specified");
+			displayWarning("At least one of Units Harvested and Total Weight must be specified");
 			return;
 		}
 
-		int unitsHarvested = Integer.parseInt(unitsHarvestedString);
-		double totalWeight = Double.parseDouble(totalWeightString);
+		int unitsHarvested =
+			(unitsHarvestedString.isEmpty()) ? 0 : Integer.parseInt(unitsHarvestedString);
+		double totalWeight =
+			(totalWeightString.isEmpty()) ? 0 : Double.parseDouble(totalWeightString);
 
 		harvestListVM.addHarvest(unitsHarvested, totalWeight, dateHarvested, selectedCrop);
 		navigateUp();

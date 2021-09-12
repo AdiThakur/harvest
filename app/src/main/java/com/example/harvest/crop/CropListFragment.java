@@ -2,7 +2,6 @@ package com.example.harvest.crop;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,9 +15,11 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import common.Event;
 import common.OnClickListener;
 import com.example.harvest.R;
 import com.example.harvest.harvest.HarvestAddVM;
+import com.google.android.material.snackbar.Snackbar;
 
 import common.BaseFragment;
 import data.models.Crop;
@@ -67,7 +68,9 @@ public class CropListFragment extends BaseFragment implements OnClickListener
 		recyclerView.setAdapter(adapter);
 
 		cropListVM.deleteCrop$.observe(getViewLifecycleOwner(), this::cropDeletedObserver);
-		cropListVM.error$.observe(getViewLifecycleOwner(), this::displayError);
+		cropListVM.error$.observe(getViewLifecycleOwner(), (Event<String> e) -> {
+			this.displayError(view, e);
+		});
 	}
 
 	@Override

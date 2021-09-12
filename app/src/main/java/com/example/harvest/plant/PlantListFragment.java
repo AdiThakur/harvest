@@ -16,9 +16,11 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import common.Event;
 import common.OnClickListener;
 import com.example.harvest.R;
 import com.example.harvest.crop.CropAddVM;
+import com.google.android.material.snackbar.Snackbar;
 
 import common.BaseFragment;
 import data.models.Plant;
@@ -39,7 +41,6 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 
-		// TODO: Pass some basic data to this fragment that enables/disables the selection feature
 		String caller = getCaller();
 		if (caller.equals("fragment_crop_add")) {
 			cropAddVM = getProvider(R.id.crop_add_graph).get(CropAddVM.class);
@@ -68,7 +69,9 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 		recyclerView.setAdapter(adapter);
 
 		plantListVM.deletePlant$.observe(getViewLifecycleOwner(), this::plantDeletedObserver);
-		plantListVM.error$.observe(getViewLifecycleOwner(), this::displayError);
+		plantListVM.error$.observe(getViewLifecycleOwner(), (Event<String> e) -> {
+			this.displayError(view, e);
+		});
 	}
 
 	@Override

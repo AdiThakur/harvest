@@ -84,7 +84,7 @@ public class PlantListVM extends AndroidViewModel
 		int deleteCount = plantBridge.delete(plant);
 
 		if (deleteCount == 0) {
-			String message = plant.name + " couldn't be deleted; it is needed by 1 or more crops!";
+			String message = plant.name + " couldn't be deleted. It is needed by 1 or more Crops!";
 			error.setValue(new Event<>(message));
 			return;
 		}
