@@ -13,7 +13,7 @@ import data.models.Crop;
 public interface CropDao
 {
 	@Insert
-	public long insert(Crop Crop);
+	public long insert(Crop crop);
 
 	@Query("SELECT * FROM crop WHERE uid = :cropId")
 	public Crop getById(long cropId);

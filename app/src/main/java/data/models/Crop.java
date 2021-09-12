@@ -6,7 +6,6 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity(tableName = "crop")
 public class Crop

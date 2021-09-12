@@ -47,6 +47,7 @@ public class HarvestListVM extends AndroidViewModel
 		return harvests;
 	}
 
+	// TODO: If two harvests for the same crop are made on the same day, do not create a new harvest object; instead, add the new info to the old harvest object
 	public void addHarvest(
 		int unitsHarvested, double totalWeight, LocalDateTime dateHarvested, Crop crop)
 	{

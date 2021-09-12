@@ -123,7 +123,6 @@ public class HarvestAddFragment extends BaseFragment
 		navigateTo(R.id.harvestAddFragment, R.id.action_harvestAddFragment_to_crop_nav_graph);
 	}
 
-	// TODO: add validation logic for the date of harvest; harvest cannot occur before the day that the crop was planted
 	private void submit()
 	{
 		Crop selectedCrop = harvestAddVM.getSelectedCrop();
@@ -136,9 +135,14 @@ public class HarvestAddFragment extends BaseFragment
 			displayWarning("Please select a Crop!");
 			return;
 		}
-
 		if (unitsHarvestedString.isEmpty() && totalWeightString.isEmpty()) {
 			displayWarning("At least one of Units Harvested and Total Weight must be specified");
+			return;
+		}
+		if (dateHarvested.getYear() < selectedCrop.datePlanted.getYear() ||
+			dateHarvested.getMonthValue() < selectedCrop.datePlanted.getMonthValue() ||
+			dateHarvested.getDayOfMonth() < selectedCrop.datePlanted.getDayOfMonth()) {
+			displayWarning("Can't set date of Harvest before the Crop was planted!");
 			return;
 		}
 

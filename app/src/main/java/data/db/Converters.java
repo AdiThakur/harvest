@@ -1,18 +1,10 @@
 package data.db;
 
 import android.net.Uri;
-
 import androidx.room.TypeConverter;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 import common.Helper;
 
@@ -21,17 +13,19 @@ public class Converters
 	@TypeConverter
 	public static LocalDateTime dateFromLong(Long value)
 	{
-		if (value == null) {
-			return null;
-		}
-
-		return Helper.dateFromSeconds(value);
+		return (value == null) ? null : Helper.dateFromSeconds(value);
 	}
 
 	@TypeConverter
 	public static Long dateToLong(LocalDateTime date)
 	{
-		return date == null ? null : date.atZone(ZoneOffset.UTC).toEpochSecond();
+		if (date == null) { return null; }
+
+		date.minusHours(date.getHour());
+		date.minusMinutes(date.getMinute());
+		date.minusSeconds(date.getMinute());
+		date.minusNanos(date.getNano());
+		return date.atZone(ZoneOffset.UTC).toEpochSecond();
 	}
 
 	@TypeConverter
@@ -43,10 +37,6 @@ public class Converters
 	@TypeConverter
 	public static String uriToString(Uri uri)
 	{
-		if (uri == null) {
-			return null;
-		}
-
-		return uri.toString();
+		return (uri == null) ? null : uri.toString();
 	}
 }
