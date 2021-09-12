@@ -125,35 +125,22 @@ public class CropAddFragment extends BaseFragment
 	private void submit()
 	{
 		Plant selectedPlant = cropAddVM.getSelectedPlant();
-		String numberOfPlants = numberOfPlantsEditText.getText().toString();
+		String numberOfPlantsString = numberOfPlantsEditText.getText().toString();
 		LocalDateTime datePlanted = cropAddVM.storedDate.toZonedDateTime().toLocalDateTime();
 
 		if (selectedPlant == null) {
 			this.displayError("Please select a Plant!");
 			return;
 		}
-		if (numberOfPlants.isEmpty()) {
+		if (numberOfPlantsString.isEmpty()) {
 			numberOfPlantsEditText.setError("Please specify an amount!");
 			return;
 		}
 
-		boolean cropAdded = cropListVM.addCrop(
-			// TODO: Replace hardcoded season
-			2021,
-			datePlanted,
-			Integer.parseInt(numberOfPlants),
-			selectedPlant
-		);
+		int numberOfPlants = Integer.parseInt(numberOfPlantsString);
 
-		if (cropAdded) {
-			navigateUp();
-			return;
-		}
-
-		Toast.makeText(
-			requireActivity(),
-			"Couldn't add crop",
-			Toast.LENGTH_LONG
-		).show();
+		// TODO: Replace hardcoded season
+		cropListVM.addCrop(2021, datePlanted, numberOfPlants, selectedPlant);
+		navigateUp();
 	}
 }

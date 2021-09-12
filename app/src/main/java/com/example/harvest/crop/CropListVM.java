@@ -34,7 +34,8 @@ public class CropListVM extends AndroidViewModel
 
 		BridgeFactory bridgeFactory = new BridgeFactory(application.getApplicationContext());
 		cropBridge = bridgeFactory.getCropBridge();
-		crops = cropBridge.getAll();
+		// TODO: get rid of hardcoded season (Also add seasonal logic to home screen and harvests list)
+		crops = cropBridge.getAllBySeason(2021);
 
 		deleteCrop = new MutableLiveData<>();
 		deleteCrop$ = deleteCrop;
@@ -43,18 +44,24 @@ public class CropListVM extends AndroidViewModel
 		error$ = error;
 	}
 
-	// TODO: add logic to ensure that a given plant is ever only associated to one crop
-	public boolean addCrop(long seasonId, LocalDateTime datePlanted, int numberOfPlants, Plant plant)
+	public void addCrop(long seasonId, LocalDateTime datePlanted, int numberOfPlants, Plant plant)
 	{
+		boolean cropExistsForPlant = crops.stream().anyMatch(crop -> crop.plantId == plant.uid);
+
+		if (cropExistsForPlant) {
+			String message = plant.name + " already has a crop associated to it!";
+			error.setValue(new Event<>(message));
+			return;
+		}
+
 		Crop crop = new Crop(seasonId, datePlanted, numberOfPlants, plant);
 		cropBridge.insert(crop);
 
 		if (crop.uid != 0) {
 			crops.add(crop);
-			return true;
+		} else {
+			error.setValue(new Event<>("Couldn't add " + plant.name));
 		}
-
-		return false;
 	}
 
 	public List<Crop> getCrops()
