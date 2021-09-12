@@ -7,7 +7,7 @@
     android:layout_marginLeft="10dp"
     android:layout_marginTop="10dp"
     android:layout_marginRight="10dp"
-    android:background="@color/card_very_light_purple">
+    android:background="@color/card_lightest_purple">
 
     <TextView
         android:id="@+id/textView"

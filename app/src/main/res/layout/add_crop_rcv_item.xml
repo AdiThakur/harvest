@@ -4,17 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="10dp"
-    android:layout_marginTop="10dp"
-    android:layout_marginRight="10dp"
-    android:background="@color/card_grey"
+    android:layout_marginLeft="@dimen/card_external_margin"
+    android:layout_marginTop="@dimen/card_external_margin"
+    android:layout_marginRight="@dimen/card_external_margin"
+    android:background="@color/card_lightest_purple"
     android:outlineProvider="bounds"
     android:outlineSpotShadowColor="#F44336">
 
     <ImageView
         android:id="@+id/cropRcvItem_cropImage"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
+        android:layout_width="@dimen/image"
+        android:layout_height="@dimen/image"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
@@ -29,57 +29,60 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
-        android:fontFamily="serif"
+        android:fontFamily="sans-serif-condensed-light"
         android:maxLines="2"
-        android:text="Cherry Tomato"
-        android:textSize="20sp"
+        android:textSize="@dimen/title_font_size"
         app:layout_constraintBottom_toTopOf="@+id/textView6"
         app:layout_constraintStart_toEndOf="@+id/cropRcvItem_cropImage"
-        app:layout_constraintTop_toTopOf="@+id/cropRcvItem_cropImage" />
+        app:layout_constraintTop_toTopOf="@+id/cropRcvItem_cropImage"
+        tools:text="Cherry Tomato" />
 
     <TextView
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-condensed"
-        android:text="Count"
-        android:textSize="16sp"
+        android:fontFamily="sans-serif-condensed-light"
+        android:text="@string/count"
+        android:textSize="@dimen/subtitle_font_size"
         app:layout_constraintBottom_toTopOf="@+id/textView8"
         app:layout_constraintStart_toStartOf="@+id/cropRcvItem_cropNameText"
-        app:layout_constraintTop_toBottomOf="@+id/cropRcvItem_cropNameText" />
+        app:layout_constraintTop_toBottomOf="@+id/cropRcvItem_cropNameText"
+        tools:text="Count" />
 
     <TextView
         android:id="@+id/cropRcvItem_cropCountText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:text="1"
-        android:textSize="16sp"
+        android:fontFamily="sans-serif-condensed-light"
+        android:textSize="@dimen/subtitle_font_size"
         app:layout_constraintBottom_toBottomOf="@+id/textView6"
         app:layout_constraintStart_toEndOf="@+id/textView6"
-        app:layout_constraintTop_toTopOf="@+id/textView6" />
+        app:layout_constraintTop_toTopOf="@+id/textView6"
+        tools:text="1" />
 
     <TextView
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-condensed"
-        android:text="Date Planted"
-        android:textSize="16sp"
+        android:fontFamily="sans-serif-condensed-light"
+        android:text="@string/date_planted"
+        android:textSize="@dimen/subtitle_font_size"
         app:layout_constraintBottom_toBottomOf="@+id/cropRcvItem_cropImage"
         app:layout_constraintStart_toStartOf="@+id/textView6"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+        app:layout_constraintTop_toBottomOf="@+id/textView6"
+        tools:text="Date Planted" />
 
     <TextView
         android:id="@+id/cropRcvItem_cropDatePlantedtext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:fontFamily="sans-serif-condensed"
-        android:text="2021/08/06"
-        android:textSize="16sp"
+        android:fontFamily="sans-serif-condensed-light"
+        android:textSize="@dimen/subtitle_font_size"
         app:layout_constraintBottom_toBottomOf="@+id/textView8"
         app:layout_constraintStart_toEndOf="@+id/textView8"
-        app:layout_constraintTop_toTopOf="@+id/textView8" />
+        app:layout_constraintTop_toTopOf="@+id/textView8"
+        tools:text="2 Aug 2021" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

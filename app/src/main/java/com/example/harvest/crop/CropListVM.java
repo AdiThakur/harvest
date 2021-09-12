@@ -43,6 +43,7 @@ public class CropListVM extends AndroidViewModel
 		error$ = error;
 	}
 
+	// TODO: add logic to ensure that a given plant is ever only associated to one crop
 	public boolean addCrop(long seasonId, LocalDateTime datePlanted, int numberOfPlants, Plant plant)
 	{
 		Crop crop = new Crop(seasonId, datePlanted, numberOfPlants, plant);

@@ -107,7 +107,7 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater)
 	{
 		super.onCreateOptionsMenu(menu, inflater);
-		inflater.inflate(R.menu.fragment_add_menu , menu);
+		inflater.inflate(R.menu.add_new_item_menu, menu);
 	}
 
 	@Override

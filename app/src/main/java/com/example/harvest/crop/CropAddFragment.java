@@ -4,10 +4,11 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -16,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.example.harvest.R;
 
@@ -45,6 +47,7 @@ public class CropAddFragment extends BaseFragment
 	public void onCreate(@Nullable Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
 		cropAddVM = getProvider(R.id.crop_add_graph).get(CropAddVM.class);
 		cropListVM = getProvider(R.id.crop_nav_graph).get(CropListVM.class);
 	}
@@ -67,10 +70,6 @@ public class CropAddFragment extends BaseFragment
 			cropAddVM.storedDate = new GregorianCalendar(year, month, day);
 		});
 
-		submitButton = view.findViewById(R.id.addCrop_submitButton);
-		submitButton.setOnClickListener((v) -> submit());
-		submitButton.setEnabled(false);
-
 		return view;
 	}
 
@@ -85,11 +84,9 @@ public class CropAddFragment extends BaseFragment
 			if (selectedPlant == null) {
 				plantContainer.findViewById(R.id.noPlantSelected).setVisibility(View.VISIBLE);
 				plantContainer.findViewById(R.id.selectedPlantItem).setVisibility(View.GONE);
-				submitButton.setEnabled(false);
 			} else {
 				plantContainer.findViewById(R.id.noPlantSelected).setVisibility(View.GONE);
 				plantContainer.findViewById(R.id.selectedPlantItem).setVisibility(View.VISIBLE);
-				submitButton.setEnabled(true);
 				plantNameTextView.setText(selectedPlant.name);
 				plantWeightTextView.setText(String.valueOf(selectedPlant.unitWeight));
 				plantImageView.setImageBitmap(
@@ -99,6 +96,25 @@ public class CropAddFragment extends BaseFragment
 		});
 	}
 
+	@Override
+	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater)
+	{
+		super.onCreateOptionsMenu(menu, inflater);
+		inflater.inflate(R.menu.crop_add_menu, menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(@NonNull MenuItem item)
+	{
+		int id = item.getItemId();
+
+		if (id == R.id.crop_add_menu_saveButton) {
+			submit();
+		}
+
+		return true;
+	}
+
 	// Callbacks for user-generated events
 
 	private void launchPlantListFragment()
@@ -106,12 +122,16 @@ public class CropAddFragment extends BaseFragment
 		navigateTo(R.id.cropAddFragment, R.id.action_cropAddFragment_to_plant_nav_graph);
 	}
 
-	private void  submit()
+	private void submit()
 	{
 		Plant selectedPlant = cropAddVM.getSelectedPlant();
 		String numberOfPlants = numberOfPlantsEditText.getText().toString();
 		LocalDateTime datePlanted = cropAddVM.storedDate.toZonedDateTime().toLocalDateTime();
 
+		if (selectedPlant == null) {
+			this.displayError("Please select a Crop!");
+			return;
+		}
 		if (numberOfPlants.isEmpty()) {
 			numberOfPlantsEditText.setError("Please specify an amount!");
 			return;

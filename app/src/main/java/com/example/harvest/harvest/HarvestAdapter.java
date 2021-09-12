@@ -85,7 +85,7 @@ public class HarvestAdapter extends RecyclerView.Adapter<HarvestViewHolder>
 		holder.cropImageView.setImageBitmap(Helper.loadBitmapFromImage(context, filename));
 		holder.cropNameTextView.setText(harvest.crop.plant.name);
 		// TODO: use placeholder string resources
-		// TODO: update UI of other cards (Plant, Crop, etc) to match HarvestList card
+		// TODO: move save/submit buttons and cancel/back buttons to the action bar
 		holder.totalWeightTextView.setText(df.format(totalWeight) + " grams");
 		holder.unitsHarvestedTextView.setText(String.valueOf(harvest.unitsHarvested) + " units");
 	}

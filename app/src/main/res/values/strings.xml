@@ -12,6 +12,7 @@
 
     <!--Common-->
     <string name="submit">Submit</string>
+    <string name="save">Save</string>
     <string name="cancel">Cancel</string>
     <string name="select">Select</string>
     <string name="confirm">Confirm</string>
@@ -22,6 +23,7 @@
     <string name="gram">g</string>
     <string name="date_planted">Date Planted</string>
     <string name="click_to_select">Click to Select</string>
+    <string name="count">Count</string>
 
     <string name="add_crop">Add Crop</string>
     <string name="add_plant">Add Plant</string>
@@ -30,6 +32,10 @@
     <string name="plant_name">Plant Name</string>
     <string name="choose_image">Choose Image</string>
     <string name="plant_image">Plant Image</string>
+
+    <!-- Crop -->
+    <string name="selected_plant">Selected Plant</string>
+    <string name="number_of_plants">Number of Plants</string>
 
     <!-- Harvest -->
     <string name="units">units</string>

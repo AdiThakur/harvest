@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="10dp"
-    android:layout_marginTop="10dp"
-    android:layout_marginRight="10dp"
-    android:background="@color/card_grey"
+    android:layout_marginLeft="@dimen/card_external_margin"
+    android:layout_marginTop="@dimen/card_external_margin"
+    android:layout_marginRight="@dimen/card_external_margin"
+    android:background="@color/card_lightest_purple"
     android:outlineProvider="bounds"
     android:outlineSpotShadowColor="#F44336">
 
@@ -25,20 +25,22 @@
             android:id="@+id/plantRcvItem_plantNameText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:fontFamily="serif"
+            android:fontFamily="sans-serif-condensed-light"
             android:maxLines="2"
-            android:text="Cherry Tomato"
-            android:textSize="23sp"
+            android:textSize="@dimen/title_font_size"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Cherry Tomato" />
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="2dp"
+            android:fontFamily="sans-serif-condensed-light"
             android:text="@string/unit_weight"
+            android:textSize="@dimen/subtitle_font_size"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/plantRcvItem_plantNameText" />
 
@@ -47,24 +49,30 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:text="1"
+            android:fontFamily="sans-serif-condensed-light"
+            android:textSize="@dimen/subtitle_font_size"
+            app:layout_constraintBottom_toBottomOf="@+id/textView2"
             app:layout_constraintStart_toEndOf="@+id/textView2"
-            app:layout_constraintTop_toBottomOf="@+id/plantRcvItem_plantNameText" />
+            app:layout_constraintTop_toBottomOf="@+id/plantRcvItem_plantNameText"
+            tools:text="1" />
 
         <TextView
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="2dp"
+            android:fontFamily="sans-serif-condensed-light"
             android:text="@string/grams"
+            android:textSize="@dimen/subtitle_font_size"
+            app:layout_constraintBottom_toBottomOf="@+id/plantRcvItem_plantUnitWeightText"
             app:layout_constraintStart_toEndOf="@+id/plantRcvItem_plantUnitWeightText"
             app:layout_constraintTop_toBottomOf="@+id/plantRcvItem_plantNameText" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
         android:id="@+id/plantRcvItem_plantImage"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
+        android:layout_width="@dimen/image"
+        android:layout_height="@dimen/image"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"

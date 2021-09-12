@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="10dp"
-    android:layout_marginTop="10dp"
-    android:layout_marginRight="10dp"
-    android:background="@color/card_grey"
+    android:layout_marginLeft="@dimen/card_external_margin"
+    android:layout_marginTop="@dimen/card_external_margin"
+    android:layout_marginRight="@dimen/card_external_margin"
+    android:background="@color/card_lightest_purple"
     android:outlineProvider="bounds"
     android:outlineSpotShadowColor="#F44336">
 
@@ -18,10 +18,10 @@
         android:layout_marginStart="2dp"
         android:fontFamily="sans-serif-condensed-light"
         android:padding="0dp"
-        android:text="1854.22 grams"
-        android:textSize="16sp"
+        android:textSize="@dimen/subtitle_font_size"
         app:layout_constraintStart_toStartOf="@+id/harvestRcvItem_cropNameTextView"
-        app:layout_constraintTop_toBottomOf="@+id/harvestRcvItem_cropNameTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/harvestRcvItem_cropNameTextView"
+        tools:text="1854.22 grams" />
 
     <TextView
         android:id="@+id/harvestRcvItem_cropNameTextView"
@@ -29,11 +29,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:fontFamily="sans-serif-condensed-light"
-        android:text="Cherry Tomato"
-        android:textSize="30sp"
+        android:textSize="@dimen/title_font_size"
         android:textStyle="normal"
         app:layout_constraintStart_toEndOf="@+id/harvestRcvItem_cropImage"
-        app:layout_constraintTop_toTopOf="@+id/harvestRcvItem_cropImage" />
+        app:layout_constraintTop_toTopOf="@+id/harvestRcvItem_cropImage"
+        tools:text="Cherry Tomato" />
 
     <TextView
         android:id="@+id/harvestRcvItem_unitsHarvestedTextView"
@@ -43,15 +43,15 @@
         android:fontFamily="sans-serif-condensed-light"
         android:includeFontPadding="false"
         android:padding="0dp"
-        android:text="250 units"
-        android:textSize="16sp"
+        android:textSize="@dimen/subtitle_font_size"
         app:layout_constraintStart_toStartOf="@+id/harvestRcvItem_totalWeightTextView"
-        app:layout_constraintTop_toBottomOf="@+id/harvestRcvItem_totalWeightTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/harvestRcvItem_totalWeightTextView"
+        tools:text="250 units" />
 
     <ImageView
         android:id="@+id/harvestRcvItem_cropImage"
-        android:layout_width="85dp"
-        android:layout_height="85dp"
+        android:layout_width="@dimen/image"
+        android:layout_height="@dimen/image"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
@@ -78,12 +78,12 @@
             android:fontFamily="sans-serif-condensed-light"
             android:gravity="center"
             android:paddingVertical="3dp"
-            android:text="May 15 2021"
-            android:textSize="16sp"
+            android:textSize="@dimen/subtitle_font_size"
             android:textStyle="normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="May 15 2021" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
