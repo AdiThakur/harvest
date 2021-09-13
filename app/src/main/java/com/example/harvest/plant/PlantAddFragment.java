@@ -54,8 +54,8 @@ public class PlantAddFragment extends BaseFragment
 					displayWarning("No image selected; using default");
 					return;
 				}
-				plantAddVM.selectedImageUri = result;
-				plantImage.setImageURI(plantAddVM.selectedImageUri);
+				plantAddVM.setSelectedImageUri(result);
+				plantImage.setImageURI(plantAddVM.getSelectedImageUri());
 			}
 		);
 
@@ -71,7 +71,7 @@ public class PlantAddFragment extends BaseFragment
 		plantNameEditText = view.findViewById(R.id.plantAdd_plantNameEditText);
 		plantUnitWeightEditText = view.findViewById(R.id.plantAdd_plantUnitWeightEditText);
 		plantImage = view.findViewById(R.id.plantAdd_plantImage);
-		plantImage.setImageURI(plantAddVM.selectedImageUri);
+		plantImage.setImageURI(plantAddVM.getSelectedImageUri());
 
 		Button chooseImage = view.findViewById(R.id.plantAdd_ChooseImageButton);
 		chooseImage.setOnClickListener(v -> chooseImage());
@@ -118,7 +118,7 @@ public class PlantAddFragment extends BaseFragment
 		}
 
 		plantListVM.addPlant(
-			plantName, Double.parseDouble(plantUnitWeight), plantAddVM.selectedImageUri
+			plantName, Double.parseDouble(plantUnitWeight), plantAddVM.getSelectedImageUri()
 		);
 		plantListVM.addPlant$.observe(getViewLifecycleOwner(), (success) -> {
 			navigateUp();

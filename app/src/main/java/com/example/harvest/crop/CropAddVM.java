@@ -11,8 +11,8 @@ import data.models.Plant;
 public class CropAddVM extends ViewModel
 {
 	private Plant selectedPlant;
-	private MutableLiveData<Plant> selectedPlantSubject;
-	public LiveData<Plant> selectedPlantObservable;
+	private final MutableLiveData<Plant> selectedPlantSubject;
+	public final LiveData<Plant> selectedPlantObservable;
 
 	public LocalDate storedDate;
 
@@ -21,7 +21,6 @@ public class CropAddVM extends ViewModel
 		super();
 		selectedPlantSubject = new MutableLiveData<>();
 		selectedPlantObservable = selectedPlantSubject;
-
 		storedDate = LocalDate.now();
 	}
 

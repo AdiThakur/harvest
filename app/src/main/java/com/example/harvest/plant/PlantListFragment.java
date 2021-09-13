@@ -20,7 +20,6 @@ import common.Event;
 import common.OnClickListener;
 import com.example.harvest.R;
 import com.example.harvest.crop.CropAddVM;
-import com.google.android.material.snackbar.Snackbar;
 
 import common.BaseFragment;
 import data.models.Plant;
@@ -84,7 +83,9 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 	@Override
 	public boolean onOptionsItemSelected(@NonNull MenuItem item)
 	{
-		if (item.getItemId() == R.id.addMenu_addButton) {
+		int id = item.getItemId();
+
+		if (id == R.id.addMenu_addButton) {
 			launchPlantAddFragment();
 		}
 
@@ -110,7 +111,10 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 
 	private void launchPlantAddFragment()
 	{
-		navigateTo(R.id.plantListFragment, R.id.action_plantListFragment_to_plantAddFragment);
+		navigateTo(
+			R.id.plantListFragment,
+			R.id.action_plantListFragment_to_plantAddFragment
+		);
 	}
 
 	// OnClickListener interface overrides for PlantAdapter

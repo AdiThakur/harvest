@@ -19,7 +19,6 @@ import common.Event;
 import common.OnClickListener;
 import com.example.harvest.R;
 import com.example.harvest.harvest.HarvestAddVM;
-import com.google.android.material.snackbar.Snackbar;
 
 import common.BaseFragment;
 import data.models.Crop;
@@ -102,6 +101,7 @@ public class CropListFragment extends BaseFragment implements OnClickListener
 		if (harvestAddVM != null && deletedCropUid == harvestAddVM.getSelectedCrop().uid) {
 			harvestAddVM.setSelectedCrop(null);
 		}
+
 		adapter.notifyItemRemoved(deletedCropPosition);
 	}
 
@@ -109,13 +109,17 @@ public class CropListFragment extends BaseFragment implements OnClickListener
 
 	private void launchCropAddFragment()
 	{
-		navigateTo(R.id.cropListFragment, R.id.action_cropListFragment_to_crop_add_graph);
+		navigateTo(
+			R.id.cropListFragment,
+			R.id.action_cropListFragment_to_crop_add_graph
+		);
 	}
 
 	// OnClickListener interface overrides for CropAdapter
 
 	@Override
-	public void onClick(View row, int position) {
+	public void onClick(View row, int position)
+	{
 		if (harvestAddVM != null) {
 			Crop cropSelected = cropListVM.getCrops().get(position);
 			harvestAddVM.setSelectedCrop(cropSelected);

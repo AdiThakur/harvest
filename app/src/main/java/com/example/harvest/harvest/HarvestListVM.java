@@ -1,7 +1,6 @@
 package com.example.harvest.harvest;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -9,7 +8,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,13 +21,13 @@ import data.models.Harvest;
 public class HarvestListVM extends AndroidViewModel
 {
 	private final HarvestBridge bridge;
-	private List<Harvest> harvests;
+	private final List<Harvest> harvests;
 
 	private final MutableLiveData<Integer> deleteHarvest;
 	public final LiveData<Integer> deleteHarvest$;
 
 	private final MutableLiveData<Event<String>> error;
-	public LiveData<Event<String>> error$;
+	public final LiveData<Event<String>> error$;
 
 	public HarvestListVM(@NonNull Application application)
 	{
@@ -48,9 +46,7 @@ public class HarvestListVM extends AndroidViewModel
 
 	public List<Harvest> getHarvests()
 	{
-		harvests.sort((Harvest h1, Harvest h2) -> {
-			return Helper.compareDates(h1.dateHarvested, h2.dateHarvested);
-		});
+		harvests.sort((h1, h2) -> Helper.compareDates(h1.dateHarvested, h2.dateHarvested));
 		return harvests;
 	}
 
@@ -72,10 +68,10 @@ public class HarvestListVM extends AndroidViewModel
 			new Harvest(2021, unitsHarvested, totalWeight, dateHarvested, crop);
 		newHarvest = bridge.insert(newHarvest);
 
-		if (newHarvest.uid != 0) {
-			harvests.add(newHarvest);
-		} else {
+		if (newHarvest.uid == 0) {
 			error.setValue(new Event<>("Couldn't add harvest!"));
+		} else {
+			harvests.add(newHarvest);
 		}
 	}
 
@@ -101,10 +97,9 @@ public class HarvestListVM extends AndroidViewModel
 		if (deleteCount == 0) {
 			String message = "Harvest couldn't be deleted.";
 			error.setValue(new Event<>(message));
-			return;
+		} else {
+			harvests.remove(harvest);
+			deleteHarvest.setValue(position);
 		}
-
-		harvests.remove(harvest);
-		deleteHarvest.setValue(position);
 	}
 }

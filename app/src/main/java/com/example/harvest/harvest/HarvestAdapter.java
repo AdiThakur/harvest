@@ -77,7 +77,7 @@ public class HarvestAdapter extends RecyclerView.Adapter<HarvestViewHolder>
 	{
 		Harvest harvest = harvests.get(position);
 		String filename = harvest.crop.plant.imageFileName;
-		// TODO: Update weight calculcation logic; it is possible that a harvest's EXACT weight is saved
+		// TODO: Update weight calculation logic; it is possible that a harvest's EXACT weight is saved
 		double totalWeight = harvest.unitsHarvested * harvest.crop.plant.unitWeight;
 		DecimalFormat df = new DecimalFormat("#.00");
 

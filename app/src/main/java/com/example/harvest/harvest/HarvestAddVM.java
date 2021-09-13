@@ -16,16 +16,13 @@ public class HarvestAddVM extends AndroidViewModel
 	private Crop crop;
 	private MutableLiveData<Crop> selectedCrop;
 	public LiveData<Crop> selectedCrop$;
-
 	public LocalDate storedDate;
 
 	public HarvestAddVM(@NonNull Application application)
 	{
 		super(application);
-
 		selectedCrop = new MutableLiveData<>();
 		selectedCrop$ = selectedCrop;
-
 		storedDate = LocalDate.now();
 	}
 

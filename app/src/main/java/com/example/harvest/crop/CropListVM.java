@@ -20,13 +20,13 @@ import data.models.Plant;
 public class CropListVM extends AndroidViewModel
 {
 	private final CropBridge cropBridge;
-	private List<Crop> crops;
+	private final List<Crop> crops;
 
 	private final MutableLiveData<Pair<Long, Integer>> deleteCrop;
-	public LiveData<Pair<Long, Integer>> deleteCrop$;
+	public final LiveData<Pair<Long, Integer>> deleteCrop$;
 
 	private final MutableLiveData<Event<String>> error;
-	public LiveData<Event<String>> error$;
+	public final LiveData<Event<String>> error$;
 
 	public CropListVM(@NonNull Application application)
 	{
@@ -57,10 +57,10 @@ public class CropListVM extends AndroidViewModel
 		Crop crop = new Crop(seasonId, datePlanted, numberOfPlants, plant);
 		cropBridge.insert(crop);
 
-		if (crop.uid != 0) {
-			crops.add(crop);
-		} else {
+		if (crop.uid == 0) {
 			error.setValue(new Event<>("Couldn't add " + plant.name));
+		} else {
+			crops.add(crop);
 		}
 	}
 
@@ -77,10 +77,9 @@ public class CropListVM extends AndroidViewModel
 			String message =
 				crop.plant.name + " couldn't be deleted. It is needed by 1 or more Harvests!";
 			error.setValue(new Event<>(message));
-			return;
+		} else {
+			crops.remove(crop);
+			deleteCrop.setValue(new Pair<>(crop.uid, position));
 		}
-
-		crops.remove(crop);
-		deleteCrop.setValue(new Pair<>(crop.uid, position));
 	}
 }

@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.harvest.R;
-import com.google.android.material.snackbar.Snackbar;
 
 import common.BaseFragment;
 import common.Event;
@@ -94,7 +93,10 @@ public class HarvestListFragment extends BaseFragment implements OnClickListener
 
 	private void launchHarvestAddFragment()
 	{
-		navigateTo(R.id.harvestListFragment, R.id.action_harvestListFragment_to_harvest_add_nav_graph);
+		navigateTo(
+			R.id.harvestListFragment,
+			R.id.action_harvestListFragment_to_harvest_add_nav_graph
+		);
 	}
 
 	// OnClickListener interface overrides for HarvestAdapter
