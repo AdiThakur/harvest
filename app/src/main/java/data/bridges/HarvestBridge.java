@@ -24,6 +24,12 @@ public class HarvestBridge implements IBridge<Harvest>
 		return harvest;
 	}
 
+	public int update(Harvest harvest)
+	{
+		if (harvest.uid == 0) { return 0; }
+		return harvestDao.update(harvest);
+	}
+
 	@Override
 	public Harvest getById(long harvestId)
 	{

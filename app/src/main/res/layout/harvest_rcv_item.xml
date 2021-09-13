@@ -72,7 +72,7 @@
 
         <TextView
             android:id="@+id/harvestRcvItem_dateHarvestedTextView"
-            android:layout_width="85dp"
+            android:layout_width="@dimen/image"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:fontFamily="sans-serif-condensed-light"

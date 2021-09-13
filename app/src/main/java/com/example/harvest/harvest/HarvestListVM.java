@@ -9,8 +9,10 @@ import androidx.lifecycle.MutableLiveData;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import common.Event;
+import common.Helper;
 import data.bridges.BridgeFactory;
 import data.bridges.HarvestBridge;
 import data.models.Crop;
@@ -51,6 +53,17 @@ public class HarvestListVM extends AndroidViewModel
 	public void addHarvest(
 		int unitsHarvested, double totalWeight, LocalDateTime dateHarvested, Crop crop)
 	{
+		Optional<Harvest> matchingHarvest = harvests.stream()
+			.filter(harvest -> (
+				(harvest.crop.uid == crop.uid)	&&
+				(Helper.compareDates(dateHarvested, crop.datePlanted) == 0)))
+			.findFirst();
+		
+		if (matchingHarvest.isPresent()) {
+			updateHarvest(matchingHarvest.get(), unitsHarvested, totalWeight, dateHarvested);
+			return;
+		}
+
 		// TODO: Get rid of hardcoded season id
 		Harvest newHarvest =
 			new Harvest(2021, unitsHarvested, totalWeight, dateHarvested, crop);
@@ -60,6 +73,21 @@ public class HarvestListVM extends AndroidViewModel
 			harvests.add(newHarvest);
 		} else {
 			error.setValue(new Event<>("Couldn't add harvest!"));
+		}
+	}
+
+	public void updateHarvest(
+		Harvest harvest, int unitsHarvested, double totalWeight, LocalDateTime dateHarvested)
+	{
+		harvest.unitsHarvested += unitsHarvested;
+		harvest.totalWeight += totalWeight;
+		harvest.dateHarvested = dateHarvested;
+
+		int updateCount = bridge.update(harvest);
+
+		if (updateCount == 0) {
+			String message = "Harvest couldn't be updated.";
+			error.setValue(new Event<>(message));
 		}
 	}
 

@@ -139,9 +139,7 @@ public class HarvestAddFragment extends BaseFragment
 			displayWarning("At least one of Units Harvested and Total Weight must be specified");
 			return;
 		}
-		if (dateHarvested.getYear() < selectedCrop.datePlanted.getYear() ||
-			dateHarvested.getMonthValue() < selectedCrop.datePlanted.getMonthValue() ||
-			dateHarvested.getDayOfMonth() < selectedCrop.datePlanted.getDayOfMonth()) {
+		if (Helper.compareDates(dateHarvested, selectedCrop.datePlanted) == -1) {
 			displayWarning("Can't set date of Harvest before the Crop was planted!");
 			return;
 		}

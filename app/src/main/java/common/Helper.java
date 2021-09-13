@@ -16,6 +16,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 
@@ -40,6 +41,34 @@ public class Helper
 		 return LocalDateTime.ofEpochSecond(
 			seconds, 0, OffsetDateTime.now().getOffset()
 	 	);
+	}
+
+	/**
+	 * Compares the two dates while ignoring the associated times.
+	 *
+	 * @param d1			Date 1
+	 * @param d2			Date 2
+	 * @return				-1 if d1 occurs BEFORE d2
+	 * 						 0 if d1 and d2 refer to the same date
+	 * 						+1 if d1 occurs AFTER d2
+	 */
+	public static int compareDates(LocalDateTime d1, LocalDateTime d2)
+	{
+		int day1 = d1.getDayOfMonth();
+		int month1 = d1.getMonthValue();
+		int year1 = d1.getYear();
+
+		int day2 = d2.getDayOfMonth();
+		int month2 = d2.getMonthValue();
+		int year2 = d2.getYear();
+
+		if ((day1 == day2) && (month1 == month2) && (year1 == year2)) {
+			return 0;
+		} else if (d1.isBefore(d2)) {
+			return -1;
+		} else {
+			return 1;
+		}
 	}
 
 	/**

@@ -20,7 +20,6 @@ public class Converters
 	public static Long dateToLong(LocalDateTime date)
 	{
 		if (date == null) { return null; }
-
 		date.minusHours(date.getHour());
 		date.minusMinutes(date.getMinute());
 		date.minusSeconds(date.getMinute());

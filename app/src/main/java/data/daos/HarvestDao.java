@@ -4,6 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Delete;
+import androidx.room.Update;
 
 import java.util.List;
 
@@ -14,6 +15,9 @@ public interface HarvestDao
 {
 	@Insert
 	public long insert(Harvest harvest);
+
+	@Update
+	public int update(Harvest harvest);
 
 	@Query("SELECT * FROM harvest WHERE uid = :harvestId")
 	public Harvest getById(long harvestId);
