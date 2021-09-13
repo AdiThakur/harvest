@@ -5,18 +5,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.example.harvest.R;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 
@@ -31,20 +26,13 @@ public class Helper
 	 * @param date			Date object to convert into a short and sweet String.
 	 * @return				String representing the specified date; formatted like 21 Aug, 2021
 	 */
-	public static String shortFormatOfDate(LocalDateTime date)
+	public static String shortFormatOfDate(LocalDate date)
 	{
 		return date.format(DateTimeFormatter.ofPattern("d MMM yyyy"));
 	}
 
-	public static LocalDateTime dateFromSeconds(long seconds)
-	{
-		 return LocalDateTime.ofEpochSecond(
-			seconds, 0, OffsetDateTime.now().getOffset()
-	 	);
-	}
-
 	/**
-	 * Compares the two dates while ignoring the associated times.
+	 * Compares the two dates.
 	 *
 	 * @param d1			Date 1
 	 * @param d2			Date 2
@@ -52,20 +40,12 @@ public class Helper
 	 * 						 0 if d1 and d2 refer to the same date
 	 * 						+1 if d1 occurs AFTER d2
 	 */
-	public static int compareDates(LocalDateTime d1, LocalDateTime d2)
+	public static int compareDates(LocalDate d1, LocalDate d2)
 	{
-		int day1 = d1.getDayOfMonth();
-		int month1 = d1.getMonthValue();
-		int year1 = d1.getYear();
-
-		int day2 = d2.getDayOfMonth();
-		int month2 = d2.getMonthValue();
-		int year2 = d2.getYear();
-
-		if ((day1 == day2) && (month1 == month2) && (year1 == year2)) {
-			return 0;
-		} else if (d1.isBefore(d2)) {
+		if (d1.isBefore(d2)) {
 			return -1;
+		} else if (d1.isEqual(d2)) {
+			return 0;
 		} else {
 			return 1;
 		}

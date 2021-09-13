@@ -7,10 +7,9 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import java.util.GregorianCalendar;
+import java.time.LocalDate;
 
 import data.models.Crop;
-import data.models.Plant;
 
 public class HarvestAddVM extends AndroidViewModel
 {
@@ -18,7 +17,7 @@ public class HarvestAddVM extends AndroidViewModel
 	private MutableLiveData<Crop> selectedCrop;
 	public LiveData<Crop> selectedCrop$;
 
-	public GregorianCalendar storedDate;
+	public LocalDate storedDate;
 
 	public HarvestAddVM(@NonNull Application application)
 	{
@@ -27,7 +26,7 @@ public class HarvestAddVM extends AndroidViewModel
 		selectedCrop = new MutableLiveData<>();
 		selectedCrop$ = selectedCrop;
 
-		storedDate = new GregorianCalendar();
+		storedDate = LocalDate.now();
 	}
 
 	public Crop getSelectedCrop()

@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import java.util.GregorianCalendar;
+import java.time.LocalDate;
 
 import data.models.Plant;
 
@@ -14,7 +14,7 @@ public class CropAddVM extends ViewModel
 	private MutableLiveData<Plant> selectedPlantSubject;
 	public LiveData<Plant> selectedPlantObservable;
 
-	public GregorianCalendar storedDate;
+	public LocalDate storedDate;
 
 	public CropAddVM()
 	{
@@ -22,7 +22,7 @@ public class CropAddVM extends ViewModel
 		selectedPlantSubject = new MutableLiveData<>();
 		selectedPlantObservable = selectedPlantSubject;
 
-		storedDate = new GregorianCalendar();
+		storedDate = LocalDate.now();
 	}
 
 	public Plant getSelectedPlant()

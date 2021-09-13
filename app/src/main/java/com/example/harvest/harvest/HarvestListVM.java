@@ -1,13 +1,15 @@
 package com.example.harvest.harvest;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,19 +48,20 @@ public class HarvestListVM extends AndroidViewModel
 
 	public List<Harvest> getHarvests()
 	{
+		harvests.sort((Harvest h1, Harvest h2) -> {
+			return Helper.compareDates(h1.dateHarvested, h2.dateHarvested);
+		});
 		return harvests;
 	}
 
-	// TODO: If two harvests for the same crop are made on the same day, do not create a new harvest object; instead, add the new info to the old harvest object
 	public void addHarvest(
-		int unitsHarvested, double totalWeight, LocalDateTime dateHarvested, Crop crop)
+		int unitsHarvested, double totalWeight, LocalDate dateHarvested, Crop crop)
 	{
 		Optional<Harvest> matchingHarvest = harvests.stream()
-			.filter(harvest -> (
-				(harvest.crop.uid == crop.uid)	&&
-				(Helper.compareDates(dateHarvested, crop.datePlanted) == 0)))
+			.filter(harvest ->
+				(harvest.crop.uid == crop.uid) && (harvest.dateHarvested.isEqual(dateHarvested)))
 			.findFirst();
-		
+
 		if (matchingHarvest.isPresent()) {
 			updateHarvest(matchingHarvest.get(), unitsHarvested, totalWeight, dateHarvested);
 			return;
@@ -77,7 +80,7 @@ public class HarvestListVM extends AndroidViewModel
 	}
 
 	public void updateHarvest(
-		Harvest harvest, int unitsHarvested, double totalWeight, LocalDateTime dateHarvested)
+		Harvest harvest, int unitsHarvested, double totalWeight, LocalDate dateHarvested)
 	{
 		harvest.unitsHarvested += unitsHarvested;
 		harvest.totalWeight += totalWeight;

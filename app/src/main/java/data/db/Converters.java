@@ -3,7 +3,7 @@ package data.db;
 import android.net.Uri;
 import androidx.room.TypeConverter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.ZoneOffset;
 
 import common.Helper;
@@ -11,20 +11,17 @@ import common.Helper;
 public class Converters
 {
 	@TypeConverter
-	public static LocalDateTime dateFromLong(Long value)
+	public static LocalDate dateFromLong(String value)
 	{
-		return (value == null) ? null : Helper.dateFromSeconds(value);
+		if (value == null) { return null; }
+		return LocalDate.parse(value);
 	}
 
 	@TypeConverter
-	public static Long dateToLong(LocalDateTime date)
+	public static String dateToLong(LocalDate date)
 	{
 		if (date == null) { return null; }
-		date.minusHours(date.getHour());
-		date.minusMinutes(date.getMinute());
-		date.minusSeconds(date.getMinute());
-		date.minusNanos(date.getNano());
-		return date.atZone(ZoneOffset.UTC).toEpochSecond();
+		return date.toString();
 	}
 
 	@TypeConverter

@@ -5,7 +5,7 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity(tableName = "crop")
 public class Crop
@@ -22,7 +22,7 @@ public class Crop
 	public long uid;
 
 	@ColumnInfo(name = "date_planted")
-	public LocalDateTime datePlanted;
+	public LocalDate datePlanted;
 
 	@ColumnInfo(name = "number_of_plants")
 	public int numberOfPlants;
@@ -32,7 +32,7 @@ public class Crop
 
 	public Crop() {}
 
-	public Crop(long seasonId, LocalDateTime datePlanted, int numberOfPlants, Plant plant)
+	public Crop(long seasonId, LocalDate datePlanted, int numberOfPlants, Plant plant)
 	{
 		this.seasonId = seasonId;
 		this.datePlanted = datePlanted;

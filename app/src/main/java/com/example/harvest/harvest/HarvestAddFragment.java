@@ -19,8 +19,7 @@ import android.widget.TextView;
 
 import com.example.harvest.R;
 
-import java.time.LocalDateTime;
-import java.util.GregorianCalendar;
+import java.time.LocalDate;
 
 import common.BaseFragment;
 import common.Helper;
@@ -66,7 +65,7 @@ public class HarvestAddFragment extends BaseFragment
 
 		dateHarvestCalendarView = view.findViewById(R.id.harvestAdd_dateHarvestedCalendarView);
 		dateHarvestCalendarView.setOnDateChangeListener((calendarView, year, month, day) -> {
-			harvestAddVM.storedDate = new GregorianCalendar(year, month, day);
+			harvestAddVM.storedDate = LocalDate.of(year, month + 1, day);
 		});
 
 		return view;
@@ -129,7 +128,7 @@ public class HarvestAddFragment extends BaseFragment
 
 		String unitsHarvestedString = unitsHarvestedEditText.getText().toString();
 		String totalWeightString = totalWeightEditText.getText().toString();
-		LocalDateTime dateHarvested = harvestAddVM.storedDate.toZonedDateTime().toLocalDateTime();
+		LocalDate dateHarvested = harvestAddVM.storedDate;
 
 		if (selectedCrop == null) {
 			displayWarning("Please select a Crop!");
@@ -139,7 +138,7 @@ public class HarvestAddFragment extends BaseFragment
 			displayWarning("At least one of Units Harvested and Total Weight must be specified");
 			return;
 		}
-		if (Helper.compareDates(dateHarvested, selectedCrop.datePlanted) == -1) {
+		if (dateHarvested.isBefore(selectedCrop.datePlanted)) {
 			displayWarning("Can't set date of Harvest before the Crop was planted!");
 			return;
 		}

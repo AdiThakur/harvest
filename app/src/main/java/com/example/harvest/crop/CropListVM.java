@@ -8,7 +8,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 import common.Event;
@@ -44,7 +44,7 @@ public class CropListVM extends AndroidViewModel
 		error$ = error;
 	}
 
-	public void addCrop(long seasonId, LocalDateTime datePlanted, int numberOfPlants, Plant plant)
+	public void addCrop(long seasonId, LocalDate datePlanted, int numberOfPlants, Plant plant)
 	{
 		boolean cropExistsForPlant = crops.stream().anyMatch(crop -> crop.plantId == plant.uid);
 

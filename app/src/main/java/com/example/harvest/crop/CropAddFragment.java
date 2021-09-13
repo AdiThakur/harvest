@@ -19,8 +19,7 @@ import android.widget.TextView;
 
 import com.example.harvest.R;
 
-import java.time.LocalDateTime;
-import java.util.GregorianCalendar;
+import java.time.LocalDate;
 
 import common.BaseFragment;
 import common.Helper;
@@ -65,7 +64,7 @@ public class CropAddFragment extends BaseFragment
 
 		datePlantedCalendarView = view.findViewById(R.id.addCrop_datePlantedCalendarView);
 		datePlantedCalendarView.setOnDateChangeListener((calendarView, year, month, day) -> {
-			cropAddVM.storedDate = new GregorianCalendar(year, month, day);
+			cropAddVM.storedDate = LocalDate.of(year, month + 1, day);
 		});
 
 		return view;
@@ -124,7 +123,7 @@ public class CropAddFragment extends BaseFragment
 	{
 		Plant selectedPlant = cropAddVM.getSelectedPlant();
 		String numberOfPlantsString = numberOfPlantsEditText.getText().toString();
-		LocalDateTime datePlanted = cropAddVM.storedDate.toZonedDateTime().toLocalDateTime();
+		LocalDate datePlanted = cropAddVM.storedDate;
 
 		if (selectedPlant == null) {
 			displayWarning("Please select a Plant!");

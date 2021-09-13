@@ -22,7 +22,7 @@ import data.models.Season;
 
 @Database(
 		entities = { Crop.class, Harvest.class, Plant.class, Season.class },
-		version = 6,
+		version = 7,
 		exportSchema = false
 )
 @TypeConverters({ Converters.class })
