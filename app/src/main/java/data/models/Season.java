@@ -10,7 +10,6 @@ import java.util.List;
 @Entity(tableName = "season")
 public class Season
 {
-	@PrimaryKey(autoGenerate = false)
 	@ColumnInfo(name = "year")
 	public long year;
 
@@ -19,4 +18,11 @@ public class Season
 
 	@Ignore
 	public List<Harvest> harvests;
+
+	public Season() {}
+
+	public Season(long year)
+	{
+		this.year = year;
+	}
 }

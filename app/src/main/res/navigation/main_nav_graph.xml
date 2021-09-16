@@ -16,7 +16,7 @@
     />
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.harvest.HomeFragment"
+        android:name="com.example.harvest.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home">
         <action

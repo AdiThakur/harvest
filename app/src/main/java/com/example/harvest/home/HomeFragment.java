@@ -1,23 +1,29 @@
-package com.example.harvest;
+package com.example.harvest.home;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.harvest.R;
+
 import common.BaseFragment;
 
 public class HomeFragment extends BaseFragment
 {
+	private HomeVM homeVM;
+
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		homeVM = getProvider(this).get(HomeVM.class);
 	}
 
 	@Nullable
@@ -32,6 +38,9 @@ public class HomeFragment extends BaseFragment
 	{
 		super.onViewCreated(view, savedInstanceState);
 		setTitle("Home");
+
+		TextView currentSeason = view.findViewById(R.id.home_seasonTextView);
+		currentSeason.setText(String.valueOf(homeVM.getCurrentSeason()));
 
 		Button harvestsButton = view.findViewById(R.id.home_harvestsButton);
 		harvestsButton.setOnClickListener((v) -> {
