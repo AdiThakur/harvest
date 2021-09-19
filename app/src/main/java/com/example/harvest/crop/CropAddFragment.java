@@ -136,8 +136,7 @@ public class CropAddFragment extends BaseFragment
 
 		int numberOfPlants = Integer.parseInt(numberOfPlantsString);
 
-		// TODO: Replace hardcoded season
-		cropListVM.addCrop(2021, datePlanted, numberOfPlants, selectedPlant);
+		cropListVM.addCrop(datePlanted, numberOfPlants, selectedPlant);
 		navigateUp();
 	}
 }

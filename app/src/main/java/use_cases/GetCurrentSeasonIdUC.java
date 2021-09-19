@@ -12,29 +12,29 @@ import data.models.Season;
  * Use Case: Gets the latest Season. If a Season representing the current year doesn't exist in the
  * DB, it is added.
  */
-public class GetCurrentSeasonUC
+public class GetCurrentSeasonIdUC
 {
 	private final SeasonBridge bridge;
 
-	public GetCurrentSeasonUC(Context context)
+	public GetCurrentSeasonIdUC(Context context)
 	{
 		BridgeFactory factory = new BridgeFactory(context);
 		bridge = factory.getSeasonBridge();
 	}
 
-	public Season use()
+	public long use()
 	{
 		Season latest = bridge.getLatestSeason();
 		long currYear = LocalDate.now().getYear();
 
 		// Most recent Season in DB represents this year
 		if (latest != null && latest.year == currYear) {
-			return latest;
+			return latest.year;
 		}
 
 		Season newSeason = new Season(currYear);
 		newSeason = bridge.insert(newSeason);
 
-		return newSeason;
+		return newSeason.year;
 	}
 }

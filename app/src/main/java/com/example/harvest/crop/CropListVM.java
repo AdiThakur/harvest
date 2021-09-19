@@ -16,6 +16,7 @@ import data.bridges.BridgeFactory;
 import data.bridges.CropBridge;
 import data.models.Crop;
 import data.models.Plant;
+import use_cases.GetCurrentSeasonIdUC;
 
 public class CropListVM extends AndroidViewModel
 {
@@ -34,8 +35,8 @@ public class CropListVM extends AndroidViewModel
 
 		BridgeFactory bridgeFactory = new BridgeFactory(application.getApplicationContext());
 		cropBridge = bridgeFactory.getCropBridge();
-		// TODO: get rid of hardcoded season (Also add seasonal logic to home screen and harvests list)
-		crops = cropBridge.getAllBySeason(2021);
+		long currentSeasonId = (new GetCurrentSeasonIdUC(application.getApplicationContext())).use();
+		crops = cropBridge.getAllBySeason(currentSeasonId);
 
 		deleteCrop = new MutableLiveData<>();
 		deleteCrop$ = deleteCrop;
@@ -44,7 +45,7 @@ public class CropListVM extends AndroidViewModel
 		error$ = error;
 	}
 
-	public void addCrop(long seasonId, LocalDate datePlanted, int numberOfPlants, Plant plant)
+	public void addCrop(LocalDate datePlanted, int numberOfPlants, Plant plant)
 	{
 		boolean cropExistsForPlant = crops.stream().anyMatch(crop -> crop.plantId == plant.uid);
 
@@ -54,6 +55,7 @@ public class CropListVM extends AndroidViewModel
 			return;
 		}
 
+		long seasonId = (new GetCurrentSeasonIdUC(getApplication().getApplicationContext())).use();
 		Crop crop = new Crop(seasonId, datePlanted, numberOfPlants, plant);
 		cropBridge.insert(crop);
 

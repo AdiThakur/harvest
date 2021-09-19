@@ -10,6 +10,7 @@ import java.util.List;
 @Entity(tableName = "season")
 public class Season
 {
+	@PrimaryKey
 	@ColumnInfo(name = "year")
 	public long year;
 

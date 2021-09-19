@@ -17,6 +17,7 @@ import data.bridges.BridgeFactory;
 import data.bridges.HarvestBridge;
 import data.models.Crop;
 import data.models.Harvest;
+import use_cases.GetCurrentSeasonIdUC;
 
 public class HarvestListVM extends AndroidViewModel
 {
@@ -63,9 +64,10 @@ public class HarvestListVM extends AndroidViewModel
 			return;
 		}
 
-		// TODO: Get rid of hardcoded season id
+		long currentSeasonId =
+			(new GetCurrentSeasonIdUC(getApplication().getApplicationContext())).use();
 		Harvest newHarvest =
-			new Harvest(2021, unitsHarvested, totalWeight, dateHarvested, crop);
+			new Harvest(currentSeasonId, unitsHarvested, totalWeight, dateHarvested, crop);
 		newHarvest = bridge.insert(newHarvest);
 
 		if (newHarvest.uid == 0) {

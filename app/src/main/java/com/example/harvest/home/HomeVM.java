@@ -5,20 +5,20 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 
-import use_cases.GetCurrentSeasonUC;
+import use_cases.GetCurrentSeasonIdUC;
 
 public class HomeVM extends AndroidViewModel
 {
-	GetCurrentSeasonUC getCurrentSeasonUC;
+	GetCurrentSeasonIdUC getCurrentSeasonIdUC;
 
 	public HomeVM(@NonNull Application application)
 	{
 		super(application);
-		getCurrentSeasonUC = new GetCurrentSeasonUC(application.getApplicationContext());
+		getCurrentSeasonIdUC = new GetCurrentSeasonIdUC(application.getApplicationContext());
 	}
 
 	public long getCurrentSeason()
 	{
-		return getCurrentSeasonUC.use().year;
+		return getCurrentSeasonIdUC.use();
 	}
 }
