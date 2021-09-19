@@ -24,6 +24,7 @@
     <string name="date_planted">Date Planted</string>
     <string name="click_to_select">Click to Select</string>
     <string name="count">Count</string>
+    <string name="edit">Edit</string>
 
     <string name="add_crop">Add Crop</string>
     <string name="add_plant">Add Plant</string>

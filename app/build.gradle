@@ -13,6 +13,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {
@@ -55,4 +56,7 @@ dependencies {
     def room_version = "2.3.0"
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
+
+    // Vector graphics
+    implementation 'com.android.support:appcompat-v7:23.2.0'
 }

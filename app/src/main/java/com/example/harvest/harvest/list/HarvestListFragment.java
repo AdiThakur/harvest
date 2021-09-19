@@ -1,4 +1,4 @@
-package com.example.harvest.harvest;
+package com.example.harvest.harvest.list;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.harvest.R;
+import com.example.harvest.harvest.HarvestAdapter;
 
 import common.BaseFragment;
 import common.Event;

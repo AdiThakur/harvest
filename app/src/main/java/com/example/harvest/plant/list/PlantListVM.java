@@ -1,4 +1,4 @@
-package com.example.harvest.plant;
+package com.example.harvest.plant.list;
 
 import android.app.Application;
 import android.content.Context;

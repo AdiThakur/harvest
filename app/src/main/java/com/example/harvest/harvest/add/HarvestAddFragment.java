@@ -1,4 +1,4 @@
-package com.example.harvest.harvest;
+package com.example.harvest.harvest.add;
 
 import android.os.Bundle;
 
@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.harvest.R;
+import com.example.harvest.harvest.list.HarvestListVM;
 
 import java.time.LocalDate;
 

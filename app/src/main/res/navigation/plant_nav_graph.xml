@@ -6,7 +6,7 @@
     app:startDestination="@id/plantListFragment">
     <fragment
         android:id="@+id/plantAddFragment"
-        android:name="com.example.harvest.plant.PlantAddFragment"
+        android:name="com.example.harvest.plant.add.PlantAddFragment"
         android:label="fragment_plant_add"
         tools:layout="@layout/fragment_plant_add" >
         <action
@@ -15,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/plantListFragment"
-        android:name="com.example.harvest.plant.PlantListFragment"
+        android:name="com.example.harvest.plant.list.PlantListFragment"
         android:label="fragment_plant_list"
         tools:layout="@layout/fragment_plant_list" >
         <action

@@ -1,4 +1,4 @@
-package com.example.harvest.plant;
+package com.example.harvest.plant.add;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.example.harvest.R;
+import com.example.harvest.plant.list.PlantListVM;
 
 import common.BaseFragment;
 

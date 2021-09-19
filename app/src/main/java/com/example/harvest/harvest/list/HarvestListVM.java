@@ -1,4 +1,4 @@
-package com.example.harvest.harvest;
+package com.example.harvest.harvest.list;
 
 import android.app.Application;
 

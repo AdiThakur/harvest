@@ -7,7 +7,7 @@
     app:startDestination="@id/harvestListFragment">
     <fragment
         android:id="@+id/harvestListFragment"
-        android:name="com.example.harvest.harvest.HarvestListFragment"
+        android:name="com.example.harvest.harvest.list.HarvestListFragment"
         tools:layout="@layout/fragment_harvest_list"
         android:label="HarvestListFragment">
         <action
@@ -19,7 +19,7 @@
         <include app:graph="@navigation/crop_nav_graph" />
         <fragment
             android:id="@+id/harvestAddFragment"
-            android:name="com.example.harvest.harvest.HarvestAddFragment"
+            android:name="com.example.harvest.harvest.add.HarvestAddFragment"
             android:label="fragment_harvest_add"
             tools:layout="@layout/fragment_harvest_add">
             <action

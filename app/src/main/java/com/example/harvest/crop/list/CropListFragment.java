@@ -1,6 +1,5 @@
-package com.example.harvest.plant;
+package com.example.harvest.crop.list;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Pair;
@@ -19,18 +18,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import common.Event;
 import common.OnClickListener;
 import com.example.harvest.R;
-import com.example.harvest.crop.CropAddVM;
+import com.example.harvest.crop.CropAdapter;
+import com.example.harvest.harvest.add.HarvestAddVM;
 
 import common.BaseFragment;
-import data.models.Plant;
+import data.models.Crop;
 
-public class PlantListFragment extends BaseFragment implements OnClickListener
+public class CropListFragment extends BaseFragment implements OnClickListener
 {
-	private PlantListVM plantListVM;
-	private CropAddVM cropAddVM;
+	private CropListVM cropListVM;
+	private HarvestAddVM harvestAddVM;
 
 	private RecyclerView recyclerView;
-	private PlantAdapter adapter;
+	private CropAdapter adapter;
 
 	// Lifecycle overrides
 
@@ -40,35 +40,35 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 
+		// TODO: Pass some basic data to this fragment that enables/disables the selection feature
 		String caller = getCaller();
-		if (caller.equals("fragment_crop_add")) {
-			cropAddVM = getProvider(R.id.crop_add_graph).get(CropAddVM.class);
+		if (caller.equals("fragment_harvest_add")) {
+			harvestAddVM = getProvider(R.id.harvest_add_nav_graph).get(HarvestAddVM.class);
 		}
 
-		plantListVM = getProvider(R.id.plant_nav_graph).get(PlantListVM.class);
+		cropListVM = getProvider(R.id.crop_nav_graph).get(CropListVM.class);
 	}
 
 	@Nullable
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
 	{
-		return inflater.inflate(R.layout.fragment_plant_list, container, false);
+		return inflater.inflate(R.layout.fragment_crop_list, container, false);
 	}
 
-	@SuppressLint("FragmentLiveDataObserve")
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
 	{
 		super.onViewCreated(view, savedInstanceState);
-		setTitle("My Plants");
+		setTitle("My Crops");
 
-		adapter = new PlantAdapter(getContext(), plantListVM.getPlants(), this);
-		recyclerView = view.findViewById(R.id.plantList_plantRcv);
+		adapter = new CropAdapter(getContext(), cropListVM.getCrops(), this);
+		recyclerView = view.findViewById(R.id.cropList_cropRcv);
 		recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
 		recyclerView.setAdapter(adapter);
 
-		plantListVM.deletePlant$.observe(getViewLifecycleOwner(), this::plantDeletedObserver);
-		plantListVM.error$.observe(getViewLifecycleOwner(), (Event<String> e) -> {
+		cropListVM.deleteCrop$.observe(getViewLifecycleOwner(), this::cropDeletedObserver);
+		cropListVM.error$.observe(getViewLifecycleOwner(), (Event<String> e) -> {
 			this.displayError(view, e);
 		});
 	}
@@ -86,45 +86,44 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 		int id = item.getItemId();
 
 		if (id == R.id.addMenu_addButton) {
-			launchPlantAddFragment();
+			launchCropAddFragment();
 		}
 
 		return true;
 	}
 
-	// Observers
+	 // Observers
 
-	private void plantDeletedObserver(Pair<Long, Integer> deletedPlantInfo)
+	private void cropDeletedObserver(Pair<Long, Integer> deletedCropInfo)
 	{
-		long deletedPlantUid = deletedPlantInfo.first;
-		int deletedPlantPosition = deletedPlantInfo.second;
+		long deletedCropUid = deletedCropInfo.first;
+		int deletedCropPosition = deletedCropInfo.second;
 
-		// Only reset CropAddVM's selectedPlant Plant if it was deleted.
-		if (cropAddVM != null && deletedPlantUid == cropAddVM.getSelectedPlant().uid) {
-			cropAddVM.setSelectedPlant(null);
+		if (harvestAddVM != null && deletedCropUid == harvestAddVM.getSelectedCrop().uid) {
+			harvestAddVM.setSelectedCrop(null);
 		}
 
-		adapter.notifyItemRemoved(deletedPlantPosition);
+		adapter.notifyItemRemoved(deletedCropPosition);
 	}
 
 	// Callbacks for user-generated events
 
-	private void launchPlantAddFragment()
+	private void launchCropAddFragment()
 	{
 		navigateTo(
-			R.id.plantListFragment,
-			R.id.action_plantListFragment_to_plantAddFragment
+			R.id.cropListFragment,
+			R.id.action_cropListFragment_to_crop_add_graph
 		);
 	}
 
-	// OnClickListener interface overrides for PlantAdapter
+	// OnClickListener interface overrides for CropAdapter
 
 	@Override
 	public void onClick(View row, int position)
 	{
-		if (cropAddVM != null) {
-			Plant selectedPlant = plantListVM.getPlants().get(position);
-			cropAddVM.setSelectedPlant(selectedPlant);
+		if (harvestAddVM != null) {
+			Crop cropSelected = cropListVM.getCrops().get(position);
+			harvestAddVM.setSelectedCrop(cropSelected);
 			navigateUp();
 		}
 	}
@@ -132,14 +131,16 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 	@Override
 	public void onLongClick(View row, int position)
 	{
-		Plant plantToDelete = plantListVM.getPlants().get(position);
+		Crop cropToDelete = cropListVM.getCrops().get(position);
 		AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
 
-		builder.setTitle("Delete " + plantToDelete.name + " Plant?");
-		builder.setMessage("This cannot be undone!");
+		builder.setTitle("Delete " + cropToDelete.plant.name + " Crop?");
+		String message =
+			"This will only remove the " + cropToDelete.plant.name + " Crop for this Season. ";
+		builder.setMessage(message);
 		builder.setNegativeButton("No", (dialogInterface, i) -> {});
 		builder.setPositiveButton("Yes", (dialogInterface, i) ->
-			plantListVM.deletePlant(plantToDelete, position)
+			cropListVM.deleteCrop(cropToDelete, position)
 		);
 
 		AlertDialog dialog = builder.create();
