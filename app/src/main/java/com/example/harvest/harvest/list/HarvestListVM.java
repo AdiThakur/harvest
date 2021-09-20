@@ -27,6 +27,9 @@ public class HarvestListVM extends AndroidViewModel
 	private final MutableLiveData<Integer> deleteHarvest;
 	public final LiveData<Integer> deleteHarvest$;
 
+	private Harvest toUpdate;
+	private int harvestEditPosition;
+
 	private final MutableLiveData<Event<String>> error;
 	public final LiveData<Event<String>> error$;
 
@@ -60,7 +63,7 @@ public class HarvestListVM extends AndroidViewModel
 			.findFirst();
 
 		if (matchingHarvest.isPresent()) {
-			updateHarvest(matchingHarvest.get(), unitsHarvested, totalWeight, dateHarvested);
+			addToExistingHarvest(matchingHarvest.get(), unitsHarvested, totalWeight, dateHarvested);
 			return;
 		}
 
@@ -77,7 +80,7 @@ public class HarvestListVM extends AndroidViewModel
 		}
 	}
 
-	public void updateHarvest(
+	private void addToExistingHarvest(
 		Harvest harvest, int unitsHarvested, double totalWeight, LocalDate dateHarvested)
 	{
 		harvest.unitsHarvested += unitsHarvested;
@@ -102,6 +105,31 @@ public class HarvestListVM extends AndroidViewModel
 		} else {
 			harvests.remove(harvest);
 			deleteHarvest.setValue(position);
+		}
+	}
+
+	public Harvest getHarvestToUpdate()
+	{
+		return toUpdate;
+	}
+
+	public void setHarvestToUpdate(int position)
+	{
+		toUpdate = harvests.get(position);
+		harvestEditPosition = position;
+	}
+
+	public void updateHarvest(int unitsHarvested, double totalWeight, LocalDate dateHarvested)
+	{
+		toUpdate.unitsHarvested = unitsHarvested;
+		toUpdate.totalWeight = totalWeight;
+		toUpdate.dateHarvested = dateHarvested;
+
+		int updateCount = bridge.update(toUpdate);
+
+		if (updateCount == 0) {
+			String message = "Harvest couldn't be updated!";
+			error.setValue(new Event<>(message));
 		}
 	}
 }

@@ -77,7 +77,7 @@ public class CropListFragment extends BaseFragment implements OnClickListener
 	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater)
 	{
 		super.onCreateOptionsMenu(menu, inflater);
-		inflater.inflate(R.menu.add_new_item_menu, menu);
+		inflater.inflate(R.menu.new_item_menu_option, menu);
 	}
 
 	@Override
@@ -146,4 +146,7 @@ public class CropListFragment extends BaseFragment implements OnClickListener
 		AlertDialog dialog = builder.create();
 		dialog.show();
 	}
+
+	@Override
+	public void onNestedButtonClick(int rowIndex) {}
 }

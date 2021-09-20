@@ -11,7 +11,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -36,7 +35,6 @@ public class HarvestAddFragment extends BaseFragment
 	private TextView cropNameTextView, cropCountTextView, cropPlantedDateTextView;
 	private EditText unitsHarvestedEditText, totalWeightEditText;
 	private CalendarView dateHarvestCalendarView;
-	private Button submitButton;
 
 	// Lifecycle Overrides
 
@@ -100,7 +98,7 @@ public class HarvestAddFragment extends BaseFragment
 	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater)
 	{
 		super.onCreateOptionsMenu(menu, inflater);
-		inflater.inflate(R.menu.crop_add_menu, menu);
+		inflater.inflate(R.menu.save_menu_option, menu);
 	}
 
 	@Override
@@ -108,7 +106,7 @@ public class HarvestAddFragment extends BaseFragment
 	{
 		int id = item.getItemId();
 
-		if (id == R.id.crop_add_menu_saveButton) {
+		if (id == R.id.saveMenuOption_SaveButton) {
 			submit();
 		}
 

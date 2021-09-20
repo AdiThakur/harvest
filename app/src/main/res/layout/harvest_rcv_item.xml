@@ -88,7 +88,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/harvestRcvItem_editHarvestImageView"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:cropToPadding="false"

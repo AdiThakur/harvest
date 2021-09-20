@@ -98,7 +98,7 @@ public class CropAddFragment extends BaseFragment
 	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater)
 	{
 		super.onCreateOptionsMenu(menu, inflater);
-		inflater.inflate(R.menu.crop_add_menu, menu);
+		inflater.inflate(R.menu.save_menu_option, menu);
 	}
 
 	@Override
@@ -106,7 +106,7 @@ public class CropAddFragment extends BaseFragment
 	{
 		int id = item.getItemId();
 
-		if (id == R.id.crop_add_menu_saveButton) {
+		if (id == R.id.saveMenuOption_SaveButton) {
 			submit();
 		}
 

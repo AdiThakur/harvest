@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_harvestListFragment_to_harvest_add_nav_graph"
             app:destination="@id/harvest_add_nav_graph" />
+        <action
+            android:id="@+id/action_harvestListFragment_to_harvestEditFragment"
+            app:destination="@id/harvestEditFragment" />
     </fragment>
     <navigation android:id="@+id/harvest_add_nav_graph"
         app:startDestination="@id/harvestAddFragment">
@@ -30,4 +33,13 @@
             android:id="@+id/action_global_harvestListFragment"
             app:destination="@id/harvestListFragment" />
     </navigation>
+    <fragment
+        android:id="@+id/harvestEditFragment"
+        android:name="com.example.harvest.harvest.edit.HarvestEditFragment"
+        android:label="fragment_harvest_edit"
+        tools:layout="@layout/fragment_harvest_edit" >
+        <action
+            android:id="@+id/action_harvestEditFragment_to_harvestListFragment"
+            app:destination="@id/harvestListFragment" />
+    </fragment>
 </navigation>

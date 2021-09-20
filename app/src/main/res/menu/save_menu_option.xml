@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/crop_add_menu_saveButton"
+        android:id="@+id/saveMenuOption_SaveButton"
         android:title="@string/save"
         app:showAsAction="always" />
 </menu>

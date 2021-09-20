@@ -27,6 +27,7 @@ class HarvestViewHolder extends RecyclerView.ViewHolder
 	public TextView cropNameTextView;
 	public TextView unitsHarvestedTextView;
 	public TextView totalWeightTextView;
+	public ImageView editHarvestImageView;
 
 	public HarvestViewHolder(@NonNull View row, OnClickListener listener)
 	{
@@ -39,11 +40,15 @@ class HarvestViewHolder extends RecyclerView.ViewHolder
 		cropNameTextView = row.findViewById(R.id.harvestRcvItem_cropNameTextView);
 		totalWeightTextView = row.findViewById(R.id.harvestRcvItem_totalWeightTextView);
 		unitsHarvestedTextView = row.findViewById(R.id.harvestRcvItem_unitsHarvestedTextView);
+		editHarvestImageView = row.findViewById(R.id.harvestRcvItem_editHarvestImageView);
 
-		row.setOnClickListener(view -> listener.onClick(view, getAdapterPosition()));
-		row.setOnLongClickListener(view -> {
-			listener.onLongClick(view, getAdapterPosition());
+		row.setOnClickListener((View v )-> listener.onClick(v, getAdapterPosition()));
+		row.setOnLongClickListener((View v) -> {
+			listener.onLongClick(v, getAdapterPosition());
 			return true;
+		});
+		editHarvestImageView.setOnClickListener((View v) -> {
+			listener.onNestedButtonClick(getAdapterPosition());
 		});
 	}
 }

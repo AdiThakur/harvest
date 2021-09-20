@@ -47,5 +47,6 @@
     <string name="estimated_total_weight">Estimated Total Weight</string>
     <string name="units_harvested">Units Harvested</string>
     <string name="selected_crop">Selected Crop</string>
+    <string name="originally_harvested_on">Originally Harvested On</string>
 
 </resources>
