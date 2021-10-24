@@ -4,16 +4,21 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Delete;
+import androidx.room.Update;
 
 import java.util.List;
 
 import data.models.Crop;
+import data.models.Harvest;
 
 @Dao
 public interface CropDao
 {
 	@Insert
 	public long insert(Crop crop);
+
+	@Update
+	public int update(Crop crop);
 
 	@Query("SELECT * FROM crop WHERE uid = :cropId")
 	public Crop getById(long cropId);

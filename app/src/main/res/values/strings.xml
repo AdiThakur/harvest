@@ -48,5 +48,7 @@
     <string name="units_harvested">Units Harvested</string>
     <string name="selected_crop">Selected Crop</string>
     <string name="originally_harvested_on">Originally Harvested On</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

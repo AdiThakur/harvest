@@ -64,9 +64,10 @@ public class HomeFragment extends BaseFragment
 		navigateTo(R.id.homeFragment, resId);
 	}
 
+	// TODO: Create a relational hierarchy between all the entities
 	// TODO: Make Plant.unitWeight optional (since the unit weight of a brand new plant may not be known)
 	// TODO: Update weight calculation logic in HarvestAdapter; estimated weight should be annotated to inform the user that it is estimated, and actual weight should be annotated to inform that it is exact.
-	// TODO: Add the functionality to edit Harvests/Crops/Plants
+	// TODO: Add the functionality to edit Plants
 	// TODO: Make all bridge functions async; show a loading animation while async method executes
 	// TODO: use placeholder string resources in calls to TextView.setText()
 }

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".crop.add.CropAddFragment">
-
+    tools:context=".crop.edit.CropEditFragment">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -26,17 +26,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cropAdd_SelectedPlantContainer"
+            android:id="@+id/cropEdit_SelectedPlantContainer"
             android:layout_width="0dp"
             android:layout_height="95dp"
             app:layout_constraintEnd_toEndOf="@+id/textView3"
             app:layout_constraintStart_toStartOf="@+id/textView3"
             app:layout_constraintTop_toBottomOf="@+id/textView3">
-
             <include
-                android:id="@+id/noPlantSelected"
+                android:id="@+id/cropEdit_noPlantSelected"
                 layout="@layout/add_crop_empty_plant_item"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -46,9 +44,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0" />
-
             <include
-                android:id="@+id/selectedPlantItem"
+                android:id="@+id/cropEdit_selectedPlantItem"
                 layout="@layout/add_plant_rcv_item"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -59,7 +56,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
@@ -72,12 +68,12 @@
             android:padding="5dp"
             android:text="@string/number_of_plants"
             android:textSize="@dimen/subtitle_font_size"
-            app:layout_constraintEnd_toEndOf="@+id/cropAdd_SelectedPlantContainer"
-            app:layout_constraintStart_toStartOf="@+id/cropAdd_SelectedPlantContainer"
-            app:layout_constraintTop_toBottomOf="@+id/cropAdd_SelectedPlantContainer" />
+            app:layout_constraintEnd_toEndOf="@+id/cropEdit_SelectedPlantContainer"
+            app:layout_constraintStart_toStartOf="@+id/cropEdit_SelectedPlantContainer"
+            app:layout_constraintTop_toBottomOf="@+id/cropEdit_SelectedPlantContainer" />
 
         <EditText
-            android:id="@+id/addCrop_numberOfPlantsEditText"
+            android:id="@+id/cropEdit_numberOfPlantsEditText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -86,7 +82,7 @@
             android:outlineProvider="bounds"
             android:outlineSpotShadowColor="@color/card_light_purple"
             android:textSize="@dimen/subtitle_font_size"
-            app:layout_constraintEnd_toEndOf="@+id/cropAdd_SelectedPlantContainer"
+            app:layout_constraintEnd_toEndOf="@+id/cropEdit_SelectedPlantContainer"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/textView7"
             app:layout_constraintTop_toBottomOf="@+id/textView7" />
@@ -101,18 +97,17 @@
             android:padding="5dp"
             android:text="Date Planted"
             android:textSize="@dimen/subtitle_font_size"
-            app:layout_constraintEnd_toEndOf="@+id/addCrop_numberOfPlantsEditText"
-            app:layout_constraintStart_toStartOf="@+id/addCrop_numberOfPlantsEditText"
-            app:layout_constraintTop_toBottomOf="@+id/addCrop_numberOfPlantsEditText" />
+            app:layout_constraintEnd_toEndOf="@+id/cropEdit_numberOfPlantsEditText"
+            app:layout_constraintStart_toStartOf="@+id/cropEdit_numberOfPlantsEditText"
+            app:layout_constraintTop_toBottomOf="@+id/cropEdit_numberOfPlantsEditText" />
 
         <CalendarView
-            android:id="@+id/addCrop_datePlantedCalendarView"
+            android:id="@+id/cropEdit_datePlantedCalendarView"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/addCrop_numberOfPlantsEditText"
+            app:layout_constraintEnd_toEndOf="@+id/cropEdit_numberOfPlantsEditText"
             app:layout_constraintStart_toStartOf="@+id/textView9"
             app:layout_constraintTop_toBottomOf="@+id/textView9" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

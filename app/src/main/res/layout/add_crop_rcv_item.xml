@@ -85,4 +85,15 @@
         app:layout_constraintTop_toTopOf="@+id/textView8"
         tools:text="2 Aug 2021" />
 
+    <ImageView
+        android:id="@+id/cropRcvItem_editCropImageView"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:cropToPadding="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.542"
+        app:srcCompat="@drawable/chevron_right" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

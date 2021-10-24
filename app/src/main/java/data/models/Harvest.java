@@ -44,4 +44,18 @@ public class Harvest
 		this.dateHarvested = dateHarvested;
 		this.crop = crop;
 	}
+
+	public static Harvest ShallowCopy(Harvest toCopy)
+	{
+		Harvest copy = new Harvest();
+		copy.uid = toCopy.uid;
+		copy.seasonId = toCopy.seasonId;
+		copy.cropId = toCopy.cropId;
+		copy.unitsHarvested = toCopy.unitsHarvested;
+		copy.totalWeight = toCopy.totalWeight;
+		copy.dateHarvested = toCopy.dateHarvested;
+		copy.crop = toCopy.crop;
+
+		return copy;
+	}
 }

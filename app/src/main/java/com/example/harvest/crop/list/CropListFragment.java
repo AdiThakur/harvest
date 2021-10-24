@@ -148,5 +148,12 @@ public class CropListFragment extends BaseFragment implements OnClickListener
 	}
 
 	@Override
-	public void onNestedButtonClick(int rowIndex) {}
+	public void onNestedButtonClick(int rowIndex)
+	{
+		cropListVM.setCropToUpdate(rowIndex);
+		navigateTo(
+			R.id.cropListFragment,
+			R.id.action_cropListFragment_to_cropEditFragment
+		);
+	}
 }

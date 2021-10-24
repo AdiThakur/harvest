@@ -16,7 +16,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="5dp"
             android:background="@color/card_light_purple"
             android:fontFamily="sans-serif-condensed-light"
@@ -31,7 +31,7 @@
             android:id="@+id/harvestEdit_datePlantedTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:background="@color/card_light_purple"
             android:fontFamily="sans-serif-condensed-light"
             android:padding="5dp"
@@ -44,7 +44,8 @@
         <CalendarView
             android:id="@+id/harvestEdit_dateHarvestedCalendarView"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/harvestEdit_datePlantedTitle"
             app:layout_constraintStart_toStartOf="@+id/harvestEdit_datePlantedTitle"
             app:layout_constraintTop_toBottomOf="@+id/harvestEdit_datePlantedTitle" />
@@ -56,6 +57,7 @@
             android:ems="10"
             android:fontFamily="sans-serif-condensed-light"
             android:inputType="numberDecimal"
+            android:textSize="@dimen/subtitle_font_size"
             app:layout_constraintEnd_toEndOf="@+id/textView10"
             app:layout_constraintStart_toStartOf="@+id/textView10"
             app:layout_constraintTop_toBottomOf="@+id/textView10" />
@@ -67,6 +69,7 @@
             android:ems="10"
             android:fontFamily="sans-serif-condensed-light"
             android:inputType="number"
+            android:textSize="@dimen/subtitle_font_size"
             app:layout_constraintEnd_toEndOf="@+id/harvestEdit_harvestCountTitle"
             app:layout_constraintStart_toStartOf="@+id/harvestEdit_harvestCountTitle"
             app:layout_constraintTop_toBottomOf="@+id/harvestEdit_harvestCountTitle" />
@@ -91,7 +94,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="15dp"
             android:background="@color/card_light_purple"
             app:layout_constraintEnd_toEndOf="parent"

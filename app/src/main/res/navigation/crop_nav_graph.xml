@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_cropListFragment_to_crop_add_graph"
             app:destination="@id/crop_add_graph" />
+        <action
+            android:id="@+id/action_cropListFragment_to_cropEditFragment"
+            app:destination="@id/cropEditFragment" />
     </fragment>
     <navigation android:id="@+id/crop_add_graph"
         app:startDestination="@id/cropAddFragment">
@@ -30,4 +33,13 @@
                 app:destination="@id/plant_nav_graph" />
         </fragment>
     </navigation>
+    <fragment
+        android:id="@+id/cropEditFragment"
+        android:name="com.example.harvest.crop.edit.CropEditFragment"
+        android:label="fragment_crop_edit"
+        tools:layout="@layout/fragment_crop_edit" >
+        <action
+            android:id="@+id/action_cropEditFragment_to_cropListFragment"
+            app:destination="@id/cropListFragment" />
+    </fragment>
 </navigation>

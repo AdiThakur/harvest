@@ -28,7 +28,6 @@ public class HarvestListVM extends AndroidViewModel
 	public final LiveData<Integer> deleteHarvest$;
 
 	private Harvest toUpdate;
-	private int harvestEditPosition;
 
 	private final MutableLiveData<Event<String>> error;
 	public final LiveData<Event<String>> error$;
@@ -116,20 +115,24 @@ public class HarvestListVM extends AndroidViewModel
 	public void setHarvestToUpdate(int position)
 	{
 		toUpdate = harvests.get(position);
-		harvestEditPosition = position;
 	}
 
 	public void updateHarvest(int unitsHarvested, double totalWeight, LocalDate dateHarvested)
 	{
-		toUpdate.unitsHarvested = unitsHarvested;
-		toUpdate.totalWeight = totalWeight;
-		toUpdate.dateHarvested = dateHarvested;
+		Harvest updateCopy = Harvest.ShallowCopy(toUpdate);
+		updateCopy.unitsHarvested = unitsHarvested;
+		updateCopy.totalWeight = totalWeight;
+		updateCopy.dateHarvested = dateHarvested;
 
-		int updateCount = bridge.update(toUpdate);
+		int updateCount = bridge.update(updateCopy);
 
 		if (updateCount == 0) {
 			String message = "Harvest couldn't be updated!";
 			error.setValue(new Event<>(message));
+		} else {
+			toUpdate.unitsHarvested = unitsHarvested;
+			toUpdate.totalWeight = totalWeight;
+			toUpdate.dateHarvested = dateHarvested;
 		}
 	}
 }

@@ -25,21 +25,26 @@ class CropViewHolder extends RecyclerView.ViewHolder
 	public TextView cropNameTextView;
 	public TextView cropCountTextView;
 	public TextView cropPlantedDateTextView;
+	public ImageView editCropImageView;
 
 	CropViewHolder(@NonNull View cropRowItem, OnClickListener listener)
 	{
 		super(cropRowItem);
 
 		row = cropRowItem;
-		cropImageView =  row.findViewById(R.id.cropRcvItem_cropImage);
-		cropNameTextView =  row.findViewById(R.id.cropRcvItem_cropNameText);
-		cropCountTextView =  row.findViewById(R.id.cropRcvItem_cropCountText);
-		cropPlantedDateTextView =  row.findViewById(R.id.cropRcvItem_cropDatePlantedtext);
+		cropImageView = row.findViewById(R.id.cropRcvItem_cropImage);
+		cropNameTextView = row.findViewById(R.id.cropRcvItem_cropNameText);
+		cropCountTextView = row.findViewById(R.id.cropRcvItem_cropCountText);
+		cropPlantedDateTextView = row.findViewById(R.id.cropRcvItem_cropDatePlantedtext);
+		editCropImageView = row.findViewById(R.id.cropRcvItem_editCropImageView);
 
 		row.setOnClickListener(view -> listener.onClick(view, getAdapterPosition()));
 		row.setOnLongClickListener(view -> {
 			listener.onLongClick(view, getAdapterPosition());
 			return true;
+		});
+		editCropImageView.setOnClickListener((View v) -> {
+			listener.onNestedButtonClick(getAdapterPosition());
 		});
 	}
 }

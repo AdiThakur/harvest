@@ -4,6 +4,7 @@ import java.util.List;
 
 import data.daos.CropDao;
 import data.models.Crop;
+import data.models.Harvest;
 
 public class CropBridge implements IBridge<Crop>
 {
@@ -22,6 +23,12 @@ public class CropBridge implements IBridge<Crop>
 		crop.plantId = crop.plant.uid;
 		crop.uid = cropDao.insert(crop);
 		return crop;
+	}
+
+	public int update(Crop crop)
+	{
+		if (crop.uid == 0) { return 0; }
+		return cropDao.update(crop);
 	}
 
 	@Override

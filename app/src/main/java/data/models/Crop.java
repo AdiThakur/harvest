@@ -39,4 +39,17 @@ public class Crop
 		this.numberOfPlants = numberOfPlants;
 		this.plant = plant;
 	}
+
+	public static Crop ShallowCopy(Crop toCopy)
+	{
+		Crop copy = new Crop();
+		copy.uid = toCopy.uid;
+		copy.seasonId = toCopy.seasonId;
+		copy.plantId = toCopy.plantId;
+		copy.numberOfPlants = toCopy.numberOfPlants;
+		copy.datePlanted = toCopy.datePlanted;
+		copy.plant = toCopy.plant;
+
+		return copy;
+	}
 }

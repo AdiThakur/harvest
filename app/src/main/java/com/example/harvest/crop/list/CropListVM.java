@@ -20,11 +20,13 @@ import use_cases.GetCurrentSeasonIdUC;
 
 public class CropListVM extends AndroidViewModel
 {
-	private final CropBridge cropBridge;
+	private final CropBridge bridge;
 	private final List<Crop> crops;
 
 	private final MutableLiveData<Pair<Long, Integer>> deleteCrop;
 	public final LiveData<Pair<Long, Integer>> deleteCrop$;
+
+	private Crop toUpdate;
 
 	private final MutableLiveData<Event<String>> error;
 	public final LiveData<Event<String>> error$;
@@ -34,9 +36,9 @@ public class CropListVM extends AndroidViewModel
 		super(application);
 
 		BridgeFactory bridgeFactory = new BridgeFactory(application.getApplicationContext());
-		cropBridge = bridgeFactory.getCropBridge();
+		bridge = bridgeFactory.getCropBridge();
 		long currentSeasonId = (new GetCurrentSeasonIdUC(application.getApplicationContext())).use();
-		crops = cropBridge.getAllBySeason(currentSeasonId);
+		crops = bridge.getAllBySeason(currentSeasonId);
 
 		deleteCrop = new MutableLiveData<>();
 		deleteCrop$ = deleteCrop;
@@ -57,7 +59,7 @@ public class CropListVM extends AndroidViewModel
 
 		long seasonId = (new GetCurrentSeasonIdUC(getApplication().getApplicationContext())).use();
 		Crop crop = new Crop(seasonId, datePlanted, numberOfPlants, plant);
-		cropBridge.insert(crop);
+		bridge.insert(crop);
 
 		if (crop.uid == 0) {
 			error.setValue(new Event<>("Couldn't add " + plant.name));
@@ -73,7 +75,7 @@ public class CropListVM extends AndroidViewModel
 
 	public void deleteCrop(Crop crop, int position)
 	{
-		int deleteCount = cropBridge.delete(crop);
+		int deleteCount = bridge.delete(crop);
 
 		if (deleteCount == 0) {
 			String message =
@@ -82,6 +84,33 @@ public class CropListVM extends AndroidViewModel
 		} else {
 			crops.remove(crop);
 			deleteCrop.setValue(new Pair<>(crop.uid, position));
+		}
+	}
+
+	public Crop getCropToUpdate()
+	{
+		return toUpdate;
+	}
+
+	public void setCropToUpdate(int position)
+	{
+		toUpdate = crops.get(position);
+	}
+
+	public void updateCrop(int numberOfPlants, LocalDate datePlanted)
+	{
+		Crop updateCopy = Crop.ShallowCopy(toUpdate);
+		updateCopy.numberOfPlants = numberOfPlants;
+		updateCopy.datePlanted = datePlanted;
+
+		int updateCount = bridge.update(updateCopy);
+
+		if (updateCount == 0) {
+			String message = "Crop couldn't be updated!";
+			error.setValue(new Event<>(message));
+		} else {
+			toUpdate.numberOfPlants = numberOfPlants;
+			toUpdate.datePlanted = datePlanted;
 		}
 	}
 }

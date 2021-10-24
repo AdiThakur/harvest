@@ -69,8 +69,8 @@ public class HarvestEditFragment extends BaseFragment
 		totalWeightEditText = view.findViewById(R.id.harvestEdit_totalWeightEditText);
 		totalWeightEditText.setText(String.valueOf(harvestBeingEdited.totalWeight));
 
-		dateHarvestCalendarView = view.findViewById(R.id.harvestEdit_dateHarvestedCalendarView);
 		long millis = (harvestBeingEdited.dateHarvested.toEpochDay() + 1) * 86400 * 1000;
+		dateHarvestCalendarView = view.findViewById(R.id.harvestEdit_dateHarvestedCalendarView);
 		dateHarvestCalendarView.setDate(millis);
 		dateHarvestCalendarView.setOnDateChangeListener((calendarView, year, month, day) -> {
 			newHarvestedDate = LocalDate.of(year, month + 1, day);
@@ -126,9 +126,9 @@ public class HarvestEditFragment extends BaseFragment
 		}
 
 		int unitsHarvested =
-				(unitsHarvestedString.isEmpty()) ? 0 : Integer.parseInt(unitsHarvestedString);
+			(unitsHarvestedString.isEmpty()) ? 0 : Integer.parseInt(unitsHarvestedString);
 		double totalWeight =
-				(totalWeightString.isEmpty()) ? 0 : Double.parseDouble(totalWeightString);
+			(totalWeightString.isEmpty()) ? 0 : Double.parseDouble(totalWeightString);
 
 		harvestListVM.updateHarvest(unitsHarvested, totalWeight, dateHarvested);
 		navigateUp();
