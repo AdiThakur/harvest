@@ -64,6 +64,7 @@ public class HomeFragment extends BaseFragment
 		navigateTo(R.id.homeFragment, resId);
 	}
 
+	// TODO: Add a character limit for plant names and trim long plant names before displaying them (and update edit harvest UI to better handle longer names)
 	// TODO: Create a relational hierarchy between all the entities
 	// TODO: Make Plant.unitWeight optional (since the unit weight of a brand new plant may not be known)
 	// TODO: Update weight calculation logic in HarvestAdapter; estimated weight should be annotated to inform the user that it is estimated, and actual weight should be annotated to inform that it is exact.

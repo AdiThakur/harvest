@@ -73,6 +73,9 @@ public class CropEditFragment extends BaseFragment
 		plantWeightTextView = plantContainer.findViewById(R.id.plantRcvItem_plantUnitWeightText);
 		plantWeightTextView.setText(String.valueOf(cropBeingEdited.plant.unitWeight));
 
+		// Disable edit button
+		plantContainer.findViewById(R.id.plantRcvItem_editPlantImageView).setVisibility(View.GONE);
+
 		numberOfPlantsEditText = view.findViewById(R.id.cropEdit_numberOfPlantsEditText);
 		numberOfPlantsEditText.setText(String.valueOf(cropBeingEdited.numberOfPlants));
 

@@ -15,7 +15,6 @@
         android:id="@+id/harvestRcvItem_totalWeightTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
         android:fontFamily="sans-serif-condensed-light"
         android:padding="0dp"
         android:textSize="@dimen/subtitle_font_size"
@@ -25,27 +24,32 @@
 
     <TextView
         android:id="@+id/harvestRcvItem_cropNameTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
         android:fontFamily="sans-serif-condensed-light"
         android:textSize="@dimen/title_font_size"
         android:textStyle="normal"
+        app:layout_constraintEnd_toStartOf="@+id/harvestRcvItem_editHarvestImageView"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/harvestRcvItem_cropImage"
-        app:layout_constraintTop_toTopOf="@+id/harvestRcvItem_cropImage"
+        app:layout_constraintTop_toBottomOf="@+id/harvestRcvItem_dateContainer"
         tools:text="Cherry Tomato" />
 
     <TextView
         android:id="@+id/harvestRcvItem_unitsHarvestedTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
+        android:layout_marginBottom="10dp"
         android:fontFamily="sans-serif-condensed-light"
         android:includeFontPadding="false"
         android:padding="0dp"
         android:textSize="@dimen/subtitle_font_size"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/harvestRcvItem_totalWeightTextView"
         app:layout_constraintTop_toBottomOf="@+id/harvestRcvItem_totalWeightTextView"
+        app:layout_constraintVertical_bias="0.0"
         tools:text="250 units" />
 
     <ImageView

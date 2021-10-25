@@ -4,6 +4,7 @@ import java.util.List;
 
 import data.daos.PlantDao;
 import data.db.HarvestDB;
+import data.models.Harvest;
 import data.models.Plant;
 
 public class PlantBridge implements IBridge<Plant>
@@ -20,6 +21,12 @@ public class PlantBridge implements IBridge<Plant>
 	{
 		plant.uid = plantDao.insert(plant);
 		return plant;
+	}
+
+	public int update(Plant plant)
+	{
+		if (plant.uid == 0) { return 0; }
+		return plantDao.update(plant);
 	}
 
 	@Override

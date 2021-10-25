@@ -29,12 +29,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
+        android:layout_marginTop="10dp"
         android:fontFamily="sans-serif-condensed-light"
         android:maxLines="2"
         android:textSize="@dimen/title_font_size"
         app:layout_constraintBottom_toTopOf="@+id/textView6"
+        app:layout_constraintEnd_toStartOf="@+id/cropRcvItem_editCropImageView"
         app:layout_constraintStart_toEndOf="@+id/cropRcvItem_cropImage"
-        app:layout_constraintTop_toTopOf="@+id/cropRcvItem_cropImage"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="Cherry Tomato" />
 
     <TextView
@@ -65,10 +67,11 @@
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:fontFamily="sans-serif-condensed-light"
         android:text="@string/date_planted"
         android:textSize="@dimen/subtitle_font_size"
-        app:layout_constraintBottom_toBottomOf="@+id/cropRcvItem_cropImage"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textView6"
         app:layout_constraintTop_toBottomOf="@+id/textView6"
         tools:text="Date Planted" />

@@ -24,6 +24,7 @@ class PlantViewHolder extends RecyclerView.ViewHolder
 	public ImageView plantImageView;
 	public TextView plantNameTextView;
 	public TextView plantUnitWeightTextView;
+	public ImageView editPlantImageView;
 
 	public PlantViewHolder(@NonNull View plantRowItem, OnClickListener listener)
 	{
@@ -33,11 +34,15 @@ class PlantViewHolder extends RecyclerView.ViewHolder
 		plantImageView =  row.findViewById(R.id.plantRcvItem_plantImage);
 		plantNameTextView =  row.findViewById(R.id.plantRcvItem_plantNameText);
 		plantUnitWeightTextView = row.findViewById(R.id.plantRcvItem_plantUnitWeightText);
+		editPlantImageView = row.findViewById(R.id.plantRcvItem_editPlantImageView);
 
 		row.setOnClickListener(view -> listener.onClick(view, getAdapterPosition()));
 		row.setOnLongClickListener(view -> {
 			listener.onLongClick(view, getAdapterPosition());
 			return true;
+		});
+		editPlantImageView.setOnClickListener((View v) -> {
+			listener.onNestedButtonClick(getAdapterPosition());
 		});
 	}
 }

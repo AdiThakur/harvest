@@ -148,5 +148,12 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 	}
 
 	@Override
-	public void onNestedButtonClick(int rowIndex) {}
+	public void onNestedButtonClick(int rowIndex)
+	{
+		plantListVM.setPlantToUpdate(rowIndex);
+		navigateTo(
+			R.id.plantListFragment,
+			R.id.action_plantListFragment_to_plantEditFragment
+		);
+	}
 }

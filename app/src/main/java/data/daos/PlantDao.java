@@ -4,6 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Delete;
+import androidx.room.Update;
 
 import java.util.List;
 
@@ -14,6 +15,9 @@ public interface PlantDao
 {
 	@Insert
 	public long insert(Plant plant);
+
+	@Update
+	public int update(Plant plant);
 
 	@Query("SELECT * FROM plant WHERE uid = :plantId")
 	public Plant getById(long plantId);

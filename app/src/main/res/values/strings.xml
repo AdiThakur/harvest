@@ -32,6 +32,8 @@
     <string name="grams">grams</string>
     <string name="plant_name">Plant Name</string>
     <string name="choose_image">Choose Image</string>
+    <string name="choose_another_image">Choose Another</string>
+    <string name="selected_image">Selected Image</string>
     <string name="plant_image">Plant Image</string>
 
     <!-- Plant -->

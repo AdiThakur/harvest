@@ -1,7 +1,5 @@
 package data.models;
 
-import android.net.Uri;
-
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -28,5 +26,16 @@ public class Plant
 		this.name = name;
 		this.unitWeight = unitWeight;
 		this.imageFileName = imageFileName;
+	}
+
+	public static Plant ShallowCopy(Plant toCopy)
+	{
+		Plant copy = new Plant();
+		copy.uid = toCopy.uid;
+		copy.name = toCopy.name;
+		copy.unitWeight = toCopy.unitWeight;
+		copy.imageFileName = toCopy.imageFileName;
+
+		return copy;
 	}
 }

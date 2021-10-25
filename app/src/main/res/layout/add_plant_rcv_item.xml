@@ -15,9 +15,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
-        android:layout_marginEnd="25dp"
         app:layout_constraintBottom_toBottomOf="@+id/plantRcvItem_plantImage"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/plantRcvItem_editPlantImageView"
         app:layout_constraintStart_toEndOf="@+id/plantRcvItem_plantImage"
         app:layout_constraintTop_toTopOf="@+id/plantRcvItem_plantImage">
 
@@ -82,5 +81,16 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/tomato"
         tools:srcCompat="@drawable/tomato" />
+
+    <ImageView
+        android:id="@+id/plantRcvItem_editPlantImageView"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:cropToPadding="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.542"
+        app:srcCompat="@drawable/chevron_right" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -21,5 +21,17 @@
         <action
             android:id="@+id/action_plantListFragment_to_plantAddFragment"
             app:destination="@id/plantAddFragment" />
+        <action
+            android:id="@+id/action_plantListFragment_to_plantEditFragment"
+            app:destination="@id/plantEditFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/plantEditFragment"
+        android:name="com.example.harvest.plant.edit.PlantEditFragment"
+        android:label="fragment_plant_edit"
+        tools:layout="@layout/fragment_plant_edit" >
+        <action
+            android:id="@+id/action_plantEditFragment_to_plantListFragment"
+            app:destination="@id/plantListFragment" />
     </fragment>
 </navigation>
