@@ -107,22 +107,20 @@ public class PlantAddFragment extends BaseFragment
 	public void submit()
 	{
 		String plantName = plantNameEditText.getText().toString();
-		String plantUnitWeight = plantUnitWeightEditText.getText().toString();
+		String plantUnitWeightString = plantUnitWeightEditText.getText().toString();
+		double plantUnitWeight = 0;
 
 		if (plantName.isEmpty()) {
 			plantNameEditText.setError("Please specify name!");
 			return;
 		}
-		if (plantUnitWeight.isEmpty()) {
-			plantUnitWeightEditText.setError("Please specify unit weight!");
-			return;
+
+		// Unit weight is optional
+		if (!plantUnitWeightString.isEmpty()) {
+			plantUnitWeight = Double.parseDouble(plantUnitWeightString);
 		}
 
-		plantListVM.addPlant(
-			plantName, Double.parseDouble(plantUnitWeight), plantAddVM.getSelectedImageUri()
-		);
-		plantListVM.addPlant$.observe(getViewLifecycleOwner(), (success) -> {
-			navigateUp();
-		});
+		plantListVM.addPlant(plantName, plantUnitWeight, plantAddVM.getSelectedImageUri()		);
+		navigateUp();
 	}
 }

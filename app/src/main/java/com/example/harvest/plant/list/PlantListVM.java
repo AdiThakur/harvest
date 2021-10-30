@@ -24,9 +24,6 @@ public class PlantListVM extends AndroidViewModel
 	private final PlantBridge bridge;
 	private final List<Plant> plants;
 
-	private final MutableLiveData<Boolean> addPlant;
-	public LiveData<Boolean> addPlant$;
-
 	private final MutableLiveData<Pair<Long, Integer>> deletePlant;
 	public LiveData<Pair<Long, Integer>> deletePlant$;
 
@@ -43,9 +40,6 @@ public class PlantListVM extends AndroidViewModel
 		bridge = bridgeFactory.getPlantBridge();
 
 		plants = bridge.getAll();
-
-		addPlant = new MutableLiveData<>();
-		addPlant$ = addPlant;
 
 		deletePlant = new MutableLiveData<>();
 		deletePlant$ = deletePlant;
@@ -78,7 +72,6 @@ public class PlantListVM extends AndroidViewModel
 			error.setValue(new Event<>(message));
 		} else {
 			plants.add(newPlant);
-			addPlant.setValue(true);
 		}
 	}
 

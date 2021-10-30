@@ -117,20 +117,20 @@ public class PlantEditFragment extends BaseFragment
 	public void submit()
 	{
 		String plantName = plantNameEditText.getText().toString();
-		String plantUnitWeight = plantUnitWeightEditText.getText().toString();
+		String plantUnitWeightString = plantUnitWeightEditText.getText().toString();
+		double plantUnitWeight = 0;
 
 		if (plantName.isEmpty()) {
 			plantNameEditText.setError("Please specify name!");
 			return;
 		}
-		if (plantUnitWeight.isEmpty()) {
-			plantUnitWeightEditText.setError("Please specify unit weight!");
-			return;
+
+		// Unit weight is optional
+		if (!plantUnitWeightString.isEmpty()) {
+			plantUnitWeight = Double.parseDouble(plantUnitWeightString);
 		}
 
-		double unitWeight = Double.parseDouble(plantUnitWeight);
-
-		plantListVM.updatePlant(plantName, unitWeight, newImageUri);
+		plantListVM.updatePlant(plantName, plantUnitWeight, newImageUri);
 		navigateUp();
 	}
 }

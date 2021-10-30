@@ -25,8 +25,10 @@ class HarvestViewHolder extends RecyclerView.ViewHolder
 	public TextView dateHarvestedTextView;
 	public ImageView cropImageView;
 	public TextView cropNameTextView;
+	public TextView unitsHarvestedTagTextView;
 	public TextView unitsHarvestedTextView;
 	public TextView totalWeightTextView;
+	public TextView totalWeightTagTextView;
 	public ImageView editHarvestImageView;
 
 	public HarvestViewHolder(@NonNull View row, OnClickListener listener)
@@ -38,7 +40,9 @@ class HarvestViewHolder extends RecyclerView.ViewHolder
 
 		cropImageView = row.findViewById(R.id.harvestRcvItem_cropImage);
 		cropNameTextView = row.findViewById(R.id.harvestRcvItem_cropNameTextView);
+		totalWeightTagTextView = row.findViewById(R.id.harvestRcvItem_totalWeightTagTextView);
 		totalWeightTextView = row.findViewById(R.id.harvestRcvItem_totalWeightTextView);
+		unitsHarvestedTagTextView = row.findViewById(R.id.harvestRcvItem_unitsHarvestedTagTextView);
 		unitsHarvestedTextView = row.findViewById(R.id.harvestRcvItem_unitsHarvestedTextView);
 		editHarvestImageView = row.findViewById(R.id.harvestRcvItem_editHarvestImageView);
 
@@ -82,14 +86,39 @@ public class HarvestAdapter extends RecyclerView.Adapter<HarvestViewHolder>
 	{
 		Harvest harvest = harvests.get(position);
 		String filename = harvest.crop.plant.imageFileName;
-		double totalWeight = harvest.unitsHarvested * harvest.crop.plant.unitWeight;
 		DecimalFormat df = new DecimalFormat("#.00");
+
+		String totalWeightString = "";
+		if (harvest.totalWeight != 0) {
+			totalWeightString = df.format(harvest.totalWeight);
+		} else {
+			if (harvest.crop.plant.unitWeight == 0) {
+				totalWeightString = "No data";
+			} else {
+				double estimatedTotalWeight = harvest.unitsHarvested * harvest.crop.plant.unitWeight;
+				totalWeightString = df.format(estimatedTotalWeight);
+				holder.totalWeightTagTextView.setText("Estimated Weight (g)");
+			}
+		}
+
+		String unitsHarvestedString = "";
+		if (harvest.unitsHarvested != 0) {
+			unitsHarvestedString = String.valueOf(harvest.unitsHarvested);
+		} else {
+			if (harvest.crop.plant.unitWeight == 0) {
+				unitsHarvestedString = "No data";
+			} else {
+				int estimatedUnitsHarvested = (int) (harvest.totalWeight / harvest.crop.plant.unitWeight);
+				unitsHarvestedString = String.valueOf(estimatedUnitsHarvested);
+				holder.unitsHarvestedTagTextView.setText("Estimated Units");
+			}
+		}
 
 		holder.dateHarvestedTextView.setText(Helper.shortFormatOfDate(harvest.dateHarvested));
 		holder.cropImageView.setImageBitmap(Helper.loadBitmapFromImage(context, filename));
 		holder.cropNameTextView.setText(harvest.crop.plant.name);
-		holder.totalWeightTextView.setText(df.format(totalWeight) + " grams");
-		holder.unitsHarvestedTextView.setText(String.valueOf(harvest.unitsHarvested) + " units");
+		holder.totalWeightTextView.setText(totalWeightString);
+		holder.unitsHarvestedTextView.setText(unitsHarvestedString);
 	}
 
 	@Override

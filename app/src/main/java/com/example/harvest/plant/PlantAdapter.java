@@ -75,9 +75,16 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantViewHolder>
 	public void onBindViewHolder(@NonNull PlantViewHolder holder, int position)
 	{
 		Plant plant = plants.get(position);
+
 		holder.plantNameTextView.setText(plant.name);
-		holder.plantUnitWeightTextView.setText(String.valueOf(plant.unitWeight));
 		holder.plantImageView.setImageBitmap(Helper.loadBitmapFromImage(context, plant.imageFileName));
+
+		if (plant.unitWeight == 0) {
+			// TODO: Use resource string, and color this string red or some shit
+			holder.plantUnitWeightTextView.setText("Not Specified");
+		} else {
+			holder.plantUnitWeightTextView.setText(String.valueOf(plant.unitWeight));
+		}
 	}
 
 	@Override

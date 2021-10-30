@@ -56,16 +56,6 @@ public class HarvestListVM extends AndroidViewModel
 	public void addHarvest(
 		int unitsHarvested, double totalWeight, LocalDate dateHarvested, Crop crop)
 	{
-		Optional<Harvest> matchingHarvest = harvests.stream()
-			.filter(harvest ->
-				(harvest.crop.uid == crop.uid) && (harvest.dateHarvested.isEqual(dateHarvested)))
-			.findFirst();
-
-		if (matchingHarvest.isPresent()) {
-			addToExistingHarvest(matchingHarvest.get(), unitsHarvested, totalWeight, dateHarvested);
-			return;
-		}
-
 		long currentSeasonId =
 			(new GetCurrentSeasonIdUC(getApplication().getApplicationContext())).use();
 		Harvest newHarvest =
@@ -76,21 +66,6 @@ public class HarvestListVM extends AndroidViewModel
 			error.setValue(new Event<>("Couldn't add harvest!"));
 		} else {
 			harvests.add(newHarvest);
-		}
-	}
-
-	private void addToExistingHarvest(
-		Harvest harvest, int unitsHarvested, double totalWeight, LocalDate dateHarvested)
-	{
-		harvest.unitsHarvested += unitsHarvested;
-		harvest.totalWeight += totalWeight;
-		harvest.dateHarvested = dateHarvested;
-
-		int updateCount = bridge.update(harvest);
-
-		if (updateCount == 0) {
-			String message = "Harvest couldn't be updated.";
-			error.setValue(new Event<>(message));
 		}
 	}
 
