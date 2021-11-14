@@ -123,6 +123,11 @@ public class PlantEditFragment extends BaseFragment
 		if (plantName.isEmpty()) {
 			plantNameEditText.setError("Please specify name!");
 			return;
+		} else if (plantName.length() > Plant.NAME_CHARACTER_LIMIT) {
+			plantNameEditText.setError(
+				String.format("Name must be less than %d characters", Plant.NAME_CHARACTER_LIMIT)
+			);
+			return;
 		}
 
 		// Unit weight is optional
