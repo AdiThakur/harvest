@@ -11,6 +11,7 @@ import com.example.harvest.R;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
@@ -113,5 +114,19 @@ public class Helper
 		} catch (IOException e) {
 			return BitmapFactory.decodeResource(context.getResources(), R.drawable.tomato);
 		}
+	}
+
+	public static String inGrams(double weight)
+	{
+		return weight + " (g)";
+	}
+
+	public static String formatUnitWeight(double weight)
+	{
+		if (weight > 0) {
+			DecimalFormat df = new DecimalFormat("#.00");
+			return df.format(weight) + " (g)";
+		}
+		return "No Data";
 	}
 }
