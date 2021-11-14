@@ -60,7 +60,7 @@ public class CropListFragment extends BaseFragment implements OnClickListener
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
 	{
 		super.onViewCreated(view, savedInstanceState);
-		setTitle("My Crops");
+		setTitle("This Season's Crops");
 
 		adapter = new CropAdapter(getContext(), cropListVM.getCrops(), this);
 		recyclerView = view.findViewById(R.id.cropList_cropRcv);
