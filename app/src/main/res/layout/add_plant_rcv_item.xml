@@ -15,8 +15,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
+        android:layout_marginEnd="45dp"
         app:layout_constraintBottom_toBottomOf="@+id/plantRcvItem_plantImage"
-        app:layout_constraintEnd_toStartOf="@+id/plantRcvItem_editPlantImageView"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/plantRcvItem_plantImage"
         app:layout_constraintTop_toTopOf="@+id/plantRcvItem_plantImage">
 
@@ -24,8 +25,9 @@
             android:id="@+id/plantRcvItem_plantNameText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
             android:fontFamily="sans-serif-condensed-light"
-            android:maxLines="2"
+            android:maxLines="1"
             android:textSize="@dimen/title_font_size"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -84,8 +86,8 @@
 
     <ImageView
         android:id="@+id/plantRcvItem_editPlantImageView"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:cropToPadding="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
