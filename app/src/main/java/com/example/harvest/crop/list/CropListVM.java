@@ -36,8 +36,8 @@ public class CropListVM extends AndroidViewModel
 		super(application);
 
 		BridgeFactory bridgeFactory = new BridgeFactory(application.getApplicationContext());
-		bridge = bridgeFactory.getCropBridge();
 		long currentSeasonId = (new GetCurrentSeasonIdUC(application.getApplicationContext())).use();
+		bridge = bridgeFactory.getCropBridge();
 		crops = bridge.getAllBySeason(currentSeasonId);
 
 		deleteCrop = new MutableLiveData<>();

@@ -37,8 +37,9 @@ public class HarvestListVM extends AndroidViewModel
 		super(application);
 
 		BridgeFactory bridgeFactory = new BridgeFactory(application.getApplicationContext());
+		long currentSeasonId = (new GetCurrentSeasonIdUC(application.getApplicationContext())).use();
 		bridge = bridgeFactory.getHarvestBridge();
-		harvests = bridge.getAll();
+		harvests = bridge.getAllBySeason(currentSeasonId);
 
 		deleteHarvest = new MutableLiveData<>();
 		deleteHarvest$ = deleteHarvest;

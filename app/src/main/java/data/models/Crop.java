@@ -40,6 +40,11 @@ public class Crop
 		this.plant = plant;
 	}
 
+	@Override
+	public String toString() {
+		return plant.name + " (" + seasonId + ")";
+	}
+
 	public static Crop ShallowCopy(Crop toCopy)
 	{
 		Crop copy = new Crop();

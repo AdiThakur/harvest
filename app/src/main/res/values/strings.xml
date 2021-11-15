@@ -25,6 +25,7 @@
     <string name="click_to_select">Click to Select</string>
     <string name="count">Count</string>
     <string name="edit">Edit</string>
+    <string name="history">History</string>
 
     <string name="add_crop">Add Crop</string>
     <string name="add_plant">Add Plant</string>
@@ -50,7 +51,12 @@
     <string name="units_harvested">Units Harvested</string>
     <string name="selected_crop">Selected Crop</string>
     <string name="originally_harvested_on">Originally Harvested On</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- History -->
+    <string name="select_seasons">Select Seasons</string>
+    <string name="click_to_select_seasons">Click to Select Seasons</string>
+    <string name="select_crops">Select Crops</string>
+    <string name="click_to_select_crops">Click to Select Crops</string>
+    <string name="filter_data">Filter Data</string>
 
 </resources>

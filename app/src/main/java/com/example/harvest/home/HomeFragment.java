@@ -57,6 +57,10 @@ public class HomeFragment extends BaseFragment
 			launch(R.id.action_homeFragment_to_plant_nav_graph);
 		});
 
+		Button historyButton = view.findViewById(R.id.home_historyButton);
+		historyButton.setOnClickListener((v) -> {
+			launch(R.id.action_homeFragment_to_history_nav_graph);
+		});
 	}
 
 	private void launch(@IdRes int resId)
@@ -64,10 +68,12 @@ public class HomeFragment extends BaseFragment
 		navigateTo(R.id.homeFragment, resId);
 	}
 
-	// TODO: Update 'Selected Plant' box in CropAdd/Edit; it should only show plant image and name
-	// TODO: Update 'Selected Crop' box in HarvestAdd/Edit; it should only show crop image and name
+	// TODO: Finish implementing FiltersFragment; add a summary area, and a button to navigate to a view that shows all the details Harvests, similar to HarvestList
+	// TODO: Polish UI for FiltersFragment (display the selected options as ChipGroups
+	// TODO: Polish validation logic for the two selectors (season and crop selects); add logic to handle cases where no options are selected
+	// TODO: Add a button in the MultiChoice dialog that selects all options
+	// TODO: Add a button in the MultiChoice dialog that clears all options
 
-	// TODO: Create a relational hierarchy between all the entities
 	// TODO: Make all bridge functions async; show a loading animation while async method executes
 	// TODO: use placeholder string resources in calls to TextView.setText()
 }

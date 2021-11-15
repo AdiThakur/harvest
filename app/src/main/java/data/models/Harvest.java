@@ -45,6 +45,20 @@ public class Harvest
 		this.crop = crop;
 	}
 
+	@Override
+	public String toString() {
+		return
+			"Harvest{" +
+			"seasonId=" + seasonId +
+			", cropId=" + cropId +
+			", uid=" + uid +
+			", dateHarvested=" + dateHarvested +
+			", unitsHarvested=" + unitsHarvested +
+			", totalWeight=" + totalWeight +
+			", crop=" + crop +
+			'}';
+	}
+
 	public static Harvest ShallowCopy(Harvest toCopy)
 	{
 		Harvest copy = new Harvest();

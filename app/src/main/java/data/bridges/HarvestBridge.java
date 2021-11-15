@@ -64,4 +64,12 @@ public class HarvestBridge implements IBridge<Harvest>
 
 		return harvests;
 	}
+
+	public List<Harvest> getAllBySeasonAndPlantIds(List<Long> seasonIds, List<Long> cropIds)
+	{
+		List<Harvest> harvests = harvestDao.getAllBySeasonAndCropIds(seasonIds, cropIds);
+		harvests.forEach(harvest -> harvest.crop = cropBridge.getById(harvest.cropId));
+
+		return harvests;
+	}
 }

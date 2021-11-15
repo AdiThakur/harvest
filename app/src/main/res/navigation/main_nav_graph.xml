@@ -29,5 +29,9 @@
         <action
             android:id="@+id/action_homeFragment_to_harvest_nav_graph"
             app:destination="@id/harvest_nav_graph" />
+        <action
+            android:id="@+id/action_homeFragment_to_history_nav_graph"
+            app:destination="@id/history_nav_graph" />
     </fragment>
+    <include app:graph="@navigation/history_nav_graph" />
 </navigation>
