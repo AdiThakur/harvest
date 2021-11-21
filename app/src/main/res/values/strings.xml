@@ -28,6 +28,7 @@
     <string name="edit">Edit</string>
     <string name="history">History</string>
     <string name="summary">Summary</string>
+    <string name="details">Details</string>
 
     <string name="add_crop">Add Crop</string>
     <string name="add_plant">Add Plant</string>
@@ -66,6 +67,6 @@
     <string name="selected_crops">Selected Crops</string>
     <string name="click_to_select_crops">Click to Select Crops</string>
     <string name="filter_data">Filter Data</string>
-    <string name="view_details">View Details</string>
+    <string name="filters">Filters</string>
 
 </resources>

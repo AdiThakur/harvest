@@ -14,7 +14,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/filter_selectedCropsChips"
@@ -100,7 +100,7 @@
                 android:background="@color/card_lighter_purple"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toBottomOf="@+id/textView22">
 
                 <TextView
                     android:id="@+id/textView4"
@@ -240,18 +240,42 @@
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <Button
-                android:id="@+id/filter_viewDetails"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/textView20"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:background="#CAA0FE"
+                android:fontFamily="sans-serif-light"
+                android:padding="7dp"
+                android:text="@string/details"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/filter_summaryContainer" />
+
+            <TextView
+                android:id="@+id/textView22"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="#CAA0FE"
+                android:fontFamily="sans-serif-light"
+                android:padding="7dp"
+                android:text="@string/filters"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/filter_rcv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:text="@string/view_details"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/filter_summaryContainer"
-                app:layout_constraintStart_toStartOf="@+id/filter_summaryContainer"
-                app:layout_constraintTop_toBottomOf="@+id/filter_summaryContainer"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView20" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

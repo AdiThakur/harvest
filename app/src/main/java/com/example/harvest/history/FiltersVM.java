@@ -31,8 +31,8 @@ public class FiltersVM extends AndroidViewModel
 	private List<Crop> selectedCrops;
 
 	private List<Harvest> filterResult;
-	private MutableLiveData<SummaryDetails> details;
-	public LiveData<SummaryDetails> details$;
+	private MutableLiveData<List<Harvest>> filteredResults;
+	public LiveData<List<Harvest>> filteredResults$;
 
 	// TODO: Refactor ctor
 	public FiltersVM(@NonNull Application application)
@@ -45,8 +45,8 @@ public class FiltersVM extends AndroidViewModel
 
 		yearsMultiChoice = new MultiChoice<>();
 		cropsMultiChoice = new MultiChoice<>();
-		details = new MutableLiveData<>();
-		details$ = details;
+		filteredResults = new MutableLiveData<>();
+		filteredResults$ = filteredResults;
 
 		yearsMultiChoice.setOptions(seasonBridge.getAllYears());
 		yearsMultiChoice.selected$.subscribe(options -> {
@@ -58,24 +58,26 @@ public class FiltersVM extends AndroidViewModel
 			});
 
 			cropsMultiChoice.setOptions(allCrops);
-			details.setValue(new SummaryDetails(0, 0, 0));
 		});
 
 		cropsMultiChoice.selected$.subscribe(options -> {
-
 			selectedCrops = options;
-			List<Harvest> filteredHarvests = filterData();
-			double totalWeight = 0.0;
-			int totalUnitsHarvested = 0;
-			int totalHarvests = filteredHarvests.size();
-
-			for (int i = 0; i < filteredHarvests.size(); i++) {
-				totalWeight += filteredHarvests.get(i).totalWeight;
-				totalUnitsHarvested += filteredHarvests.get(i).unitsHarvested;
-			}
-
-			details.setValue(new SummaryDetails(totalWeight, totalUnitsHarvested, totalHarvests));
+			filteredResults.setValue(filterData());
 		});
+	}
+
+	public SummaryDetails summarizeData(List<Harvest> harvests)
+	{
+		double totalWeight = 0.0;
+		int totalUnits = 0;
+		int totalHarvests = harvests.size();
+
+		for (int i = 0; i < harvests.size(); i++) {
+			totalWeight += harvests.get(i).totalWeight;
+			totalUnits += harvests.get(i).unitsHarvested;
+		}
+
+		return new SummaryDetails(totalWeight, totalUnits, totalHarvests);
 	}
 
 	public void showSeasonsMultiChoice(Context context)

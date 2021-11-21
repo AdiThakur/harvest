@@ -9,8 +9,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.harvest.R;
+import com.example.harvest.harvest.HarvestAdapter;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
@@ -19,9 +22,9 @@ import java.util.Locale;
 
 import common.BaseFragment;
 import common.Helper;
+import common.OnClickListener;
 
-public class FiltersFragment extends BaseFragment
-{
+public class FiltersFragment extends BaseFragment implements OnClickListener {
 	private final int MAX_CHIP_COUNT = 5;
 
 	private FiltersVM filtersVM;
@@ -36,7 +39,8 @@ public class FiltersFragment extends BaseFragment
 	private TextView totalUnits;
 	private TextView totalHarvests;
 
-	private Button viewDetails;
+	private HarvestAdapter adapter;
+	private RecyclerView rcv;
 
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState)
@@ -70,9 +74,9 @@ public class FiltersFragment extends BaseFragment
 		totalWeight = view.findViewById(R.id.filter_totalWeight);
 		totalUnits = view.findViewById(R.id.filter_totalUnits);
 		totalHarvests = view.findViewById(R.id.filter_totalHarvests);
-		viewDetails = view.findViewById(R.id.filter_viewDetails);
-		viewDetails.setOnClickListener((v) -> {});
-		viewDetails.setEnabled(false);
+
+		rcv = view.findViewById(R.id.filter_rcv);
+		rcv.setLayoutManager(new LinearLayoutManager(requireActivity()));
 
 		filtersVM.yearsMultiChoice.selected$.subscribe(selectedSeasons -> {
 			populateChipGroup(selectedSeasonsChips, selectedSeasons);
@@ -80,15 +84,15 @@ public class FiltersFragment extends BaseFragment
 
 			if (!enabled) { selectedCropChips.removeAllViews(); }
 			addCropFilters.setEnabled(enabled);
-			viewDetails.setEnabled(false);
 		});
 
 		filtersVM.cropsMultiChoice.selected$.subscribe(selectedCrops -> {
 			populateChipGroup(selectedCropChips, selectedCrops);
-			viewDetails.setEnabled(selectedCrops.size() > 0);
 		});
 
-		filtersVM.details$.observe(getViewLifecycleOwner(), details -> {
+		filtersVM.filteredResults$.observe(getViewLifecycleOwner(), filteredResult -> {
+			SummaryDetails details = filtersVM.summarizeData(filteredResult);
+			rcv.setAdapter(new HarvestAdapter(requireContext(), filteredResult, this));
 			totalWeight.setText(Helper.formatUnitWeight(details.totalWeight));
 			totalUnits.setText(Helper.formatData(details.totalUnits));
 			totalHarvests.setText(Helper.formatData(details.totalHarvests));
@@ -113,4 +117,13 @@ public class FiltersFragment extends BaseFragment
 			group.addView(ellipses);
 		}
 	}
+
+	@Override
+	public void onClick(View row, int rowIndex) {}
+
+	@Override
+	public void onLongClick(View row, int rowIndex) {}
+
+	@Override
+	public void onNestedButtonClick(int rowIndex) {}
 }
