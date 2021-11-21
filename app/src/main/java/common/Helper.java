@@ -127,7 +127,7 @@ public class Helper
 			DecimalFormat df = new DecimalFormat("#.00");
 			return df.format(weight) + " (g)";
 		}
-		return "No Data";
+		return "No data";
 	}
 
 	public static <N extends Number> String formatData(N data)

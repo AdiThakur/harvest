@@ -58,6 +58,7 @@ public class FiltersVM extends AndroidViewModel
 			});
 
 			cropsMultiChoice.setOptions(allCrops);
+			details.setValue(new SummaryDetails(0, 0, 0));
 		});
 
 		cropsMultiChoice.selected$.subscribe(options -> {

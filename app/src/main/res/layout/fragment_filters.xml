@@ -167,22 +167,24 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
+                    android:text="@string/no_data"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="@+id/textView19"
                     app:layout_constraintEnd_toEndOf="@+id/filter_totalUnits"
                     app:layout_constraintTop_toTopOf="@+id/textView19"
-                    tools:text="75" />
+                    tools:text="@string/no_data" />
 
                 <TextView
                     android:id="@+id/filter_totalUnits"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
+                    android:text="@string/no_data"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="@+id/textView18"
                     app:layout_constraintEnd_toEndOf="@+id/filter_totalWeight"
                     app:layout_constraintTop_toTopOf="@+id/textView18"
-                    tools:text="350" />
+                    tools:text="@string/no_data" />
 
                 <TextView
                     android:id="@+id/filter_totalWeight"
@@ -190,11 +192,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:fontFamily="sans-serif-light"
+                    android:text="@string/no_data"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="@+id/textView16"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/textView16"
-                    tools:text="1254000" />
+                    tools:text="@string/no_data" />
 
                 <TextView
                     android:id="@+id/textView18"

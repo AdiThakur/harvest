@@ -80,7 +80,7 @@ public class FiltersFragment extends BaseFragment
 
 			if (!enabled) { selectedCropChips.removeAllViews(); }
 			addCropFilters.setEnabled(enabled);
-			viewDetails.setEnabled(enabled);
+			viewDetails.setEnabled(false);
 		});
 
 		filtersVM.cropsMultiChoice.selected$.subscribe(selectedCrops -> {
