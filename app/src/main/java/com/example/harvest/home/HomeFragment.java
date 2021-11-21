@@ -68,12 +68,11 @@ public class HomeFragment extends BaseFragment
 		navigateTo(R.id.homeFragment, resId);
 	}
 
-	// TODO: Finish implementing FiltersFragment; add a summary area, and a button to navigate to a view that shows all the details Harvests, similar to HarvestList
-	// TODO: Polish UI for FiltersFragment (display the selected options as ChipGroups
-	// TODO: Polish validation logic for the two selectors (season and crop selects); add logic to handle cases where no options are selected
-	// TODO: Add a button in the MultiChoice dialog that selects all options
-	// TODO: Add a button in the MultiChoice dialog that clears all options
-
+	// TODO: Finish implementing FiltersFragment; add a details page to view all harvests that match constraints
+	// TODO: FilterFragment: Make the Chip text smaller in FiltersFragment
+	// TODO: FilterFragment: only add year suffix to crop name iff there are duplicates
+	// TODO: Add bottom margins for all list views
+	// TODO: Make the HomeFragment buttons into squares, and center the square buttons in a square
 	// TODO: Make all bridge functions async; show a loading animation while async method executes
 	// TODO: use placeholder string resources in calls to TextView.setText()
 }

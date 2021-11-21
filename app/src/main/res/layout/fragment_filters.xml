@@ -4,82 +4,253 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:overScrollMode="always"
     tools:context=".history.FiltersFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:scrollbarStyle="insideOverlay">
 
-        <TextView
-            android:id="@+id/textView16"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:fontFamily="sans-serif-light"
-            android:padding="5dp"
-            android:text="@string/select_crops"
-            android:textSize="@dimen/subtitle_font_size"
-            app:layout_constraintStart_toStartOf="@+id/filters_selectSeasons"
-            app:layout_constraintTop_toBottomOf="@+id/filters_selectSeasons" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/filters_selectCrops"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-light"
-            android:hint="@string/click_to_select_crops"
-            android:padding="5dp"
-            android:textSize="@dimen/subtitle_font_size"
-            app:layout_constraintStart_toStartOf="@+id/textView16"
-            app:layout_constraintTop_toBottomOf="@+id/textView16" />
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/filter_selectedCropsChips"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/card_lightest_purple"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                app:chipSpacingHorizontal="3dp"
+                app:chipSpacingVertical="3dp"
+                app:ensureMinTouchTargetSize="true"
+                app:layout_constraintEnd_toEndOf="@+id/filter_selectedCropsTitleContainer"
+                app:layout_constraintStart_toStartOf="@+id/filter_selectedCropsTitleContainer"
+                app:layout_constraintTop_toBottomOf="@+id/filter_selectedCropsTitleContainer">
 
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="15dp"
-            android:fontFamily="sans-serif-light"
-            android:padding="5dp"
-            android:text="@string/select_seasons"
-            android:textSize="@dimen/subtitle_font_size"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            </com.google.android.material.chip.ChipGroup>
 
-        <TextView
-            android:id="@+id/filters_selectSeasons"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-light"
-            android:hint="@string/click_to_select_seasons"
-            android:padding="5dp"
-            android:textSize="@dimen/subtitle_font_size"
-            app:layout_constraintStart_toStartOf="@+id/textView4"
-            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/filter_selectedSeasonsChips"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/card_lightest_purple"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                app:ensureMinTouchTargetSize="false"
+                app:layout_constraintEnd_toEndOf="@+id/filter_selectedSeasonsTitleContainer"
+                app:layout_constraintStart_toStartOf="@+id/filter_selectedSeasonsTitleContainer"
+                app:layout_constraintTop_toBottomOf="@+id/filter_selectedSeasonsTitleContainer">
 
-        <TextView
-            android:id="@+id/textView20"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:fontFamily="sans-serif-light"
-            android:padding="5dp"
-            android:text="Summary"
-            android:textSize="@dimen/subtitle_font_size"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.507"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/filters_filterDataButton" />
+            </com.google.android.material.chip.ChipGroup>
 
-        <Button
-            android:id="@+id/filters_filterDataButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:text="@string/filter_data"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/filters_selectCrops" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/filter_selectedCropsTitleContainer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/card_lighter_purple"
+                app:layout_constraintEnd_toEndOf="@+id/filter_selectedSeasonsTitleContainer"
+                app:layout_constraintStart_toStartOf="@+id/filter_selectedSeasonsTitleContainer"
+                app:layout_constraintTop_toBottomOf="@+id/filter_selectedSeasonsChips">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:padding="7dp"
+                    android:text="@string/selected_crops"
+                    android:textSize="@dimen/subtitle_font_size"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/filter_addCropFiltersButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:includeFontPadding="false"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="5dp"
+                    android:text="@string/add"
+                    android:textSize="11sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/filter_selectedSeasonsTitleContainer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@color/card_lighter_purple"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:padding="7dp"
+                    android:text="@string/selected_seasons"
+                    android:textSize="@dimen/subtitle_font_size"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/filter_addSeasonFiltersButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:includeFontPadding="false"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="5dp"
+                    android:text="@string/add"
+                    android:textSize="11sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/card_lighter_purple"
+                android:fontFamily="sans-serif-light"
+                android:padding="7dp"
+                android:text="@string/summary"
+                android:textSize="@dimen/subtitle_font_size"
+                app:layout_constraintEnd_toEndOf="@+id/filter_selectedCropsTitleContainer"
+                app:layout_constraintStart_toStartOf="@+id/filter_selectedCropsTitleContainer"
+                app:layout_constraintTop_toBottomOf="@+id/filter_selectedCropsChips" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/filter_summaryContainer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@color/card_lightest_purple"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/textView15"
+                app:layout_constraintStart_toStartOf="@+id/textView15"
+                app:layout_constraintTop_toBottomOf="@+id/textView15"
+                app:layout_constraintVertical_bias="0.0">
+
+                <TextView
+                    android:id="@+id/filter_totalHarvests"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView19"
+                    app:layout_constraintEnd_toEndOf="@+id/filter_totalUnits"
+                    app:layout_constraintTop_toTopOf="@+id/textView19"
+                    tools:text="75" />
+
+                <TextView
+                    android:id="@+id/filter_totalUnits"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView18"
+                    app:layout_constraintEnd_toEndOf="@+id/filter_totalWeight"
+                    app:layout_constraintTop_toTopOf="@+id/textView18"
+                    tools:text="350" />
+
+                <TextView
+                    android:id="@+id/filter_totalWeight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:fontFamily="sans-serif-light"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView16"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/textView16"
+                    tools:text="1254000" />
+
+                <TextView
+                    android:id="@+id/textView18"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="sans-serif-light"
+                    android:text="@string/total_units_harvested"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@+id/textView16"
+                    app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
+                <TextView
+                    android:id="@+id/textView19"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="sans-serif-light"
+                    android:text="@string/no_of_harvests"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/textView18"
+                    app:layout_constraintTop_toBottomOf="@+id/textView18"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <TextView
+                    android:id="@+id/textView16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="sans-serif-light"
+                    android:text="@string/total_weight"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <Button
+                android:id="@+id/filter_viewDetails"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/view_details"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/filter_summaryContainer"
+                app:layout_constraintStart_toStartOf="@+id/filter_summaryContainer"
+                app:layout_constraintTop_toBottomOf="@+id/filter_summaryContainer"
+                app:layout_constraintVertical_bias="0.0" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
 </FrameLayout>

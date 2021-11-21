@@ -129,4 +129,12 @@ public class Helper
 		}
 		return "No Data";
 	}
+
+	public static <N extends Number> String formatData(N data)
+	{
+		if (data.doubleValue() > 0) {
+			return String.valueOf(data);
+		}
+		return "No data";
+	}
 }

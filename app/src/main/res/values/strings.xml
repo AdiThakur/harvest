@@ -11,6 +11,7 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
     <!--Common-->
+    <string name="add">Add</string>
     <string name="submit">Submit</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
@@ -26,6 +27,7 @@
     <string name="count">Count</string>
     <string name="edit">Edit</string>
     <string name="history">History</string>
+    <string name="summary">Summary</string>
 
     <string name="add_crop">Add Crop</string>
     <string name="add_plant">Add Plant</string>
@@ -46,7 +48,10 @@
 
     <!-- Harvest -->
     <string name="units">units</string>
+    <string name="total_units_harvested">Total Units Harvested</string>
+    <string name="no_of_harvests">Number of Harvests</string>
     <string name="total_weight">Total Weight</string>
+    <string name="total_weight_grams">Total Weight (g)</string>
     <string name="estimated_total_weight">Estimated Total Weight</string>
     <string name="units_harvested">Units Harvested</string>
     <string name="selected_crop">Selected Crop</string>
@@ -54,9 +59,12 @@
 
     <!-- History -->
     <string name="select_seasons">Select Seasons</string>
+    <string name="selected_seasons">Selected Seasons</string>
     <string name="click_to_select_seasons">Click to Select Seasons</string>
     <string name="select_crops">Select Crops</string>
+    <string name="selected_crops">Selected Crops</string>
     <string name="click_to_select_crops">Click to Select Crops</string>
     <string name="filter_data">Filter Data</string>
+    <string name="view_details">View Details</string>
 
 </resources>
