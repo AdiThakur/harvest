@@ -1,6 +1,7 @@
 package common;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
@@ -48,10 +49,15 @@ public class BaseFragment extends Fragment
 
 	protected void navigateTo(@IdRes int source, @IdRes int action)
 	{
+		navigateTo(source, action, null);
+	}
+
+	protected void navigateTo(@IdRes int source, @IdRes int action, Bundle bundle)
+	{
 		NavDestination currentDestination =
-			NavHostFragment.findNavController(this).getCurrentDestination();
+				NavHostFragment.findNavController(this).getCurrentDestination();
 		if (currentDestination != null && currentDestination.getId() == source) {
-			NavHostFragment.findNavController(this).navigate(action);
+			NavHostFragment.findNavController(this).navigate(action, bundle);
 		}
 	}
 

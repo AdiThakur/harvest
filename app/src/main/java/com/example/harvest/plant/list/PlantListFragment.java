@@ -21,6 +21,7 @@ import common.OnClickListener;
 import com.example.harvest.R;
 import com.example.harvest.crop.add.CropAddVM;
 import com.example.harvest.plant.PlantAdapter;
+import com.example.harvest.plant.edit.PlantEditFragment;
 
 import common.BaseFragment;
 import data.models.Plant;
@@ -63,7 +64,7 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 		super.onViewCreated(view, savedInstanceState);
 		setTitle("My Plants");
 
-		adapter = new PlantAdapter(getContext(), plantListVM.getPlants(), this);
+		adapter = new PlantAdapter(getContext(), plantListVM.loadPlants(), this);
 		recyclerView = view.findViewById(R.id.plantList_plantRcv);
 		recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
 		recyclerView.setAdapter(adapter);
@@ -148,12 +149,16 @@ public class PlantListFragment extends BaseFragment implements OnClickListener
 	}
 
 	@Override
-	public void onNestedButtonClick(int rowIndex)
+	public void onNestedButtonClick(int position)
 	{
-		plantListVM.setPlantToUpdate(rowIndex);
+		Plant plantToEdit = plantListVM.getPlants().get(position);
+		Bundle bundle = new Bundle();
+		bundle.putLong(PlantEditFragment.PLANT_UID_KEY, plantToEdit.uid);
+
 		navigateTo(
 			R.id.plantListFragment,
-			R.id.action_plantListFragment_to_plantEditFragment
+			R.id.action_plantListFragment_to_plantEditFragment,
+			bundle
 		);
 	}
 }

@@ -1,10 +1,9 @@
-package com.example.harvest.plant.list;
+package com.example.harvest.plant.edit;
 
 import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.util.Pair;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -19,78 +18,79 @@ import data.bridges.BridgeFactory;
 import data.bridges.PlantBridge;
 import data.models.Plant;
 
-public class PlantListVM extends AndroidViewModel
+public class PlantEditVM extends AndroidViewModel
 {
 	private final PlantBridge bridge;
-	private List<Plant> plants;
-
-	private final MutableLiveData<Pair<Long, Integer>> deletePlant;
-	public LiveData<Pair<Long, Integer>> deletePlant$;
-
 	private Plant toUpdate;
+	public Uri newImageUri;
+
+	private final MutableLiveData<Plant> getPlant;
+	public LiveData<Plant> getPlant$;
 
 	private final MutableLiveData<Event<String>> error;
 	public LiveData<Event<String>> error$;
 
-	public PlantListVM(@NonNull Application application)
+	public PlantEditVM(@NonNull Application application)
 	{
 		super(application);
 
 		BridgeFactory bridgeFactory = new BridgeFactory(application.getApplicationContext());
 		bridge = bridgeFactory.getPlantBridge();
 
-
-		deletePlant = new MutableLiveData<>();
-		deletePlant$ = deletePlant;
+		getPlant = new MutableLiveData<>();
+		getPlant$ = getPlant;
 
 		error = new MutableLiveData<>();
 		error$ = error;
 	}
 
-	public List<Plant> loadPlants()
+	public void getPlant(long uid)
 	{
-		plants = bridge.getAll();
-		return plants;
-	}
+		Plant plant = bridge.getById(uid);
 
-	public List<Plant> getPlants()
-	{
-		return plants;
-	}
-
-	public void addPlant(String name, double unitWeight, Uri imageUri)
-	{
-		String fileName = saveImage(imageUri);
-
-		if (fileName == null) {
-			String message = "Image wasn't saved! Please try again!";
-			error.setValue(new Event<>(message));
-			return;
-		}
-
-		Plant newPlant = new Plant(name, unitWeight, fileName);
-		newPlant = bridge.insert(newPlant);
-
-		if (newPlant.uid == 0) {
-			String message = newPlant.name + " couldn't be saved!";
-			deleteImage(newPlant.imageFileName);
+		if (plant == null) {
+			String message = "Plant couldn't be loaded";
 			error.setValue(new Event<>(message));
 		} else {
-			plants.add(newPlant);
+			toUpdate = plant;
+			getPlant.setValue(plant);
 		}
 	}
 
-	public void deletePlant(Plant plant, int position)
+	public void updatePlant(String name, double unitWeight)
 	{
-		int deleteCount = bridge.delete(plant);
+		String oldFileName = toUpdate.imageFileName;
+		String fileName = toUpdate.imageFileName;
+		boolean isSameImage = true;
 
-		if (deleteCount == 0) {
-			String message = plant.name + " couldn't be deleted. It is needed by 1 or more Crops!";
+		if (newImageUri != null) {
+			String newImageName = extractFileNameFromUri(newImageUri);
+			isSameImage = fileName.contains(newImageName);
+
+			if (!isSameImage) {
+				fileName = saveImage(newImageUri);
+				if (fileName == null) {
+					String message = "Image wasn't saved! Please try again!";
+					error.setValue(new Event<>(message));
+					return;
+				}
+			}
+		}
+
+		toUpdate.name = name;
+		toUpdate.unitWeight = unitWeight;
+		toUpdate.imageFileName = fileName;
+		int updateCount = bridge.update(toUpdate);
+
+		if (updateCount == 0) {
+			String message = "Plant couldn't be updated!";
+			deleteImage(fileName);
 			error.setValue(new Event<>(message));
 		} else {
-			deleteImage(plant.imageFileName);
-			plants.remove(plant);
-			deletePlant.setValue(new Pair<>(plant.uid, position));
+			// Remove old image if this Plant is associated with a new one
+			if (!isSameImage) {
+				deleteImage(oldFileName);
+			}
 		}
 	}
 

@@ -19,7 +19,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.example.harvest.R;
-import com.example.harvest.plant.list.PlantListVM;
 
 import common.BaseFragment;
 import common.Helper;
@@ -27,9 +26,9 @@ import data.models.Plant;
 
 public class PlantEditFragment extends BaseFragment
 {
-	Uri newImageUri;
+	public static final String PLANT_UID_KEY = "plant_uid";
 
-	private PlantListVM plantListVM;
+	private PlantEditVM vm;
 	private ActivityResultLauncher<String> getContent;
 
 	private EditText plantNameEditText;
@@ -43,7 +42,7 @@ public class PlantEditFragment extends BaseFragment
 	{
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-		plantListVM = getProvider(R.id.plant_nav_graph).get(PlantListVM.class);
+		vm = getProvider(this).get(PlantEditVM.class);
 	}
 
 	@Nullable
@@ -57,8 +56,8 @@ public class PlantEditFragment extends BaseFragment
 					displayWarning("No image selected; using default");
 					return;
 				}
-				newImageUri = result;
-				plantImage.setImageURI(newImageUri);
+				vm.newImageUri = result;
+				plantImage.setImageURI(vm.newImageUri);
 			}
 		);
 
@@ -71,21 +70,26 @@ public class PlantEditFragment extends BaseFragment
 		super.onViewCreated(view, savedInstanceState);
 		setTitle("Edit Plant");
 
-		Plant plantBeingEdited = plantListVM.getPlantToUpdate();
-
 		plantNameEditText = view.findViewById(R.id.plantAdd_plantNameEditText);
-		plantNameEditText.setText(plantBeingEdited.name);
-
 		plantUnitWeightEditText = view.findViewById(R.id.plantAdd_plantUnitWeightEditText);
-		plantUnitWeightEditText.setText(String.valueOf(plantBeingEdited.unitWeight));
-
 		plantImage = view.findViewById(R.id.plantAdd_plantImage);
-		plantImage.setImageBitmap(
-			Helper.loadBitmapFromImage(requireContext(), plantBeingEdited.imageFileName)
-		);
-
 		Button chooseImage = view.findViewById(R.id.plantAdd_ChooseImageButton);
 		chooseImage.setOnClickListener(v -> chooseImage());
+
+		Bundle args = getArguments();
+
+		if (args != null) {
+			long plantUid = (long) args.get(PLANT_UID_KEY);
+			vm.getPlant$.observe(getViewLifecycleOwner(), plant -> {
+				plantNameEditText.setText(plant.name);
+				plantUnitWeightEditText.setText(String.valueOf(plant.unitWeight));
+				plantImage.setImageBitmap(
+						Helper.loadBitmapFromImage(requireContext(), plant.imageFileName)
+				);
+			});
+
+			vm.getPlant(plantUid);
+		}
 	}
 
 	@Override
@@ -135,7 +139,7 @@ public class PlantEditFragment extends BaseFragment
 			plantUnitWeight = Double.parseDouble(plantUnitWeightString);
 		}
 
-		plantListVM.updatePlant(plantName, plantUnitWeight, newImageUri);
+		vm.updatePlant(plantName, plantUnitWeight);
 		navigateUp();
 	}
 }
