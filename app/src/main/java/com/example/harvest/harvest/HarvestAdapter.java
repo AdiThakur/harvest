@@ -17,6 +17,7 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 import common.Helper;
+import common.ImageHelper;
 import common.OnClickListener;
 import data.models.Harvest;
 
@@ -115,7 +116,7 @@ public class HarvestAdapter extends RecyclerView.Adapter<HarvestViewHolder>
 		}
 
 		holder.dateHarvestedTextView.setText(Helper.shortFormatOfDate(harvest.dateHarvested));
-		holder.cropImageView.setImageBitmap(Helper.loadBitmapFromImage(context, filename));
+		holder.cropImageView.setImageBitmap(ImageHelper.loadBitmapFromImage(context, filename));
 		holder.cropNameTextView.setText(harvest.crop.plant.name);
 		holder.totalWeightTextView.setText(totalWeightString);
 		holder.unitsHarvestedTextView.setText(unitsHarvestedString);

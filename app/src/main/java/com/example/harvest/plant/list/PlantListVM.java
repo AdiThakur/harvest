@@ -1,8 +1,6 @@
 package com.example.harvest.plant.list;
 
 import android.app.Application;
-import android.content.Context;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Pair;
 
@@ -14,7 +12,7 @@ import androidx.lifecycle.MutableLiveData;
 import java.util.List;
 
 import common.Event;
-import common.Helper;
+import common.ImageHelper;
 import data.bridges.BridgeFactory;
 import data.bridges.PlantBridge;
 import data.models.Plant;
@@ -26,8 +24,6 @@ public class PlantListVM extends AndroidViewModel
 
 	private final MutableLiveData<Pair<Long, Integer>> deletePlant;
 	public LiveData<Pair<Long, Integer>> deletePlant$;
-
-	private Plant toUpdate;
 
 	private final MutableLiveData<Event<String>> error;
 	public LiveData<Event<String>> error$;
@@ -60,7 +56,8 @@ public class PlantListVM extends AndroidViewModel
 
 	public void addPlant(String name, double unitWeight, Uri imageUri)
 	{
-		String fileName = saveImage(imageUri);
+		String fileName =
+			ImageHelper.saveImage(getApplication().getApplicationContext(), imageUri);
 
 		if (fileName == null) {
 			String message = "Image wasn't saved! Please try again!";
@@ -73,7 +70,7 @@ public class PlantListVM extends AndroidViewModel
 
 		if (newPlant.uid == 0) {
 			String message = newPlant.name + " couldn't be saved!";
-			deleteImage(newPlant.imageFileName);
+			ImageHelper.deleteImage(getApplication().getApplicationContext(), newPlant.imageFileName);
 			error.setValue(new Event<>(message));
 		} else {
 			plants.add(newPlant);
@@ -88,30 +85,9 @@ public class PlantListVM extends AndroidViewModel
 			String message = plant.name + " couldn't be deleted. It is needed by 1 or more Crops!";
 			error.setValue(new Event<>(message));
 		} else {
-			deleteImage(plant.imageFileName);
+			ImageHelper.deleteImage(getApplication().getApplicationContext(), plant.imageFileName);
 			plants.remove(plant);
 			deletePlant.setValue(new Pair<>(plant.uid, position));
 		}
-	}
-
-	// Private Helpers
-
-	private String extractFileNameFromUri(Uri uri)
-	{
-		List<String> segments = uri.getPathSegments();
-		return segments.get(segments.size() - 1);
-	}
-
-	private String saveImage(Uri imageUri)
-	{
-		Context context = getApplication().getApplicationContext();
-		Bitmap imageBitmap = Helper.convertImageToBitmap(context, imageUri);
-
-		return Helper.saveBitmapToImage(context, imageBitmap, extractFileNameFromUri(imageUri));
-	}
-
-	private boolean deleteImage(String fileName)
-	{
-		return getApplication().getApplicationContext().deleteFile(fileName);
 	}
 }

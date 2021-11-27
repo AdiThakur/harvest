@@ -9,7 +9,6 @@ import androidx.lifecycle.MutableLiveData;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 import common.Event;
 import common.Helper;

@@ -10,12 +10,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import common.OnClickListener;
 import com.example.harvest.R;
 
 import java.util.List;
 
 import common.Helper;
+import common.ImageHelper;
+import common.OnClickListener;
 import data.models.Plant;
 
 class PlantViewHolder extends RecyclerView.ViewHolder
@@ -77,7 +78,7 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantViewHolder>
 		Plant plant = plants.get(position);
 
 		holder.plantNameTextView.setText(plant.name);
-		holder.plantImageView.setImageBitmap(Helper.loadBitmapFromImage(context, plant.imageFileName));
+		holder.plantImageView.setImageBitmap(ImageHelper.loadBitmapFromImage(context, plant.imageFileName));
 		holder.plantUnitWeightTextView.setText(Helper.formatUnitWeight(plant.unitWeight));
 	}
 

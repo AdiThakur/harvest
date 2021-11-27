@@ -15,13 +15,13 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import common.Event;
-import common.OnClickListener;
 import com.example.harvest.R;
 import com.example.harvest.crop.CropAdapter;
 import com.example.harvest.harvest.add.HarvestAddVM;
 
 import common.BaseFragment;
+import common.Event;
+import common.OnClickListener;
 import data.models.Crop;
 
 public class CropListFragment extends BaseFragment implements OnClickListener

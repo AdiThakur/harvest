@@ -22,6 +22,7 @@ import java.time.LocalDate;
 
 import common.BaseFragment;
 import common.Helper;
+import common.ImageHelper;
 import data.models.Harvest;
 
 public class HarvestEditFragment extends BaseFragment
@@ -54,7 +55,7 @@ public class HarvestEditFragment extends BaseFragment
 
 		cropImage = view.findViewById(R.id.harvestEdit_CropImageView);
 		cropImage.setImageBitmap(
-			Helper.loadBitmapFromImage(requireContext(), harvestBeingEdited.crop.plant.imageFileName)
+			ImageHelper.loadBitmapFromImage(requireContext(), harvestBeingEdited.crop.plant.imageFileName)
 		);
 
 		titleTextView = view.findViewById(R.id.harvestEdit_TitleTextView);

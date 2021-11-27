@@ -1,8 +1,5 @@
 package com.example.harvest.crop;
 
-import common.OnClickListener;
-import com.example.harvest.R;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +10,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.harvest.R;
+
 import java.util.List;
 
 import common.Helper;
+import common.ImageHelper;
+import common.OnClickListener;
 import data.models.Crop;
 
 class CropViewHolder extends RecyclerView.ViewHolder
@@ -77,7 +78,7 @@ public class CropAdapter extends RecyclerView.Adapter<CropViewHolder>
 	public void onBindViewHolder(@NonNull CropViewHolder holder, int position)
 	{
 		Crop crop = crops.get(position);
-		holder.cropImageView.setImageBitmap(Helper.loadBitmapFromImage(context, crop.plant.imageFileName));
+		holder.cropImageView.setImageBitmap(ImageHelper.loadBitmapFromImage(context, crop.plant.imageFileName));
 		holder.cropNameTextView.setText(crop.plant.name);
 		holder.cropCountTextView.setText(String.valueOf(crop.numberOfPlants));
 		holder.cropPlantedDateTextView.setText(Helper.shortFormatOfDate(crop.datePlanted));

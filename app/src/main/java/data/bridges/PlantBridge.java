@@ -3,8 +3,6 @@ package data.bridges;
 import java.util.List;
 
 import data.daos.PlantDao;
-import data.db.HarvestDB;
-import data.models.Harvest;
 import data.models.Plant;
 
 public class PlantBridge implements IBridge<Plant>

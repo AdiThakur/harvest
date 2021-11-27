@@ -4,7 +4,6 @@ import java.util.List;
 
 import data.daos.CropDao;
 import data.models.Crop;
-import data.models.Harvest;
 
 public class CropBridge implements IBridge<Crop>
 {

@@ -1,8 +1,6 @@
 package com.example.harvest.plant.edit;
 
 import android.app.Application;
-import android.content.Context;
-import android.graphics.Bitmap;
 import android.net.Uri;
 
 import androidx.annotation.NonNull;
@@ -10,10 +8,8 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import java.util.List;
-
 import common.Event;
-import common.Helper;
+import common.ImageHelper;
 import data.bridges.BridgeFactory;
 import data.bridges.PlantBridge;
 import data.models.Plant;
@@ -64,11 +60,12 @@ public class PlantEditVM extends AndroidViewModel
 		boolean isSameImage = true;
 
 		if (newImageUri != null) {
-			String newImageName = extractFileNameFromUri(newImageUri);
+			String newImageName = ImageHelper.extractFileNameFromUri(newImageUri);
 			isSameImage = fileName.contains(newImageName);
 
 			if (!isSameImage) {
-				fileName = saveImage(newImageUri);
+				fileName =
+					ImageHelper.saveImage(getApplication().getApplicationContext(), newImageUri);
 				if (fileName == null) {
 					String message = "Image wasn't saved! Please try again!";
 					error.setValue(new Event<>(message));
@@ -84,34 +81,13 @@ public class PlantEditVM extends AndroidViewModel
 
 		if (updateCount == 0) {
 			String message = "Plant couldn't be updated!";
-			deleteImage(fileName);
+			ImageHelper.deleteImage(getApplication().getApplicationContext(), fileName);
 			error.setValue(new Event<>(message));
 		} else {
 			// Remove old image if this Plant is associated with a new one
 			if (!isSameImage) {
-				deleteImage(oldFileName);
+				ImageHelper.deleteImage(getApplication().getApplicationContext(), oldFileName);
 			}
 		}
-	}
-
-	// Private Helpers
-
-	private String extractFileNameFromUri(Uri uri)
-	{
-		List<String> segments = uri.getPathSegments();
-		return segments.get(segments.size() - 1);
-	}
-
-	private String saveImage(Uri imageUri)
-	{
-		Context context = getApplication().getApplicationContext();
-		Bitmap imageBitmap = Helper.convertImageToBitmap(context, imageUri);
-
-		return Helper.saveBitmapToImage(context, imageBitmap, extractFileNameFromUri(imageUri));
-	}
-
-	private boolean deleteImage(String fileName)
-	{
-		return getApplication().getApplicationContext().deleteFile(fileName);
 	}
 }

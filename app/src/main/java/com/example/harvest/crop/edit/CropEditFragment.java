@@ -1,33 +1,29 @@
 package com.example.harvest.crop.edit;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.example.harvest.R;
-import com.example.harvest.crop.add.CropAddVM;
 import com.example.harvest.crop.list.CropListVM;
 
 import java.time.LocalDate;
 
 import common.BaseFragment;
 import common.Helper;
+import common.ImageHelper;
 import data.models.Crop;
-import data.models.Plant;
 
 public class CropEditFragment extends BaseFragment
 {
@@ -64,7 +60,7 @@ public class CropEditFragment extends BaseFragment
 
 		plantImageView = plantContainer.findViewById(R.id.plantRcvItem_plantImage);
 		plantImageView.setImageBitmap(
-			Helper.loadBitmapFromImage(requireContext(), cropBeingEdited.plant.imageFileName)
+			ImageHelper.loadBitmapFromImage(requireContext(), cropBeingEdited.plant.imageFileName)
 		);
 
 		plantNameTextView = plantContainer.findViewById(R.id.plantRcvItem_plantNameText);

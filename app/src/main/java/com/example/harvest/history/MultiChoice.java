@@ -2,7 +2,6 @@ package com.example.harvest.history;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.widget.ListView;
 
 import java.util.ArrayList;

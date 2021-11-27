@@ -2,12 +2,6 @@ package com.example.harvest.plant.edit;
 
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,10 +12,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.example.harvest.R;
 
 import common.BaseFragment;
-import common.Helper;
+import common.ImageHelper;
 import data.models.Plant;
 
 public class PlantEditFragment extends BaseFragment
@@ -84,7 +83,7 @@ public class PlantEditFragment extends BaseFragment
 				plantNameEditText.setText(plant.name);
 				plantUnitWeightEditText.setText(String.valueOf(plant.unitWeight));
 				plantImage.setImageBitmap(
-						Helper.loadBitmapFromImage(requireContext(), plant.imageFileName)
+					ImageHelper.loadBitmapFromImage(requireContext(), plant.imageFileName)
 				);
 			});
 

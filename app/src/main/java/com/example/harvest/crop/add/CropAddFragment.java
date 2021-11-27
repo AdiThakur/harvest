@@ -1,21 +1,19 @@
 package com.example.harvest.crop.add;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.example.harvest.R;
 import com.example.harvest.crop.list.CropListVM;
@@ -24,6 +22,7 @@ import java.time.LocalDate;
 
 import common.BaseFragment;
 import common.Helper;
+import common.ImageHelper;
 import data.models.Plant;
 
 public class CropAddFragment extends BaseFragment
@@ -88,7 +87,7 @@ public class CropAddFragment extends BaseFragment
 				plantNameTextView.setText(selectedPlant.name);
 				plantWeightTextView.setText(Helper.formatUnitWeight(selectedPlant.unitWeight));
 				plantImageView.setImageBitmap(
-					Helper.loadBitmapFromImage(requireContext(), selectedPlant.imageFileName)
+					ImageHelper.loadBitmapFromImage(requireContext(), selectedPlant.imageFileName)
 				);
 			}
 		});
