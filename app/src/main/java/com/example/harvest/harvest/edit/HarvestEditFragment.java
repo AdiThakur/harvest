@@ -16,19 +16,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.harvest.R;
-import com.example.harvest.harvest.list.HarvestListVM;
 
 import java.time.LocalDate;
 
 import common.BaseFragment;
 import common.Helper;
 import common.ImageHelper;
-import data.models.Harvest;
 
 public class HarvestEditFragment extends BaseFragment
 {
-	HarvestListVM harvestListVM;
-	LocalDate newHarvestedDate;
+	public static final String HARVEST_UID_KEY = "harvest_uid";
+
+	private HarvestEditVM vm;
 
 	private ImageView cropImage;
 	private TextView titleTextView;
@@ -43,41 +42,14 @@ public class HarvestEditFragment extends BaseFragment
 	{
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-		harvestListVM = getProvider(R.id.harvest_nav_graph).get(HarvestListVM.class);
+		vm = getProvider(this).get(HarvestEditVM.class);
 	}
 
 	@Nullable
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
 	{
-		View view = inflater.inflate(R.layout.fragment_harvest_edit, container, false);
-		Harvest harvestBeingEdited = harvestListVM.getHarvestToUpdate();
-
-		cropImage = view.findViewById(R.id.harvestEdit_CropImageView);
-		cropImage.setImageBitmap(
-			ImageHelper.loadBitmapFromImage(requireContext(), harvestBeingEdited.crop.plant.imageFileName)
-		);
-
-		titleTextView = view.findViewById(R.id.harvestEdit_TitleTextView);
-		titleTextView.setText(harvestBeingEdited.crop.plant.name);
-
-		dateTextView = view.findViewById(R.id.harvestEdit_dateTextView);
-		dateTextView.setText(Helper.shortFormatOfDate(harvestBeingEdited.dateHarvested));
-
-		unitsHarvestedEditText = view.findViewById(R.id.harvestEdit_harvestCountEditText);
-		unitsHarvestedEditText.setText(String.valueOf(harvestBeingEdited.unitsHarvested));
-
-		totalWeightEditText = view.findViewById(R.id.harvestEdit_totalWeightEditText);
-		totalWeightEditText.setText(String.valueOf(harvestBeingEdited.totalWeight));
-
-		long millis = (harvestBeingEdited.dateHarvested.toEpochDay() + 1) * 86400 * 1000;
-		dateHarvestCalendarView = view.findViewById(R.id.harvestEdit_dateHarvestedCalendarView);
-		dateHarvestCalendarView.setDate(millis);
-		dateHarvestCalendarView.setOnDateChangeListener((calendarView, year, month, day) -> {
-			newHarvestedDate = LocalDate.of(year, month + 1, day);
-		});
-
-		return view;
+		return inflater.inflate(R.layout.fragment_harvest_edit, container, false);
 	}
 
 	@Override
@@ -85,6 +57,36 @@ public class HarvestEditFragment extends BaseFragment
 	{
 		super.onViewCreated(view, savedInstanceState);
 		setTitle("Edit Harvest");
+
+		titleTextView = view.findViewById(R.id.harvestEdit_TitleTextView);
+		cropImage = view.findViewById(R.id.harvestEdit_CropImageView);
+		dateTextView = view.findViewById(R.id.harvestEdit_dateTextView);
+		unitsHarvestedEditText = view.findViewById(R.id.harvestEdit_harvestCountEditText);
+		totalWeightEditText = view.findViewById(R.id.harvestEdit_totalWeightEditText);
+		dateHarvestCalendarView = view.findViewById(R.id.harvestEdit_dateHarvestedCalendarView);
+		dateHarvestCalendarView.setOnDateChangeListener((calendarView, year, month, day) -> {
+			vm.newHarvestedDate = LocalDate.of(year, month + 1, day);
+		});
+
+		Bundle args = getArguments();
+
+		if (args != null) {
+			vm.getHarvest$.observe(getViewLifecycleOwner(), harvest -> {
+				titleTextView.setText(harvest.crop.plant.name);
+				dateTextView.setText(Helper.shortFormatOfDate(harvest.dateHarvested));
+				unitsHarvestedEditText.setText(String.valueOf(harvest.unitsHarvested));
+				totalWeightEditText.setText(String.valueOf(harvest.totalWeight));
+				cropImage.setImageBitmap(
+					ImageHelper.loadBitmapFromImage(requireContext(), harvest.crop.plant.imageFileName)
+				);
+
+				long millis = (harvest.dateHarvested.toEpochDay() + 1) * 86400 * 1000;
+				dateHarvestCalendarView.setDate(millis);
+			});
+
+			long harvestUid = (long) args.get(HARVEST_UID_KEY);
+			vm.getHarvest(harvestUid);
+		}
 	}
 
 	@Override
@@ -110,18 +112,14 @@ public class HarvestEditFragment extends BaseFragment
 
 	public void submit()
 	{
-		Harvest harvestBeingEdited = harvestListVM.getHarvestToUpdate();
-
 		String unitsHarvestedString = unitsHarvestedEditText.getText().toString();
 		String totalWeightString = totalWeightEditText.getText().toString();
-		LocalDate dateHarvested =
-			(newHarvestedDate != null) ? newHarvestedDate : harvestBeingEdited.dateHarvested;
 
 		if (unitsHarvestedString.isEmpty() && totalWeightString.isEmpty()) {
 			displayWarning("At least one of Units Harvested and Total Weight must be specified");
 			return;
 		}
-		if (dateHarvested.isBefore(harvestBeingEdited.crop.datePlanted)) {
+		if (vm.newHarvestedDate.isBefore(vm.toUpdate.crop.datePlanted)) {
 			displayWarning("Can't set date of Harvest before the Crop was planted!");
 			return;
 		}
@@ -131,7 +129,7 @@ public class HarvestEditFragment extends BaseFragment
 		double totalWeight =
 			(totalWeightString.isEmpty()) ? 0 : Double.parseDouble(totalWeightString);
 
-		harvestListVM.updateHarvest(unitsHarvested, totalWeight, dateHarvested);
+		vm.updateHarvest(unitsHarvested, totalWeight);
 		navigateUp();
 	}
 }

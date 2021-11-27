@@ -78,7 +78,6 @@ public class PlantEditFragment extends BaseFragment
 		Bundle args = getArguments();
 
 		if (args != null) {
-			long plantUid = (long) args.get(PLANT_UID_KEY);
 			vm.getPlant$.observe(getViewLifecycleOwner(), plant -> {
 				plantNameEditText.setText(plant.name);
 				plantUnitWeightEditText.setText(String.valueOf(plant.unitWeight));
@@ -87,6 +86,7 @@ public class PlantEditFragment extends BaseFragment
 				);
 			});
 
+			long plantUid = (long) args.get(PLANT_UID_KEY);
 			vm.getPlant(plantUid);
 		}
 	}

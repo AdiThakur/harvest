@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.harvest.R;
 import com.example.harvest.harvest.HarvestAdapter;
+import com.example.harvest.harvest.edit.HarvestEditFragment;
 
 import common.BaseFragment;
 import common.Event;
@@ -53,12 +54,14 @@ public class HarvestListFragment extends BaseFragment implements OnClickListener
 		super.onViewCreated(view, savedInstanceState);
 		setTitle("This Season's Harvests");
 
-		adapter = new HarvestAdapter(getContext(), harvestListVM.getHarvests(), this);
+		adapter = new HarvestAdapter(getContext(), harvestListVM.loadHarvests(), this);
 		recyclerView = view.findViewById(R.id.harvestList_harvestRcv);
 		recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
 		recyclerView.setAdapter(adapter);
 
-		harvestListVM.deleteHarvest$.observe(getViewLifecycleOwner(), this::harvestDeletedObserver);
+		harvestListVM.deleteHarvest$.observe(getViewLifecycleOwner(), position -> {
+			adapter.notifyItemRemoved(position);
+		});
 		harvestListVM.error$.observe(getViewLifecycleOwner(), (Event<String> e) -> {
 			this.displayError(view, e);
 		});
@@ -81,13 +84,6 @@ public class HarvestListFragment extends BaseFragment implements OnClickListener
 		}
 
 		return true;
-	}
-
-	// Observers
-
-	private void harvestDeletedObserver(int position)
-	{
-		adapter.notifyItemRemoved(position);
 	}
 
 	// Callbacks for user-generated events
@@ -126,12 +122,16 @@ public class HarvestListFragment extends BaseFragment implements OnClickListener
 	}
 
 	@Override
-	public void onNestedButtonClick(int rowIndex)
+	public void onNestedButtonClick(int position)
 	{
-		harvestListVM.setHarvestToUpdate(rowIndex);
+		Harvest harvestToEdit = harvestListVM.getHarvests().get(position);
+		Bundle bundle = new Bundle();
+		bundle.putLong(HarvestEditFragment.HARVEST_UID_KEY, harvestToEdit.uid);
+
 		navigateTo(
 			R.id.harvestListFragment,
-			R.id.action_harvestListFragment_to_harvestEditFragment
+			R.id.action_harvestListFragment_to_harvestEditFragment,
+			bundle
 		);
 	}
 }

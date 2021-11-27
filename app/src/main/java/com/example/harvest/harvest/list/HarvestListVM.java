@@ -21,12 +21,10 @@ import use_cases.GetCurrentSeasonIdUC;
 public class HarvestListVM extends AndroidViewModel
 {
 	private final HarvestBridge bridge;
-	private final List<Harvest> harvests;
+	private List<Harvest> harvests;
 
 	private final MutableLiveData<Integer> deleteHarvest;
 	public final LiveData<Integer> deleteHarvest$;
-
-	private Harvest toUpdate;
 
 	private final MutableLiveData<Event<String>> error;
 	public final LiveData<Event<String>> error$;
@@ -36,9 +34,7 @@ public class HarvestListVM extends AndroidViewModel
 		super(application);
 
 		BridgeFactory bridgeFactory = new BridgeFactory(application.getApplicationContext());
-		long currentSeasonId = (new GetCurrentSeasonIdUC(application.getApplicationContext())).use();
 		bridge = bridgeFactory.getHarvestBridge();
-		harvests = bridge.getAllBySeason(currentSeasonId);
 
 		deleteHarvest = new MutableLiveData<>();
 		deleteHarvest$ = deleteHarvest;
@@ -47,9 +43,18 @@ public class HarvestListVM extends AndroidViewModel
 		error$ = error;
 	}
 
+	public List<Harvest> loadHarvests()
+	{
+		long currentSeasonId =
+			(new GetCurrentSeasonIdUC(getApplication().getApplicationContext())).use();
+		harvests = bridge.getAllBySeason(currentSeasonId);
+		sort(harvests);
+
+		return harvests;
+	}
+
 	public List<Harvest> getHarvests()
 	{
-		harvests.sort((h1, h2) -> Helper.compareDates(h1.dateHarvested, h2.dateHarvested));
 		return harvests;
 	}
 
@@ -82,32 +87,10 @@ public class HarvestListVM extends AndroidViewModel
 		}
 	}
 
-	public Harvest getHarvestToUpdate()
+	// Private Helpers
+
+	private void sort(List<Harvest> harvests)
 	{
-		return toUpdate;
-	}
-
-	public void setHarvestToUpdate(int position)
-	{
-		toUpdate = harvests.get(position);
-	}
-
-	public void updateHarvest(int unitsHarvested, double totalWeight, LocalDate dateHarvested)
-	{
-		Harvest updateCopy = Harvest.ShallowCopy(toUpdate);
-		updateCopy.unitsHarvested = unitsHarvested;
-		updateCopy.totalWeight = totalWeight;
-		updateCopy.dateHarvested = dateHarvested;
-
-		int updateCount = bridge.update(updateCopy);
-
-		if (updateCount == 0) {
-			String message = "Harvest couldn't be updated!";
-			error.setValue(new Event<>(message));
-		} else {
-			toUpdate.unitsHarvested = unitsHarvested;
-			toUpdate.totalWeight = totalWeight;
-			toUpdate.dateHarvested = dateHarvested;
-		}
+		harvests.sort((h1, h2) -> Helper.compareDates(h1.dateHarvested, h2.dateHarvested));
 	}
 }
