@@ -3,6 +3,8 @@ package common;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Helper
 {
@@ -60,5 +62,10 @@ public class Helper
 			return String.valueOf(data);
 		}
 		return "No data";
+	}
+
+	public static <T> List<String> allToString(List<T> items)
+	{
+		return items.stream().map(Object::toString).collect(Collectors.toList());
 	}
 }

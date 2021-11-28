@@ -31,15 +31,4 @@ public class Plant
 		this.unitWeight = unitWeight;
 		this.imageFileName = imageFileName;
 	}
-
-	public static Plant ShallowCopy(Plant toCopy)
-	{
-		Plant copy = new Plant();
-		copy.uid = toCopy.uid;
-		copy.name = toCopy.name;
-		copy.unitWeight = toCopy.unitWeight;
-		copy.imageFileName = toCopy.imageFileName;
-
-		return copy;
-	}
 }

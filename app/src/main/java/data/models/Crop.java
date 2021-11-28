@@ -6,6 +6,9 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 @Entity(tableName = "crop")
 public class Crop
@@ -56,5 +59,31 @@ public class Crop
 		copy.plant = toCopy.plant;
 
 		return copy;
+	}
+
+	public static List<String> distinctNames(List<Crop> crops)
+	{
+		HashMap<String, List<Crop>> namesMap = new HashMap<>();
+		List<String> distinctNames = new ArrayList<>();
+
+		for (Crop crop : crops) {
+			if (!namesMap.containsKey(crop.plant.name)) {
+				namesMap.put(crop.plant.name, new ArrayList<>());
+			}
+			namesMap.get(crop.plant.name).add(crop);
+		}
+
+		for (String key : namesMap.keySet()) {
+			List<Crop> sameNames = namesMap.get(key);
+			if (sameNames.size() == 1) {
+				distinctNames.add(sameNames.get(0).plant.name);
+			} else {
+				for (Crop crop : sameNames) {
+					distinctNames.add(String.format("%s (%d)", crop.plant.name, crop.seasonId));
+				}
+			}
+		}
+
+		return distinctNames;
 	}
 }

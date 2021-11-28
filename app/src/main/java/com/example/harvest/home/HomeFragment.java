@@ -69,7 +69,6 @@ public class HomeFragment extends BaseFragment
 	}
 
 	// TODO: FilterFragment: Make the Chip text smaller in FiltersFragment
-	// TODO: FilterFragment: only add year suffix to crop name iff there are duplicates
 	// TODO: Add bottom margins for all list views
 	// TODO: Make the edge/external margins (margins between elements and edge of screen) 10 dp, rather than the current 15
 	// TODO: Make the HomeFragment buttons into squares, and center the square buttons in a square

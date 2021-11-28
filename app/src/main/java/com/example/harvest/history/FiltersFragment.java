@@ -26,6 +26,7 @@ import java.util.Locale;
 import common.BaseFragment;
 import common.Helper;
 import common.OnClickListener;
+import data.models.Crop;
 import data.models.Harvest;
 
 public class FiltersFragment extends BaseFragment implements OnClickListener
@@ -84,11 +85,11 @@ public class FiltersFragment extends BaseFragment implements OnClickListener
 
 		// Initial render of selected options
 		if (vm.getSelectedYears() != null) {
-			populateChipGroup(selectedSeasonsChips, vm.getSelectedYears());
+			populateChipGroup(selectedSeasonsChips, Helper.allToString(vm.getSelectedYears()));
 			addCropFilters.setEnabled(true);
 		}
 		if (vm.getSelectedCrops() != null) {
-			populateChipGroup(selectedCropChips, vm.getSelectedCrops());
+			populateChipGroup(selectedCropChips, Crop.distinctNames(vm.getSelectedCrops()));
 		}
 
 		observe();
@@ -97,9 +98,9 @@ public class FiltersFragment extends BaseFragment implements OnClickListener
 
 	private void observe()
 	{
-		vm.yearsMultiChoice.selected$.subscribe(selectedSeasons -> {
-			populateChipGroup(selectedSeasonsChips, selectedSeasons);
-			boolean isEmpty = selectedSeasons.size() == 0;
+		vm.yearsMultiChoice.selected$.subscribe(selectedYears -> {
+			populateChipGroup(selectedSeasonsChips, Helper.allToString(selectedYears));
+			boolean isEmpty = selectedYears.size() == 0;
 
 			if (isEmpty) {
 				selectedCropChips.removeAllViews();
@@ -110,7 +111,7 @@ public class FiltersFragment extends BaseFragment implements OnClickListener
 		});
 
 		vm.cropsMultiChoice.selected$.subscribe(selectedCrops -> {
-			populateChipGroup(selectedCropChips, selectedCrops);
+			populateChipGroup(selectedCropChips, Crop.distinctNames(selectedCrops));
 			boolean isEmpty = selectedCrops.size() == 0;
 
 			if (isEmpty) {
@@ -133,14 +134,14 @@ public class FiltersFragment extends BaseFragment implements OnClickListener
 		});
 	}
 
-	private <T> void populateChipGroup(ChipGroup group, List<T> list)
+	private void populateChipGroup(ChipGroup group, List<String> list)
 	{
 		int i;
 		group.removeAllViews();
 
 		for (i = 0; i < MAX_CHIP_COUNT && i < list.size(); i++) {
 			Chip chip = new Chip(requireContext());
-			chip.setText(list.get(i).toString());
+			chip.setText(list.get(i));
 			group.addView(chip);
 		}
 
