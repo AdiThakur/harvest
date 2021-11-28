@@ -14,20 +14,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.harvest.R;
 import com.example.harvest.harvest.HarvestAdapter;
+import com.example.harvest.harvest.edit.HarvestEditFragment;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import common.BaseFragment;
 import common.Helper;
 import common.OnClickListener;
+import data.models.Harvest;
 
-public class FiltersFragment extends BaseFragment implements OnClickListener {
+public class FiltersFragment extends BaseFragment implements OnClickListener
+{
 	private final int MAX_CHIP_COUNT = 5;
 
-	private FiltersVM filtersVM;
+	private FiltersVM vm;
 
 	private Button addSeasonFilters;
 	private ChipGroup selectedSeasonsChips;
@@ -46,7 +50,7 @@ public class FiltersFragment extends BaseFragment implements OnClickListener {
 	public void onCreate(@Nullable Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		filtersVM = getProvider(R.id.history_nav_graph).get(FiltersVM.class);
+		vm = getProvider(R.id.history_nav_graph).get(FiltersVM.class);
 	}
 
 	@Nullable
@@ -63,11 +67,11 @@ public class FiltersFragment extends BaseFragment implements OnClickListener {
 		setTitle("Apply Filters");
 
 		addSeasonFilters = view.findViewById(R.id.filter_addSeasonFiltersButton);
-		addSeasonFilters.setOnClickListener(v -> filtersVM.showSeasonsMultiChoice(getContext()));
+		addSeasonFilters.setOnClickListener(v -> vm.showSeasonsMultiChoice(getContext()));
 		selectedSeasonsChips = view.findViewById(R.id.filter_selectedSeasonsChips);
 
 		addCropFilters = view.findViewById(R.id.filter_addCropFiltersButton);
-		addCropFilters.setOnClickListener(v -> filtersVM.showCropsMultiChoice(getContext()));
+		addCropFilters.setOnClickListener(v -> vm.showCropsMultiChoice(getContext()));
 		addCropFilters.setEnabled(false);
 		selectedCropChips = view.findViewById(R.id.filter_selectedCropsChips);
 
@@ -78,24 +82,50 @@ public class FiltersFragment extends BaseFragment implements OnClickListener {
 		rcv = view.findViewById(R.id.filter_rcv);
 		rcv.setLayoutManager(new LinearLayoutManager(requireActivity()));
 
-		filtersVM.yearsMultiChoice.selected$.subscribe(selectedSeasons -> {
+		// Initial render of selected options
+		if (vm.getSelectedYears() != null) {
+			populateChipGroup(selectedSeasonsChips, vm.getSelectedYears());
+			addCropFilters.setEnabled(true);
+		}
+		if (vm.getSelectedCrops() != null) {
+			populateChipGroup(selectedCropChips, vm.getSelectedCrops());
+		}
+
+		observe();
+		vm.filterData();
+	}
+
+	private void observe()
+	{
+		vm.yearsMultiChoice.selected$.subscribe(selectedSeasons -> {
 			populateChipGroup(selectedSeasonsChips, selectedSeasons);
-			boolean enabled = selectedSeasons.size() > 0;
+			boolean isEmpty = selectedSeasons.size() == 0;
 
-			if (!enabled) { selectedCropChips.removeAllViews(); }
-			addCropFilters.setEnabled(enabled);
+			if (isEmpty) {
+				selectedCropChips.removeAllViews();
+				clearSummaryAndDetails();
+			}
+
+			addCropFilters.setEnabled(!isEmpty);
 		});
 
-		filtersVM.cropsMultiChoice.selected$.subscribe(selectedCrops -> {
+		vm.cropsMultiChoice.selected$.subscribe(selectedCrops -> {
 			populateChipGroup(selectedCropChips, selectedCrops);
+			boolean isEmpty = selectedCrops.size() == 0;
+
+			if (isEmpty) {
+				clearSummaryAndDetails();
+			}
 		});
 
-		filtersVM.filteredResults$.observe(getViewLifecycleOwner(), filteredResult -> {
-			SummaryDetails details = filtersVM.summarizeData(filteredResult);
-			rcv.setAdapter(new HarvestAdapter(requireContext(), filteredResult, this));
-			totalWeight.setText(Helper.formatUnitWeight(details.totalWeight));
-			totalUnits.setText(Helper.formatData(details.totalUnits));
-			totalHarvests.setText(Helper.formatData(details.totalHarvests));
+		vm.filteredResults$.observe(getViewLifecycleOwner(), filteredResult -> {
+			if (filteredResult != null) {
+				SummaryDetails details = vm.summarizeData(filteredResult);
+				rcv.setAdapter(new HarvestAdapter(requireContext(), filteredResult, this));
+				totalWeight.setText(Helper.formatUnitWeight(details.totalWeight));
+				totalUnits.setText(Helper.formatData(details.totalUnits));
+				totalHarvests.setText(Helper.formatData(details.totalHarvests));
+			}
 		});
 	}
 
@@ -118,12 +148,33 @@ public class FiltersFragment extends BaseFragment implements OnClickListener {
 		}
 	}
 
-	@Override
-	public void onClick(View row, int rowIndex) {}
+	private void clearSummaryAndDetails()
+	{
+		rcv.setAdapter(new HarvestAdapter(requireContext(), new ArrayList<>(), this));
+		totalWeight.setText(Helper.formatUnitWeight(0));
+		totalUnits.setText(Helper.formatData(0));
+		totalHarvests.setText(Helper.formatData(0));
+	}
+
+	// OnClickListener interface overrides for HarvestAdapter
 
 	@Override
-	public void onLongClick(View row, int rowIndex) {}
+	public void onClick(View row, int position) {}
 
 	@Override
-	public void onNestedButtonClick(int rowIndex) {}
+	public void onLongClick(View row, int position) {}
+
+	@Override
+	public void onNestedButtonClick(int position)
+	{
+		Harvest harvestToEdit = vm.getFilterResult().get(position);
+		Bundle bundle = new Bundle();
+		bundle.putLong(HarvestEditFragment.HARVEST_UID_KEY, harvestToEdit.uid);
+
+		navigateTo(
+			R.id.filtersFragment,
+			R.id.action_filtersFragment_to_harvestEditFragment2,
+			bundle
+		);
+	}
 }

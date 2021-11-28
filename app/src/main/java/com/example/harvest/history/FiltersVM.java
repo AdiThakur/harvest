@@ -34,7 +34,6 @@ public class FiltersVM extends AndroidViewModel
 	private MutableLiveData<List<Harvest>> filteredResults;
 	public LiveData<List<Harvest>> filteredResults$;
 
-	// TODO: Refactor ctor
 	public FiltersVM(@NonNull Application application)
 	{
 		super(application);
@@ -44,26 +43,28 @@ public class FiltersVM extends AndroidViewModel
 		cropBridge = new BridgeFactory(application.getApplicationContext()).getCropBridge();
 
 		yearsMultiChoice = new MultiChoice<>();
+		yearsMultiChoice.setOptions(seasonBridge.getAllYears());
+
 		cropsMultiChoice = new MultiChoice<>();
 		filteredResults = new MutableLiveData<>();
 		filteredResults$ = filteredResults;
 
-		yearsMultiChoice.setOptions(seasonBridge.getAllYears());
-		yearsMultiChoice.selected$.subscribe(options -> {
-			selectedYears = options;
-			selectedCrops = new ArrayList<>();
-			List<Crop> allCrops = new ArrayList<>();
-			selectedYears.forEach(year -> {
-				allCrops.addAll(cropBridge.getAllBySeason(year));
-			});
+		observe();
+	}
 
-			cropsMultiChoice.setOptions(allCrops);
-		});
+	public List<Harvest> getFilterResult()
+	{
+		return filterResult;
+	}
 
-		cropsMultiChoice.selected$.subscribe(options -> {
-			selectedCrops = options;
-			filteredResults.setValue(filterData());
-		});
+	public List<Long> getSelectedYears()
+	{
+		return selectedYears;
+	}
+
+	public List<Crop> getSelectedCrops()
+	{
+		return selectedCrops;
 	}
 
 	public SummaryDetails summarizeData(List<Harvest> harvests)
@@ -90,12 +91,35 @@ public class FiltersVM extends AndroidViewModel
 		cropsMultiChoice.show(context, "Select Crops");
 	}
 
-	public List<Harvest> filterData()
+	public void filterData()
 	{
-		List<Long> cropIds =
-			selectedCrops.stream().map(crop -> crop.uid).collect(Collectors.toList());
-		filterResult = harvestBridge.getAllBySeasonAndPlantIds(selectedYears, cropIds);
+		if (selectedYears != null && selectedCrops != null) {
+			List<Long> cropIds =
+					selectedCrops.stream().map(crop -> crop.uid).collect(Collectors.toList());
+			filterResult = harvestBridge.getAllBySeasonAndPlantIds(selectedYears, cropIds);
 
-		return filterResult;
+			filteredResults.setValue(filterResult);
+		}
+	}
+
+	// Private Helpers
+
+	private void observe()
+	{
+		yearsMultiChoice.selected$.subscribe(options -> {
+			selectedYears = options;
+			selectedCrops = new ArrayList<>();
+			List<Crop> allCrops = new ArrayList<>();
+			selectedYears.forEach(year -> {
+				allCrops.addAll(cropBridge.getAllBySeason(year));
+			});
+
+			cropsMultiChoice.setOptions(allCrops);
+		});
+
+		cropsMultiChoice.selected$.subscribe(options -> {
+			selectedCrops = options;
+			filterData();
+		});
 	}
 }
