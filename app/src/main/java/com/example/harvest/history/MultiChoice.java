@@ -37,7 +37,10 @@ public class MultiChoice<T>
 	private void select(int index, boolean isSelected)
 	{
 		if (isSelected) {
-			selectedOptions.add(options.get(index));
+			T optionToSelect = options.get(index);
+			if (!selectedOptions.contains(optionToSelect)) {
+				selectedOptions.add(optionToSelect);
+			}
 		} else {
 			selectedOptions.remove(options.get(index));
 		}

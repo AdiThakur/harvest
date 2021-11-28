@@ -1,5 +1,6 @@
 package com.example.harvest.history;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,7 +44,6 @@ public class FiltersFragment extends BaseFragment implements OnClickListener
 	private TextView totalUnits;
 	private TextView totalHarvests;
 
-	private HarvestAdapter adapter;
 	private RecyclerView rcv;
 
 	@Override
@@ -127,6 +127,10 @@ public class FiltersFragment extends BaseFragment implements OnClickListener
 				totalHarvests.setText(Helper.formatData(details.totalHarvests));
 			}
 		});
+
+		vm.error$.observe(getViewLifecycleOwner(), error -> {
+			displayError(getView(), error);
+		});
 	}
 
 	private <T> void populateChipGroup(ChipGroup group, List<T> list)
@@ -162,7 +166,24 @@ public class FiltersFragment extends BaseFragment implements OnClickListener
 	public void onClick(View row, int position) {}
 
 	@Override
-	public void onLongClick(View row, int position) {}
+	public void onLongClick(View row, int position)
+	{
+		Harvest harvestToDelete = vm.getFilterResult().get(position);
+		AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+
+		builder.setTitle("Delete Harvest?");
+		String message =
+			"Information about the Harvest of " + harvestToDelete.crop.plant.name +
+			" on " + Helper.shortFormatOfDate(harvestToDelete.dateHarvested) + " will be lost!";
+		builder.setMessage(message);
+		builder.setNegativeButton("No", (dialogInterface, i) -> {});
+		builder.setPositiveButton("Yes", (dialogInterface, i) ->
+			vm.deleteHarvest(harvestToDelete, position)
+		);
+
+		AlertDialog dialog = builder.create();
+		dialog.show();
+	}
 
 	@Override
 	public void onNestedButtonClick(int position)

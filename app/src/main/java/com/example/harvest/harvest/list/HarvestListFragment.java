@@ -62,6 +62,7 @@ public class HarvestListFragment extends BaseFragment implements OnClickListener
 		harvestListVM.deleteHarvest$.observe(getViewLifecycleOwner(), position -> {
 			adapter.notifyItemRemoved(position);
 		});
+
 		harvestListVM.error$.observe(getViewLifecycleOwner(), (Event<String> e) -> {
 			this.displayError(view, e);
 		});

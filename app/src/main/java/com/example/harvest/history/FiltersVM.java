@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import common.Event;
 import data.bridges.BridgeFactory;
 import data.bridges.CropBridge;
 import data.bridges.HarvestBridge;
@@ -34,6 +35,9 @@ public class FiltersVM extends AndroidViewModel
 	private MutableLiveData<List<Harvest>> filteredResults;
 	public LiveData<List<Harvest>> filteredResults$;
 
+	private final MutableLiveData<Event<String>> error;
+	public final LiveData<Event<String>> error$;
+
 	public FiltersVM(@NonNull Application application)
 	{
 		super(application);
@@ -48,6 +52,9 @@ public class FiltersVM extends AndroidViewModel
 		cropsMultiChoice = new MultiChoice<>();
 		filteredResults = new MutableLiveData<>();
 		filteredResults$ = filteredResults;
+
+		error = new MutableLiveData<>();
+		error$ = error;
 
 		observe();
 	}
@@ -101,6 +108,20 @@ public class FiltersVM extends AndroidViewModel
 			filteredResults.setValue(filterResult);
 		}
 	}
+
+	public void deleteHarvest(Harvest harvest, int position)
+	{
+		int deleteCount = harvestBridge.delete(harvest);
+
+		if (deleteCount == 0) {
+			String message = "Harvest couldn't be deleted.";
+			error.setValue(new Event<>(message));
+		} else {
+			filterResult.remove(harvest);
+			filteredResults.setValue(filterResult);
+		}
+	}
+
 
 	// Private Helpers
 
