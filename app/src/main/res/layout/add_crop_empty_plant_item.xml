@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="95dp"
-    android:layout_marginLeft="10dp"
-    android:layout_marginTop="10dp"
-    android:layout_marginRight="10dp"
+    android:layout_marginLeft="@dimen/main_outer_margin"
+    android:layout_marginTop="@dimen/main_outer_margin"
+    android:layout_marginRight="@dimen/main_outer_margin"
     android:background="@color/card_lightest_purple">
 
     <TextView

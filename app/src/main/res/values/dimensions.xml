@@ -3,5 +3,5 @@
     <dimen name="title_font_size">25sp</dimen>
     <dimen name="subtitle_font_size">16sp</dimen>
     <dimen name="image">80dp</dimen>
-    <dimen name="card_external_margin">10dp</dimen>
+    <dimen name="main_outer_margin">10dp</dimen>
 </resources>

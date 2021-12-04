@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/card_external_margin"
-    android:layout_marginTop="@dimen/card_external_margin"
-    android:layout_marginRight="@dimen/card_external_margin"
+    android:layout_marginLeft="@dimen/main_outer_margin"
+    android:layout_marginTop="@dimen/main_outer_margin"
+    android:layout_marginRight="@dimen/main_outer_margin"
     android:background="@color/card_lightest_purple"
     android:outlineProvider="bounds"
     android:outlineSpotShadowColor="#F44336">
