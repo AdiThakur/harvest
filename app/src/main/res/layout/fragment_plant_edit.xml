@@ -103,6 +103,7 @@
                 android:id="@+id/plantEdit_ChooseImageButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/button_color"
                 android:text="@string/choose_another_image"
                 app:layout_constraintBottom_toBottomOf="@+id/plantEdit_plantImage"
                 app:layout_constraintEnd_toEndOf="parent"

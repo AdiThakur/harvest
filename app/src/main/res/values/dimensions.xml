@@ -4,4 +4,5 @@
     <dimen name="subtitle_font_size">16sp</dimen>
     <dimen name="image">80dp</dimen>
     <dimen name="main_outer_margin">10dp</dimen>
+    <dimen name="button_border_radius">5dp</dimen>
 </resources>

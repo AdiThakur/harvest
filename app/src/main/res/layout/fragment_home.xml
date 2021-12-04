@@ -12,7 +12,7 @@
         android:background="@color/card_lighter_purple">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -20,46 +20,77 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <Button
-                android:id="@+id/home_harvestsButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="25dp"
-                android:text="@string/harvests"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:id="@+id/home_historyButton"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:backgroundTint="@color/purple_500"
+                android:insetLeft="0dp"
+                android:insetTop="0dp"
+                android:insetRight="0dp"
+                android:insetBottom="0dp"
+                android:padding="0dp"
+                android:text="@string/history"
+                android:textSize="11sp"
+                app:cornerRadius="@dimen/button_border_radius"
+                app:iconPadding="0dp"
+                app:layout_constraintBottom_toBottomOf="@+id/home_plantsButton"
+                app:layout_constraintStart_toStartOf="@+id/home_cropsButton"
+                app:layout_constraintTop_toTopOf="@+id/home_plantsButton"
+                app:layout_constraintVertical_bias="0.0" />
 
             <Button
                 android:id="@+id/home_cropsButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:layout_marginStart="10dp"
+                android:backgroundTint="@color/purple_500"
+                android:insetLeft="0dp"
+                android:insetTop="0dp"
+                android:insetRight="0dp"
+                android:insetBottom="0dp"
+                android:padding="0dp"
                 android:text="@string/crops"
-                app:layout_constraintEnd_toEndOf="@+id/home_harvestsButton"
-                app:layout_constraintStart_toStartOf="@+id/home_harvestsButton"
-                app:layout_constraintTop_toBottomOf="@+id/home_harvestsButton" />
+                android:textSize="11sp"
+                app:cornerRadius="@dimen/button_border_radius"
+                app:iconPadding="0dp"
+                app:layout_constraintStart_toEndOf="@+id/home_harvestsButton"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/home_harvestsButton"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:backgroundTint="@color/purple_500"
+                android:insetLeft="0dp"
+                android:insetTop="0dp"
+                android:insetRight="0dp"
+                android:insetBottom="0dp"
+                android:padding="0dp"
+                android:text="@string/harvests"
+                android:textSize="11sp"
+                app:cornerRadius="@dimen/button_border_radius"
+                app:iconPadding="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:id="@+id/home_plantsButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/purple_500"
+                android:insetLeft="0dp"
+                android:insetTop="0dp"
+                android:insetRight="0dp"
+                android:insetBottom="0dp"
+                android:padding="0dp"
                 android:text="@string/plants"
-                app:layout_constraintEnd_toEndOf="@+id/home_cropsButton"
-                app:layout_constraintStart_toStartOf="@+id/home_cropsButton"
-                app:layout_constraintTop_toBottomOf="@+id/home_cropsButton" />
+                android:textSize="11sp"
+                app:cornerRadius="@dimen/button_border_radius"
+                app:iconPadding="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/home_harvestsButton" />
 
-            <Button
-                android:id="@+id/home_historyButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="@string/history"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/home_plantsButton"
-                app:layout_constraintHorizontal_bias="0.50"
-                app:layout_constraintStart_toStartOf="@+id/home_plantsButton"
-                app:layout_constraintTop_toBottomOf="@+id/home_plantsButton"
-                app:layout_constraintVertical_bias="0.0" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
@@ -67,11 +98,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
-            android:layout_marginEnd="25dp"
             android:fontFamily="sans-serif-condensed-light"
             android:text="@string/app_name"
             android:textSize="60sp"
+            android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
