@@ -74,10 +74,13 @@ public class HarvestBridge implements IBridge<Harvest>
 		PublishSubject<List<Harvest>> harvestSubject = PublishSubject.create();
 		harvestDao.getAllBySeasonAndCropIds(seasonIds, cropIds)
 			.subscribeOn(Schedulers.io())
+			.observeOn(Schedulers.io())
+			.map(harvests -> {
+				harvests.forEach(harvest -> harvest.crop = cropBridge.getById(harvest.cropId));
+				return harvests;
+			})
 			.observeOn(AndroidSchedulers.mainThread())
 			.subscribe(harvests -> {
-				// TODO: Make the call to CropBridge.getById() async as well
-				harvests.forEach(harvest -> harvest.crop = cropBridge.getById(harvest.cropId));
 				harvestSubject.onNext(harvests);
 			});
 
