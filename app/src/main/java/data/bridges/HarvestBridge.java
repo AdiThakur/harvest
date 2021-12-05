@@ -4,6 +4,10 @@ import java.util.List;
 
 import data.daos.HarvestDao;
 import data.models.Harvest;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+import io.reactivex.rxjava3.subjects.PublishSubject;
 
 public class HarvestBridge implements IBridge<Harvest>
 {
@@ -65,11 +69,18 @@ public class HarvestBridge implements IBridge<Harvest>
 		return harvests;
 	}
 
-	public List<Harvest> getAllBySeasonAndPlantIds(List<Long> seasonIds, List<Long> cropIds)
+	public Observable<List<Harvest>> getAllBySeasonAndPlantIds(List<Long> seasonIds, List<Long> cropIds)
 	{
-		List<Harvest> harvests = harvestDao.getAllBySeasonAndCropIds(seasonIds, cropIds);
-		harvests.forEach(harvest -> harvest.crop = cropBridge.getById(harvest.cropId));
+		PublishSubject<List<Harvest>> harvestSubject = PublishSubject.create();
+		harvestDao.getAllBySeasonAndCropIds(seasonIds, cropIds)
+			.subscribeOn(Schedulers.io())
+			.observeOn(AndroidSchedulers.mainThread())
+			.subscribe(harvests -> {
+				// TODO: Make the call to CropBridge.getById() async as well
+				harvests.forEach(harvest -> harvest.crop = cropBridge.getById(harvest.cropId));
+				harvestSubject.onNext(harvests);
+			});
 
-		return harvests;
+		return harvestSubject.hide();
 	}
 }

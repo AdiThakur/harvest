@@ -40,6 +40,7 @@
     <string name="selected_image">Selected Image</string>
     <string name="plant_image">Plant Image</string>
     <string name="no_data">No data</string>
+    <string name="loading">Loading</string>
 
     <!-- Plant -->
     <string name="open_gallery">Open Gallery</string>

@@ -7,9 +7,9 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
-import rx.Observable;
-import rx.subjects.PublishSubject;
-import rx.subjects.Subject;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.subjects.PublishSubject;
+import io.reactivex.rxjava3.subjects.Subject;
 
 public class MultiChoice<T>
 {
@@ -18,12 +18,12 @@ public class MultiChoice<T>
 	private boolean[] selectedOptionsMap;
 	private List<T> selectedOptions;
 
-	private Subject<List<T>, List<T>> selectedSubject;
+	private Subject<List<T>> selectedSubject;
 	public Observable<List<T>> selected$;
 
 	public MultiChoice() {
 		selectedSubject = PublishSubject.create();
-		selected$ = selectedSubject.asObservable();
+		selected$ = selectedSubject.hide();
 	}
 
 	public void setOptions(List<T> newOptions)

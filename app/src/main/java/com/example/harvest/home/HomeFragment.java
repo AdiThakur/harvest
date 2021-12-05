@@ -68,6 +68,12 @@ public class HomeFragment extends BaseFragment
 		navigateTo(R.id.homeFragment, resId);
 	}
 
+	// TODO: Continue making FiltersFragment more async
+	// - Gotta make the call to CropBridge.getById() async as well
+	// - Gotta make showing and hiding the loading animation less janky
+	// - Gotta figure out good configs for the observeOn() and subscribeOn() methods for the various observables
+	// - Gotta make sure that I'm on top of managing and disposing of all of the subscriptions appropriately; RxJava comes built in with a sub manager, so use it
+
 	// TODO: FilterFragment: Make the Chip text smaller in FiltersFragment
 	// TODO: Make all bridge functions async; show a loading animation while async method executes
 	// TODO: use placeholder string resources in calls to TextView.setText()

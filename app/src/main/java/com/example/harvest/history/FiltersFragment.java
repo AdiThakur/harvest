@@ -46,6 +46,7 @@ public class FiltersFragment extends BaseFragment implements OnClickListener
 	private TextView totalHarvests;
 
 	private RecyclerView rcv;
+	private AlertDialog loadingDialog;
 
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState)
@@ -83,24 +84,19 @@ public class FiltersFragment extends BaseFragment implements OnClickListener
 		rcv = view.findViewById(R.id.filter_rcv);
 		rcv.setLayoutManager(new LinearLayoutManager(requireActivity()));
 
-		// Initial render of selected options
-		if (vm.getSelectedYears() != null) {
-			populateChipGroup(selectedSeasonsChips, Helper.allToString(vm.getSelectedYears()));
-			addCropFilters.setEnabled(true);
-		}
-		if (vm.getSelectedCrops() != null) {
-			populateChipGroup(selectedCropChips, Crop.distinctNames(vm.getSelectedCrops()));
-		}
+		AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+		builder.setView(R.layout.loading_dialog);
+		loadingDialog = builder.create();
 
 		observe();
-		vm.filterData();
+		vm.init();
 	}
 
 	private void observe()
 	{
-		vm.yearsMultiChoice.selected$.subscribe(selectedYears -> {
-			populateChipGroup(selectedSeasonsChips, Helper.allToString(selectedYears));
-			boolean isEmpty = selectedYears.size() == 0;
+		vm.selectedYears$.observe(getViewLifecycleOwner(), years -> {
+			populateChipGroup(selectedSeasonsChips, years);
+			boolean isEmpty = years.size() == 0;
 
 			if (isEmpty) {
 				selectedCropChips.removeAllViews();
@@ -110,11 +106,9 @@ public class FiltersFragment extends BaseFragment implements OnClickListener
 			addCropFilters.setEnabled(!isEmpty);
 		});
 
-		vm.cropsMultiChoice.selected$.subscribe(selectedCrops -> {
-			populateChipGroup(selectedCropChips, Crop.distinctNames(selectedCrops));
-			boolean isEmpty = selectedCrops.size() == 0;
-
-			if (isEmpty) {
+		vm.selectedCrops$.observe(getViewLifecycleOwner(), crops -> {
+			populateChipGroup(selectedCropChips, crops);
+			if (crops.size() == 0) {
 				clearSummaryAndDetails();
 			}
 		});
@@ -126,6 +120,14 @@ public class FiltersFragment extends BaseFragment implements OnClickListener
 				totalWeight.setText(Helper.formatUnitWeight(details.totalWeight));
 				totalUnits.setText(Helper.formatData(details.totalUnits));
 				totalHarvests.setText(Helper.formatData(details.totalHarvests));
+			}
+		});
+
+		vm.loading$.observe(getViewLifecycleOwner(), isLoading -> {
+			if (isLoading) {
+				loadingDialog.show();
+			} else {
+				loadingDialog.hide();
 			}
 		});
 
@@ -179,7 +181,7 @@ public class FiltersFragment extends BaseFragment implements OnClickListener
 		builder.setMessage(message);
 		builder.setNegativeButton("No", (dialogInterface, i) -> {});
 		builder.setPositiveButton("Yes", (dialogInterface, i) ->
-			vm.deleteHarvest(harvestToDelete, position)
+			vm.deleteHarvest(harvestToDelete)
 		);
 
 		AlertDialog dialog = builder.create();

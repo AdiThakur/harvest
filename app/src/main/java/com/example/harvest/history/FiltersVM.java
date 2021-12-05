@@ -10,33 +10,50 @@ import androidx.lifecycle.MutableLiveData;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import common.Event;
+import common.Helper;
 import data.bridges.BridgeFactory;
 import data.bridges.CropBridge;
 import data.bridges.HarvestBridge;
 import data.bridges.SeasonBridge;
 import data.models.Crop;
 import data.models.Harvest;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class FiltersVM extends AndroidViewModel
 {
-	private SeasonBridge seasonBridge;
-	private HarvestBridge harvestBridge;
-	private CropBridge cropBridge;
+	private final SeasonBridge seasonBridge;
+	private final HarvestBridge harvestBridge;
+	private final CropBridge cropBridge;
 
-	public MultiChoice<Long> yearsMultiChoice;
-	private List<Long> selectedYears;
-	public MultiChoice<Crop> cropsMultiChoice;
-	private List<Crop> selectedCrops;
+	private final MultiChoice<Long> yearsMultiChoice;
+	private final MultiChoice<Crop> cropsMultiChoice;
 
+	private List<Long> selectedYearsList;
+	private List<Crop> selectedCropsList;
 	private List<Harvest> filterResult;
-	private MutableLiveData<List<Harvest>> filteredResults;
-	public LiveData<List<Harvest>> filteredResults$;
+
+	private final MutableLiveData<List<String>> selectedYears;
+	public final LiveData<List<String>> selectedYears$;
+
+	private final MutableLiveData<List<String>> selectedCrops;
+	public final LiveData<List<String>> selectedCrops$;
+
+	private final MutableLiveData<List<Harvest>> filteredResults;
+	public final LiveData<List<Harvest>> filteredResults$;
+
+	private final MutableLiveData<Boolean> loading;
+	public final LiveData<Boolean> loading$;
 
 	private final MutableLiveData<Event<String>> error;
 	public final LiveData<Event<String>> error$;
+
+	private CompositeDisposable subscriptions;
 
 	public FiltersVM(@NonNull Application application)
 	{
@@ -47,31 +64,38 @@ public class FiltersVM extends AndroidViewModel
 		cropBridge = new BridgeFactory(application.getApplicationContext()).getCropBridge();
 
 		yearsMultiChoice = new MultiChoice<>();
-		yearsMultiChoice.setOptions(seasonBridge.getAllYears());
-
 		cropsMultiChoice = new MultiChoice<>();
+
+		selectedYears = new MutableLiveData<>();
+		selectedYears$ = selectedYears;
+
+		selectedCrops = new MutableLiveData<>();
+		selectedCrops$ = selectedCrops;
+
 		filteredResults = new MutableLiveData<>();
 		filteredResults$ = filteredResults;
+
+		loading = new MutableLiveData<>();
+		loading$ = loading;
 
 		error = new MutableLiveData<>();
 		error$ = error;
 
+		subscriptions = new CompositeDisposable();
+
 		observe();
+	}
+
+	public void init()
+	{
+		// TODO make async
+		yearsMultiChoice.setOptions(seasonBridge.getAllYears());
+		filterData();
 	}
 
 	public List<Harvest> getFilterResult()
 	{
 		return filterResult;
-	}
-
-	public List<Long> getSelectedYears()
-	{
-		return selectedYears;
-	}
-
-	public List<Crop> getSelectedCrops()
-	{
-		return selectedCrops;
 	}
 
 	public SummaryDetails summarizeData(List<Harvest> harvests)
@@ -100,16 +124,28 @@ public class FiltersVM extends AndroidViewModel
 
 	public void filterData()
 	{
-		if (selectedYears != null && selectedCrops != null) {
-			List<Long> cropIds =
-					selectedCrops.stream().map(crop -> crop.uid).collect(Collectors.toList());
-			filterResult = harvestBridge.getAllBySeasonAndPlantIds(selectedYears, cropIds);
+		if (selectedYearsList != null && selectedCropsList != null) {
 
-			filteredResults.setValue(filterResult);
+			loading.setValue(true);
+			List<Long> cropIds =
+					selectedCropsList.stream().map(crop -> crop.uid).collect(Collectors.toList());
+
+			subscriptions.add(
+				harvestBridge
+					.getAllBySeasonAndPlantIds(selectedYearsList, cropIds)
+					.subscribeOn(Schedulers.io())
+					.observeOn(AndroidSchedulers.mainThread())
+					.delay(500, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
+					.subscribe(harvests -> {
+						filterResult = harvests;
+						filteredResults.setValue(filterResult);
+						loading.setValue(false);
+					})
+			);
 		}
 	}
 
-	public void deleteHarvest(Harvest harvest, int position)
+	public void deleteHarvest(Harvest harvest)
 	{
 		int deleteCount = harvestBridge.delete(harvest);
 
@@ -122,25 +158,41 @@ public class FiltersVM extends AndroidViewModel
 		}
 	}
 
+	@Override
+	protected void onCleared()
+	{
+		super.onCleared();
+		if (!subscriptions.isDisposed()) {
+			subscriptions.dispose();
+		}
+	}
 
 	// Private Helpers
 
 	private void observe()
 	{
-		yearsMultiChoice.selected$.subscribe(options -> {
-			selectedYears = options;
-			selectedCrops = new ArrayList<>();
-			List<Crop> allCrops = new ArrayList<>();
-			selectedYears.forEach(year -> {
-				allCrops.addAll(cropBridge.getAllBySeason(year));
-			});
+		subscriptions.add(
+			yearsMultiChoice.selected$.subscribe(options -> {
+				selectedYearsList = options;
+				selectedCropsList = new ArrayList<>();
+				List<Crop> allCrops = new ArrayList<>();
+				selectedYearsList.forEach(year -> {
+					allCrops.addAll(cropBridge.getAllBySeason(year));
+				});
 
-			cropsMultiChoice.setOptions(allCrops);
-		});
+				cropsMultiChoice.setOptions(allCrops);
+				selectedYears.setValue(Helper.allToString(selectedYearsList));
+			})
+		);
 
-		cropsMultiChoice.selected$.subscribe(options -> {
-			selectedCrops = options;
-			filterData();
-		});
+		subscriptions.add(
+			cropsMultiChoice.selected$.subscribe(options -> {
+				selectedCropsList = options;
+				selectedCrops.setValue(Crop.distinctNames(selectedCropsList));
+				if (selectedCropsList.size() != 0) {
+					filterData();
+				}
+			})
+		);
 	}
 }

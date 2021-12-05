@@ -60,6 +60,8 @@ dependencies {
     // Vector graphics
     implementation 'com.android.support:appcompat-v7:23.2.0'
 
-    implementation 'io.reactivex:rxandroid:1.2.0'
-    implementation 'io.reactivex:rxjava:1.1.8'
+    // RxJava (and extensions for Android and Room)
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
+    implementation 'io.reactivex.rxjava3:rxjava:3.0.0'
+    implementation "androidx.room:room-rxjava3:$room_version"
 }
