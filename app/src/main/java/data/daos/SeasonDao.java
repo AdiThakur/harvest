@@ -8,22 +8,23 @@ import androidx.room.Query;
 import java.util.List;
 
 import data.models.Season;
+import io.reactivex.rxjava3.core.Single;
 
 @Dao
 public interface SeasonDao
 {
 	@Insert
-	public long insert(Season season);
+	long insert(Season season);
 
 	@Query("SELECT * FROM season WHERE year = :year")
-	public Season getById(long year);
+	Season getById(long year);
 
 	@Query("SELECT * FROM season")
-	public List<Season> getAll();
+	Single<List<Season>> getAll();
 
 	@Query("SELECT * FROM season ORDER BY year DESC LIMIT 1")
-	public Season getLatestSeason();
+	Season getLatestSeason();
 
 	@Delete
-	public int delete(Season season);
+	int delete(Season season);
 }

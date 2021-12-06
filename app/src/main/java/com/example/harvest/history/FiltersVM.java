@@ -53,7 +53,7 @@ public class FiltersVM extends AndroidViewModel
 	private final MutableLiveData<Event<String>> error;
 	public final LiveData<Event<String>> error$;
 
-	private CompositeDisposable subscriptions;
+	private final CompositeDisposable subscriptions;
 
 	public FiltersVM(@NonNull Application application)
 	{
@@ -88,9 +88,20 @@ public class FiltersVM extends AndroidViewModel
 
 	public void init()
 	{
-		// TODO make async
-		yearsMultiChoice.setOptions(seasonBridge.getAllYears());
-		filterData();
+		loading.setValue(true);
+
+		subscriptions.add(
+			seasonBridge
+				.getAllYears()
+				.subscribeOn(Schedulers.io())
+				.observeOn(AndroidSchedulers.mainThread())
+				.delay(500, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
+				.subscribe(years -> {
+					yearsMultiChoice.setOptions(years);
+					filterData();
+					loading.setValue(false);
+				})
+		);
 	}
 
 	public List<Harvest> getFilterResult()
@@ -136,11 +147,18 @@ public class FiltersVM extends AndroidViewModel
 					.subscribeOn(Schedulers.io())
 					.observeOn(AndroidSchedulers.mainThread())
 					.delay(500, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
-					.subscribe(harvests -> {
-						filterResult = harvests;
-						filteredResults.setValue(filterResult);
-						loading.setValue(false);
-					})
+					.subscribe(
+						harvests -> {
+							filterResult = harvests;
+							filteredResults.setValue(filterResult);
+							loading.setValue(false);
+						},
+						err -> {
+							String payload = "There was an error in loading the Harvests!";
+							loading.setValue(false);
+							error.setValue(new Event<>(payload));
+						}
+					)
 			);
 		}
 	}
@@ -172,27 +190,31 @@ public class FiltersVM extends AndroidViewModel
 	private void observe()
 	{
 		subscriptions.add(
-			yearsMultiChoice.selected$.subscribe(options -> {
-				selectedYearsList = options;
-				selectedCropsList = new ArrayList<>();
-				List<Crop> allCrops = new ArrayList<>();
-				selectedYearsList.forEach(year -> {
-					allCrops.addAll(cropBridge.getAllBySeason(year));
-				});
+			yearsMultiChoice.selected$
+				.subscribe(options -> {
+					selectedYearsList = options;
+					selectedCropsList = new ArrayList<>();
+					List<Crop> allCrops = new ArrayList<>();
+					selectedYearsList.forEach(year -> {
+						allCrops.addAll(cropBridge.getAllBySeason(year));
+					});
 
-				cropsMultiChoice.setOptions(allCrops);
-				selectedYears.setValue(Helper.allToString(selectedYearsList));
-			})
+					cropsMultiChoice.setOptions(allCrops);
+					selectedYears.setValue(Helper.allToString(selectedYearsList));
+				}
+			)
 		);
 
 		subscriptions.add(
-			cropsMultiChoice.selected$.subscribe(options -> {
-				selectedCropsList = options;
-				selectedCrops.setValue(Crop.distinctNames(selectedCropsList));
-				if (selectedCropsList.size() != 0) {
-					filterData();
+			cropsMultiChoice.selected$
+				.subscribe(options -> {
+					selectedCropsList = options;
+					selectedCrops.setValue(Crop.distinctNames(selectedCropsList));
+					if (selectedCropsList.size() != 0) {
+						filterData();
+					}
 				}
-			})
+			)
 		);
 	}
 }

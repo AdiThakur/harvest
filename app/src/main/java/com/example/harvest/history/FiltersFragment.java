@@ -26,7 +26,6 @@ import java.util.Locale;
 import common.BaseFragment;
 import common.Helper;
 import common.OnClickListener;
-import data.models.Crop;
 import data.models.Harvest;
 
 public class FiltersFragment extends BaseFragment implements OnClickListener
