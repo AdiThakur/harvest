@@ -67,7 +67,7 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantViewHolder>
 	{
 		Context context = parent.getContext();
 		LayoutInflater inflater = LayoutInflater.from(context);
-		View plantRowItem = inflater.inflate(R.layout.add_plant_rcv_item, parent, false);
+		View plantRowItem = inflater.inflate(R.layout.plant_rcv_item, parent, false);
 
 		return new PlantViewHolder(plantRowItem, listener);
 	}
@@ -79,7 +79,7 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantViewHolder>
 
 		holder.plantNameTextView.setText(plant.name);
 		holder.plantImageView.setImageBitmap(ImageHelper.loadBitmapFromImage(context, plant.imageFileName));
-		holder.plantUnitWeightTextView.setText(Helper.formatUnitWeight(plant.unitWeight));
+		holder.plantUnitWeightTextView.setText(Helper.formatUnitWeight(plant.unitWeight, true));
 	}
 
 	@Override

@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 import com.example.harvest.R;
 
 import common.BaseFragment;
+import common.Helper;
 import common.ImageHelper;
 import data.models.Plant;
 
@@ -80,7 +81,7 @@ public class PlantEditFragment extends BaseFragment
 		if (args != null) {
 			vm.getPlant$.observe(getViewLifecycleOwner(), plant -> {
 				plantNameEditText.setText(plant.name);
-				plantUnitWeightEditText.setText(String.valueOf(plant.unitWeight));
+				plantUnitWeightEditText.setText(Helper.formatUnitWeight(plant.unitWeight, false));
 				plantImage.setImageBitmap(
 					ImageHelper.loadBitmapFromImage(requireContext(), plant.imageFileName)
 				);

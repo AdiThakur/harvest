@@ -47,12 +47,18 @@ public class Helper
 		return weight + " (g)";
 	}
 
-	public static String formatUnitWeight(double weight)
+	public static String formatUnitWeight(double weight, boolean includeGrams)
 	{
 		if (weight > 0) {
 			DecimalFormat df = new DecimalFormat("#.00");
-			return df.format(weight) + " (g)";
+			String formatted = df.format(weight);
+			if (includeGrams) {
+				return formatted + " (g)";
+			} else {
+				return formatted;
+			}
 		}
+
 		return "No data";
 	}
 
@@ -61,6 +67,7 @@ public class Helper
 		if (data.doubleValue() > 0) {
 			return String.valueOf(data);
 		}
+
 		return "No data";
 	}
 

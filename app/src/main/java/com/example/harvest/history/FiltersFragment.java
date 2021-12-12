@@ -120,7 +120,7 @@ public class FiltersFragment extends BaseFragment implements OnClickListener
 			if (filteredResult != null) {
 				SummaryDetails details = vm.summarizeData(filteredResult);
 				rcv.setAdapter(new HarvestAdapter(requireContext(), filteredResult, this));
-				totalWeight.setText(Helper.formatUnitWeight(details.totalWeight));
+				totalWeight.setText(Helper.formatUnitWeight(details.totalWeight, true));
 				totalUnits.setText(Helper.formatData(details.totalUnits));
 				totalHarvests.setText(Helper.formatData(details.totalHarvests));
 			}
@@ -153,7 +153,7 @@ public class FiltersFragment extends BaseFragment implements OnClickListener
 	private void clearSummaryAndDetails()
 	{
 		rcv.setAdapter(new HarvestAdapter(requireContext(), new ArrayList<>(), this));
-		totalWeight.setText(Helper.formatUnitWeight(0));
+		totalWeight.setText(Helper.formatUnitWeight(0, true));
 		totalUnits.setText(Helper.formatData(0));
 		totalHarvests.setText(Helper.formatData(0));
 	}

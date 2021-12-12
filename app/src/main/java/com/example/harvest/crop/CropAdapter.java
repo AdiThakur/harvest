@@ -69,7 +69,7 @@ public class CropAdapter extends RecyclerView.Adapter<CropViewHolder>
 	{
 		Context context = parent.getContext();
 		LayoutInflater inflater = LayoutInflater.from(context);
-		View plantRowItem = inflater.inflate(R.layout.add_crop_rcv_item, parent, false);
+		View plantRowItem = inflater.inflate(R.layout.crop_rcv_item, parent, false);
 
 		return new CropViewHolder(plantRowItem, listener);
 	}
