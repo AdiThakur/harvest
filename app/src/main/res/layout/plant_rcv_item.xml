@@ -47,15 +47,19 @@
 
         <TextView
             android:id="@+id/plantRcvItem_plantUnitWeightText"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
+            android:ellipsize="end"
             android:fontFamily="sans-serif-condensed-light"
+            android:maxLines="1"
             android:textSize="@dimen/subtitle_font_size"
             app:layout_constraintBottom_toBottomOf="@+id/textView2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/textView2"
             app:layout_constraintTop_toBottomOf="@+id/plantRcvItem_plantNameText"
-            tools:text="1" />
+            tools:text="100000000000000000000000000000000000" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -85,7 +85,7 @@ public class CropAddFragment extends BaseFragment
 				plantContainer.findViewById(R.id.noPlantSelected).setVisibility(View.GONE);
 				plantContainer.findViewById(R.id.selectedPlantItem).setVisibility(View.VISIBLE);
 				plantNameTextView.setText(selectedPlant.name);
-				plantWeightTextView.setText(Helper.formatUnitWeight(selectedPlant.unitWeight));
+				plantWeightTextView.setText(Helper.formatUnitWeight(selectedPlant.unitWeight, true));
 				plantImageView.setImageBitmap(
 					ImageHelper.loadBitmapFromImage(requireContext(), selectedPlant.imageFileName)
 				);
