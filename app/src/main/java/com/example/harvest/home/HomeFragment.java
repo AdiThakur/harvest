@@ -68,7 +68,8 @@ public class HomeFragment extends BaseFragment
 		navigateTo(R.id.homeFragment, resId);
 	}
 
-	// TODO: Update the models to use more Room idiomatic code; instead of using the Bridge pattern to manually assemble the complicated objects, use a Room's one-to-one and many-to-one relationship mapping techniques
+	// TODO: Update FiltersFragment so that the filtered results are sorted by date
+	// TODO: Update the code so that Season objects are references by their uid, not season_id
 	// TODO: FilterFragment: Make the Chip text smaller in FiltersFragment
 	// TODO: Make all bridge functions async; show a loading animation while async method executes
 	// TODO: use placeholder string resources in calls to TextView.setText()

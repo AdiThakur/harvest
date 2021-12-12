@@ -10,7 +10,7 @@ import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import io.reactivex.rxjava3.subjects.SingleSubject;
 
-public class SeasonBridge
+public class SeasonBridge extends BaseBridge<Season>
 {
 	private final SeasonDao seasonDao;
 	private final CropBridge cropBridge;
@@ -18,30 +18,10 @@ public class SeasonBridge
 
 	SeasonBridge(SeasonDao seasonDao, CropBridge cropBridge, HarvestBridge harvestBridge)
 	{
+		super(seasonDao);
 		this.seasonDao = seasonDao;
 		this.cropBridge = cropBridge;
 		this.harvestBridge = harvestBridge;
-	}
-
-	public Season insert(Season season)
-	{
-		seasonDao.insert(season);
-		return season;
-	}
-
-	public Season getById(long year)
-	{
-		Season season = seasonDao.get(year);
-		season.crops = cropBridge.getAllBySeason(year);
-		// TODO: Un comment this bad boy out
-//		season.harvests = harvestBridge.getAllBySeason(year);
-
-		return season;
-	}
-
-	public int delete(Season model)
-	{
-		return seasonDao.delete(model);
 	}
 
 	public Season getLatestSeason()
