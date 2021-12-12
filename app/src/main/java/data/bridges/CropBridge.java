@@ -5,51 +5,41 @@ import java.util.List;
 import data.daos.CropDao;
 import data.models.Crop;
 
-public class CropBridge implements IBridge<Crop>
+public class CropBridge extends BaseBridge<Crop>
 {
 	private final CropDao cropDao;
 	private final PlantBridge plantBridge;
 
 	CropBridge(CropDao cropDao, PlantBridge plantBridge)
 	{
+		super(cropDao);
 		this.cropDao = cropDao;
 		this.plantBridge = plantBridge;
 	}
 
-	@Override
 	public Crop insert(Crop crop)
 	{
 		crop.plantId = crop.plant.uid;
-		crop.uid = cropDao.insert(crop);
+		return super.insert(crop);
+	}
+
+	public Crop get(long cropId)
+	{
+		Crop crop = super.get(cropId);
+		crop.plant = plantBridge.get(crop.plantId);
 		return crop;
 	}
 
-	public int update(Crop crop)
-	{
-		if (crop.uid == 0) { return 0; }
-		return cropDao.update(crop);
-	}
-
-	@Override
-	public Crop getById(long cropId)
-	{
-		Crop crop = cropDao.getById(cropId);
-		crop.plant = plantBridge.getById(crop.plantId);
-		return crop;
-	}
-
-	@Override
 	public List<Crop> getAll()
 	{
-		List<Crop> crops = cropDao.getAll();
+		List<Crop> crops = super.getAll();
 		crops.forEach(crop -> {
-			crop.plant = plantBridge.getById(crop.plantId);
+			crop.plant = plantBridge.get(crop.plantId);
 		});
 
 		return crops;
 	}
 
-	@Override
 	public int delete(Crop crop)
 	{
 		return cropDao.delete(crop.seasonId, crop.uid);
@@ -59,7 +49,7 @@ public class CropBridge implements IBridge<Crop>
 	{
 		List<Crop> crops = cropDao.getAllBySeason(seasonId);
 		crops.forEach(crop -> {
-			crop.plant = plantBridge.getById(crop.plantId);
+			crop.plant = plantBridge.get(crop.plantId);
 		});
 
 		return crops;

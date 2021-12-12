@@ -17,9 +17,9 @@ import data.models.Plant;
 import data.models.Season;
 
 @Database(
-		entities = { Crop.class, Harvest.class, Plant.class, Season.class },
-		version = 11,
-		exportSchema = false
+	entities = { Crop.class, Harvest.class, Plant.class, Season.class },
+	version = 12,
+	exportSchema = false
 )
 @TypeConverters({ Converters.class })
 public abstract class HarvestDB extends RoomDatabase
@@ -40,6 +40,7 @@ public abstract class HarvestDB extends RoomDatabase
 				.fallbackToDestructiveMigration()
 				.build();
 		}
+
 		return instance;
 	}
 }

@@ -42,7 +42,7 @@ public class PlantEditVM extends AndroidViewModel
 
 	public void getPlant(long uid)
 	{
-		Plant plant = bridge.getById(uid);
+		Plant plant = bridge.get(uid);
 
 		if (plant == null) {
 			String message = "Plant couldn't be loaded";

@@ -42,7 +42,7 @@ public class HarvestEditVM extends AndroidViewModel
 
 	public void getHarvest(long uid)
 	{
-		Harvest harvest = bridge.getById(uid);
+		Harvest harvest = bridge.get(uid);
 
 		if (harvest == null) {
 			String message = "Harvest couldn't be loaded";
