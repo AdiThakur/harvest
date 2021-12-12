@@ -33,7 +33,7 @@ public class CropBridge implements IBridge<Crop>
 	@Override
 	public Crop getById(long cropId)
 	{
-		Crop crop = cropDao.getById(cropId);
+		Crop crop = cropDao.get(cropId);
 		crop.plant = plantBridge.getById(crop.plantId);
 		return crop;
 	}

@@ -31,7 +31,7 @@ public class SeasonBridge
 
 	public Season getById(long year)
 	{
-		Season season = seasonDao.getById(year);
+		Season season = seasonDao.get(year);
 		season.crops = cropBridge.getAllBySeason(year);
 		// TODO: Un comment this bad boy out
 //		season.harvests = harvestBridge.getAllBySeason(year);
@@ -54,7 +54,7 @@ public class SeasonBridge
 		SingleSubject<List<Long>> subject = SingleSubject.create();
 
 		seasonDao
-			.getAll()
+			.getAsync()
 			.subscribeOn(Schedulers.io())
 			.observeOn(AndroidSchedulers.mainThread())
 			.subscribe(seasons -> {

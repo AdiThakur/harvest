@@ -37,7 +37,7 @@ public class HarvestBridge implements IBridge<Harvest>
 	@Override
 	public Harvest getById(long harvestId)
 	{
-		Harvest harvest = harvestDao.getById(harvestId);
+		Harvest harvest = harvestDao.get(harvestId);
 		harvest.crop = cropBridge.getById(harvest.cropId);
 		return harvest;
 	}

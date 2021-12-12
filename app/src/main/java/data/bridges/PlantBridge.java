@@ -30,7 +30,7 @@ public class PlantBridge implements IBridge<Plant>
 	@Override
 	public Plant getById(long plantId)
 	{
-		return plantDao.getById(plantId);
+		return plantDao.get(plantId);
 	}
 
 	@Override

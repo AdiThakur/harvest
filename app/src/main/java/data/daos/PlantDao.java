@@ -1,6 +1,7 @@
 package data.daos;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
@@ -10,23 +11,33 @@ import java.util.List;
 import data.models.Plant;
 
 @Dao
-public interface PlantDao
+public interface PlantDao extends IDao<Plant>
 {
+	@Override
 	@Insert
-	public long insert(Plant plant);
+	long insert(Plant entity);
 
+	@Override
+	@Query("SELECT * FROM plant WHERE uid = :uid")
+	Plant get(long uid);
+
+	@Override
+	@Query("SELECT * FROM plant")
+	List<Plant> getAll();
+
+	@Override
 	@Update
-	public int update(Plant plant);
+	int update(Plant entity);
 
-	@Query("SELECT * FROM plant WHERE uid = :plantId")
-	public Plant getById(long plantId);
+	@Override
+	@Delete
+	int delete(Plant entity);
+
+	// Plant specific methods
+
+	@Query("DELETE FROM plant WHERE uid = :uid AND NOT EXISTS (SELECT * FROM crop WHERE crop.plant_id = :uid)")
+	int delete(long uid);
 
 	@Query("SELECT * FROM plant WHERE name = :plantName")
-	public Plant getByName(String plantName);
-
-	@Query("SELECT * FROM plant")
-	public List<Plant> getAll();
-
-	@Query("DELETE FROM plant WHERE uid = :plantUid AND NOT EXISTS (SELECT * FROM crop WHERE crop.plant_id = :plantUid)")
-	public int delete(long plantUid);
+	Plant getByName(String plantName);
 }
