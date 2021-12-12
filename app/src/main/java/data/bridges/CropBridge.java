@@ -5,7 +5,7 @@ import java.util.List;
 import data.daos.CropDao;
 import data.models.Crop;
 
-public class CropBridge implements IBridge<Crop>
+public class CropBridge
 {
 	private final CropDao cropDao;
 	private final PlantBridge plantBridge;
@@ -16,7 +16,6 @@ public class CropBridge implements IBridge<Crop>
 		this.plantBridge = plantBridge;
 	}
 
-	@Override
 	public Crop insert(Crop crop)
 	{
 		crop.plantId = crop.plant.uid;
@@ -30,7 +29,6 @@ public class CropBridge implements IBridge<Crop>
 		return cropDao.update(crop);
 	}
 
-	@Override
 	public Crop getById(long cropId)
 	{
 		Crop crop = cropDao.get(cropId);
@@ -38,7 +36,6 @@ public class CropBridge implements IBridge<Crop>
 		return crop;
 	}
 
-	@Override
 	public List<Crop> getAll()
 	{
 		List<Crop> crops = cropDao.getAll();
@@ -49,7 +46,6 @@ public class CropBridge implements IBridge<Crop>
 		return crops;
 	}
 
-	@Override
 	public int delete(Crop crop)
 	{
 		return cropDao.delete(crop.seasonId, crop.uid);

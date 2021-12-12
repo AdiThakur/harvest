@@ -9,7 +9,7 @@ import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import io.reactivex.rxjava3.subjects.SingleSubject;
 
-public class HarvestBridge implements IBridge<Harvest>
+public class HarvestBridge
 {
 	private final HarvestDao harvestDao;
 	private final CropBridge cropBridge;
@@ -20,7 +20,6 @@ public class HarvestBridge implements IBridge<Harvest>
 		this.cropBridge = cropBridge;
 	}
 
-	@Override
 	public Harvest insert(Harvest harvest)
 	{
 		harvest.cropId = harvest.crop.uid;
@@ -34,7 +33,6 @@ public class HarvestBridge implements IBridge<Harvest>
 		return harvestDao.update(harvest);
 	}
 
-	@Override
 	public Harvest getById(long harvestId)
 	{
 		Harvest harvest = harvestDao.get(harvestId);
@@ -42,7 +40,6 @@ public class HarvestBridge implements IBridge<Harvest>
 		return harvest;
 	}
 
-	@Override
 	public List<Harvest> getAll()
 	{
 		List<Harvest> harvests = harvestDao.getAll();
@@ -53,7 +50,6 @@ public class HarvestBridge implements IBridge<Harvest>
 		return harvests;
 	}
 
-	@Override
 	public int delete(Harvest harvest)
 	{
 		return harvestDao.delete(harvest);

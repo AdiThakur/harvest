@@ -5,7 +5,7 @@ import java.util.List;
 import data.daos.PlantDao;
 import data.models.Plant;
 
-public class PlantBridge implements IBridge<Plant>
+public class PlantBridge
 {
 	private final PlantDao plantDao;
 
@@ -14,7 +14,6 @@ public class PlantBridge implements IBridge<Plant>
 		this.plantDao = plantDao;
 	}
 
-	@Override
 	public Plant insert(Plant plant)
 	{
 		plant.uid = plantDao.insert(plant);
@@ -27,19 +26,16 @@ public class PlantBridge implements IBridge<Plant>
 		return plantDao.update(plant);
 	}
 
-	@Override
 	public Plant getById(long plantId)
 	{
 		return plantDao.get(plantId);
 	}
 
-	@Override
 	public List<Plant> getAll()
 	{
 		return plantDao.getAll();
 	}
 
-	@Override
 	public int delete(Plant plant)
 	{
 		return plantDao.delete(plant.uid);
