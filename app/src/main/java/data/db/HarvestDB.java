@@ -18,7 +18,7 @@ import data.models.Season;
 
 @Database(
 		entities = { Crop.class, Harvest.class, Plant.class, Season.class },
-		version = 7,
+		version = 8,
 		exportSchema = false
 )
 @TypeConverters({ Converters.class })
@@ -40,6 +40,7 @@ public abstract class HarvestDB extends RoomDatabase
 				.fallbackToDestructiveMigration()
 				.build();
 		}
+
 		return instance;
 	}
 }

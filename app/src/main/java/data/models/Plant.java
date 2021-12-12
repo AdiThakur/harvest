@@ -3,16 +3,12 @@ package data.models;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
 
 @Entity(tableName = "plant")
-public class Plant
+public class Plant extends BaseEntity
 {
 	@Ignore
 	public static int NAME_CHARACTER_LIMIT = 50;
-
-	@PrimaryKey(autoGenerate = true)
-	public long uid;
 
 	@ColumnInfo(name = "name")
 	public String name;
@@ -25,6 +21,7 @@ public class Plant
 
 	public Plant() {}
 
+	@Ignore
 	public Plant(String name, double unitWeight, String imageFileName)
 	{
 		this.name = name;

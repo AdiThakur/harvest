@@ -3,14 +3,12 @@ package data.models;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
 
 import java.util.List;
 
 @Entity(tableName = "season")
-public class Season
+public class Season extends BaseEntity
 {
-	@PrimaryKey
 	@ColumnInfo(name = "year")
 	public long year;
 

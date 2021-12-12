@@ -1,9 +1,9 @@
 package data.models;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @Entity(tableName = "crop")
-public class Crop
+public class Crop extends BaseEntity
 {
 	// FK into season table
 	@ColumnInfo(name = "season_id")
@@ -20,9 +20,6 @@ public class Crop
 	// FK into plant table
 	@ColumnInfo(name = "plant_id")
 	public long plantId;
-
-	@PrimaryKey(autoGenerate = true)
-	public long uid;
 
 	@ColumnInfo(name = "date_planted")
 	public LocalDate datePlanted;
@@ -35,6 +32,7 @@ public class Crop
 
 	public Crop() {}
 
+	@Ignore
 	public Crop(long seasonId, LocalDate datePlanted, int numberOfPlants, Plant plant)
 	{
 		this.seasonId = seasonId;
@@ -43,6 +41,7 @@ public class Crop
 		this.plant = plant;
 	}
 
+	@NonNull
 	@Override
 	public String toString() {
 		return plant.name + " (" + seasonId + ")";
