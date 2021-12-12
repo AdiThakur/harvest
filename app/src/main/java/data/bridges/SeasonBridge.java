@@ -33,7 +33,8 @@ public class SeasonBridge
 	{
 		Season season = seasonDao.getById(year);
 		season.crops = cropBridge.getAllBySeason(year);
-		season.harvests = harvestBridge.getAllBySeason(year);
+		// TODO: Un comment this bad boy out
+//		season.harvests = harvestBridge.getAllBySeason(year);
 
 		return season;
 	}

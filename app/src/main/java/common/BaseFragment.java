@@ -1,6 +1,7 @@
 package common;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -14,10 +15,15 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.harvest.R;
 import com.google.android.material.snackbar.Snackbar;
 
 public class BaseFragment extends Fragment
 {
+	public static long UI_DELAY_SHORT = 250;
+	public static long UI_DELAY_LONG = 500;
+	private AlertDialog loadingDialog;
+
 	private ViewModelStoreOwner getStoreOwner(@IdRes int id)
 	{
 		NavController controller = NavHostFragment.findNavController(this);
@@ -93,5 +99,20 @@ public class BaseFragment extends Fragment
 	protected void displayError(View root, Event<String> error)
 	{
 		displayError(root, error, Snackbar.LENGTH_INDEFINITE);
+	}
+
+	protected void showLoadingDialog(boolean show)
+	{
+		if (loadingDialog == null) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+			builder.setView(R.layout.loading_dialog);
+			loadingDialog = builder.create();
+		}
+
+		if (show) {
+			loadingDialog.show();
+		} else {
+			loadingDialog.hide();
+		}
 	}
 }

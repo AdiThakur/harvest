@@ -26,10 +26,11 @@ import data.models.Harvest;
 
 public class HarvestListFragment extends BaseFragment implements OnClickListener
 {
-	private HarvestListVM harvestListVM;
+	private HarvestListVM vm;
 
 	private RecyclerView recyclerView;
 	private HarvestAdapter adapter;
+	private AlertDialog loadingDialog;
 
 	// Lifecycle overrides
 
@@ -38,7 +39,7 @@ public class HarvestListFragment extends BaseFragment implements OnClickListener
 	{
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-		harvestListVM = getProvider(R.id.harvest_nav_graph).get(HarvestListVM.class);
+		vm = getProvider(R.id.harvest_nav_graph).get(HarvestListVM.class);
 	}
 
 	@Nullable
@@ -54,18 +55,11 @@ public class HarvestListFragment extends BaseFragment implements OnClickListener
 		super.onViewCreated(view, savedInstanceState);
 		setTitle("This Season's Harvests");
 
-		adapter = new HarvestAdapter(getContext(), harvestListVM.loadHarvests(), this);
 		recyclerView = view.findViewById(R.id.harvestList_harvestRcv);
 		recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
-		recyclerView.setAdapter(adapter);
 
-		harvestListVM.deleteHarvest$.observe(getViewLifecycleOwner(), position -> {
-			adapter.notifyItemRemoved(position);
-		});
-
-		harvestListVM.error$.observe(getViewLifecycleOwner(), (Event<String> e) -> {
-			this.displayError(view, e);
-		});
+		observe();
+		vm.init();
 	}
 
 	@Override
@@ -87,6 +81,26 @@ public class HarvestListFragment extends BaseFragment implements OnClickListener
 		return true;
 	}
 
+	private void observe()
+	{
+		vm.loading$.observe(getViewLifecycleOwner(), isLoading -> {
+			showLoadingDialog(isLoading);
+		});
+
+		vm.loadHarvests$.observe(getViewLifecycleOwner(), harvests -> {
+			adapter = new HarvestAdapter(getContext(), harvests, this);
+			recyclerView.setAdapter(adapter);
+		});
+
+		vm.deleteHarvest$.observe(getViewLifecycleOwner(), position -> {
+			adapter.notifyItemRemoved(position);
+		});
+
+		vm.error$.observe(getViewLifecycleOwner(), (Event<String> e) -> {
+			this.displayError(getView(), e);
+		});
+	}
+
 	// Callbacks for user-generated events
 
 	private void launchHarvestAddFragment()
@@ -105,7 +119,7 @@ public class HarvestListFragment extends BaseFragment implements OnClickListener
 	@Override
 	public void onLongClick(View row, int position)
 	{
-		Harvest harvestToDelete = harvestListVM.getHarvests().get(position);
+		Harvest harvestToDelete = vm.getHarvests().get(position);
 		AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
 
 		builder.setTitle("Delete Harvest?");
@@ -115,7 +129,7 @@ public class HarvestListFragment extends BaseFragment implements OnClickListener
 		builder.setMessage(message);
 		builder.setNegativeButton("No", (dialogInterface, i) -> {});
 		builder.setPositiveButton("Yes", (dialogInterface, i) ->
-			harvestListVM.deleteHarvest(harvestToDelete, position)
+			vm.deleteHarvest(harvestToDelete, position)
 		);
 
 		AlertDialog dialog = builder.create();
@@ -125,7 +139,7 @@ public class HarvestListFragment extends BaseFragment implements OnClickListener
 	@Override
 	public void onNestedButtonClick(int position)
 	{
-		Harvest harvestToEdit = harvestListVM.getHarvests().get(position);
+		Harvest harvestToEdit = vm.getHarvests().get(position);
 		Bundle bundle = new Bundle();
 		bundle.putLong(HarvestEditFragment.HARVEST_UID_KEY, harvestToEdit.uid);
 

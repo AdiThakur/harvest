@@ -59,19 +59,29 @@ public class HarvestBridge implements IBridge<Harvest>
 		return harvestDao.delete(harvest);
 	}
 
-	public List<Harvest> getAllBySeason(long seasonId)
+	public Single<List<Harvest>> getAllBySeason(long seasonId)
 	{
-		List<Harvest> harvests = harvestDao.getAllBySeason(seasonId);
-		harvests.forEach(harvest -> {
-			harvest.crop = cropBridge.getById(harvest.cropId);
-		});
+		SingleSubject<List<Harvest>> harvestsSubject = SingleSubject.create();
 
-		return harvests;
+		harvestDao
+			.getAllBySeason(seasonId)
+			.subscribeOn(Schedulers.io())
+			.observeOn(Schedulers.io())
+			.map(harvests -> {
+				harvests.forEach(harvest -> harvest.crop = cropBridge.getById(harvest.cropId));
+				return harvests;
+			})
+			.observeOn(AndroidSchedulers.mainThread())
+			.subscribe(harvests -> {
+				harvestsSubject.onSuccess(harvests);
+			});
+
+		return harvestsSubject.hide();
 	}
 
 	public Single<List<Harvest>> getAllBySeasonAndPlantIds(List<Long> seasonIds, List<Long> cropIds)
 	{
-		SingleSubject<List<Harvest>> harvestSubject = SingleSubject.create();
+		SingleSubject<List<Harvest>> harvestsSubject = SingleSubject.create();
 
 		harvestDao
 			.getAllBySeasonAndCropIds(seasonIds, cropIds)
@@ -83,9 +93,9 @@ public class HarvestBridge implements IBridge<Harvest>
 			})
 			.observeOn(AndroidSchedulers.mainThread())
 			.subscribe(harvests -> {
-				harvestSubject.onSuccess(harvests);
+				harvestsSubject.onSuccess(harvests);
 			});
 
-		return harvestSubject.hide();
+		return harvestsSubject.hide();
 	}
 }

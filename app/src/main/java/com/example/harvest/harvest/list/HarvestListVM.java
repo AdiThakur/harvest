@@ -9,13 +9,17 @@ import androidx.lifecycle.MutableLiveData;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import common.BaseFragment;
 import common.Event;
 import common.Helper;
 import data.bridges.BridgeFactory;
 import data.bridges.HarvestBridge;
 import data.models.Crop;
 import data.models.Harvest;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import use_cases.GetCurrentSeasonIdUC;
 
 public class HarvestListVM extends AndroidViewModel
@@ -23,8 +27,14 @@ public class HarvestListVM extends AndroidViewModel
 	private final HarvestBridge bridge;
 	private List<Harvest> harvests;
 
+	private final MutableLiveData<List<Harvest>> loadHarvests;
+	public final LiveData<List<Harvest>> loadHarvests$;
+
 	private final MutableLiveData<Integer> deleteHarvest;
 	public final LiveData<Integer> deleteHarvest$;
+
+	private final MutableLiveData<Boolean> loading;
+	public final LiveData<Boolean> loading$;
 
 	private final MutableLiveData<Event<String>> error;
 	public final LiveData<Event<String>> error$;
@@ -36,21 +46,42 @@ public class HarvestListVM extends AndroidViewModel
 		BridgeFactory bridgeFactory = new BridgeFactory(application.getApplicationContext());
 		bridge = bridgeFactory.getHarvestBridge();
 
+		loadHarvests = new MutableLiveData<>();
+		loadHarvests$ = loadHarvests;
+
 		deleteHarvest = new MutableLiveData<>();
 		deleteHarvest$ = deleteHarvest;
+
+		loading = new MutableLiveData<>();
+		loading$ = loading;
 
 		error = new MutableLiveData<>();
 		error$ = error;
 	}
 
-	public List<Harvest> loadHarvests()
+	public void init()
 	{
+		loadHarvests();
+	}
+
+	private void loadHarvests()
+	{
+		loading.setValue(true);
+
 		long currentSeasonId =
 			(new GetCurrentSeasonIdUC(getApplication().getApplicationContext())).use();
-		harvests = bridge.getAllBySeason(currentSeasonId);
-		sort(harvests);
 
-		return harvests;
+		bridge
+			.getAllBySeason(currentSeasonId)
+			.subscribeOn(Schedulers.io())
+			.observeOn(AndroidSchedulers.mainThread())
+			.delay(BaseFragment.UI_DELAY_SHORT, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
+			.subscribe(result -> {
+				harvests = result;
+				sort(harvests);
+				loadHarvests.setValue(harvests);
+				loading.setValue(false);
+			});
 	}
 
 	public List<Harvest> getHarvests()

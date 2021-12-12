@@ -93,6 +93,10 @@ public class FiltersFragment extends BaseFragment implements OnClickListener
 
 	private void observe()
 	{
+		vm.loading$.observe(getViewLifecycleOwner(), isLoading -> {
+			showLoadingDialog(isLoading);
+		});
+
 		vm.selectedYears$.observe(getViewLifecycleOwner(), years -> {
 			populateChipGroup(selectedSeasonsChips, years);
 			boolean isEmpty = years.size() == 0;
@@ -119,14 +123,6 @@ public class FiltersFragment extends BaseFragment implements OnClickListener
 				totalWeight.setText(Helper.formatUnitWeight(details.totalWeight));
 				totalUnits.setText(Helper.formatData(details.totalUnits));
 				totalHarvests.setText(Helper.formatData(details.totalHarvests));
-			}
-		});
-
-		vm.loading$.observe(getViewLifecycleOwner(), isLoading -> {
-			if (isLoading) {
-				loadingDialog.show();
-			} else {
-				loadingDialog.hide();
 			}
 		});
 

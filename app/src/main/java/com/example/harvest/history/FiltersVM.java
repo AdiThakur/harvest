@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+import common.BaseFragment;
 import common.Event;
 import common.Helper;
 import data.bridges.BridgeFactory;
@@ -95,7 +96,7 @@ public class FiltersVM extends AndroidViewModel
 				.getAllYears()
 				.subscribeOn(Schedulers.io())
 				.observeOn(AndroidSchedulers.mainThread())
-				.delay(500, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
+				.delay(BaseFragment.UI_DELAY_LONG, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
 				.subscribe(years -> {
 					yearsMultiChoice.setOptions(years);
 					filterData();

@@ -27,7 +27,7 @@ public interface HarvestDao
 	List<Harvest> getAll();
 
 	@Query("SELECT * FROM harvest WHERE season_id = :seasonId")
-	List<Harvest> getAllBySeason(long seasonId);
+	Single<List<Harvest>> getAllBySeason(long seasonId);
 
 	@Query("SELECT * FROM harvest WHERE season_id IN (:seasonIds) AND crop_id IN (:cropIds)")
 	Single<List<Harvest>> getAllBySeasonAndCropIds(List<Long> seasonIds, List<Long> cropIds);
