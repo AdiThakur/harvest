@@ -30,7 +30,6 @@ public class HarvestListFragment extends BaseFragment implements OnClickListener
 
 	private RecyclerView recyclerView;
 	private HarvestAdapter adapter;
-	private AlertDialog loadingDialog;
 
 	// Lifecycle overrides
 

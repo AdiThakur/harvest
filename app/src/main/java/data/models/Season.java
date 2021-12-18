@@ -20,6 +20,7 @@ public class Season extends BaseEntity
 
 	public Season() {}
 
+	@Ignore
 	public Season(long year)
 	{
 		this.year = year;

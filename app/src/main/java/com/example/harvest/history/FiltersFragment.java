@@ -45,7 +45,6 @@ public class FiltersFragment extends BaseFragment implements OnClickListener
 	private TextView totalHarvests;
 
 	private RecyclerView rcv;
-	private AlertDialog loadingDialog;
 
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState)
@@ -65,7 +64,7 @@ public class FiltersFragment extends BaseFragment implements OnClickListener
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
 	{
 		super.onViewCreated(view, savedInstanceState);
-		setTitle("Apply Filters");
+		setTitle("History");
 
 		addSeasonFilters = view.findViewById(R.id.filter_addSeasonFiltersButton);
 		addSeasonFilters.setOnClickListener(v -> vm.showSeasonsMultiChoice(getContext()));
@@ -82,10 +81,6 @@ public class FiltersFragment extends BaseFragment implements OnClickListener
 
 		rcv = view.findViewById(R.id.filter_rcv);
 		rcv.setLayoutManager(new LinearLayoutManager(requireActivity()));
-
-		AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
-		builder.setView(R.layout.loading_dialog);
-		loadingDialog = builder.create();
 
 		observe();
 		vm.init();

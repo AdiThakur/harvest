@@ -28,7 +28,7 @@ import data.models.Crop;
 public class CropEditFragment extends BaseFragment
 {
 	private CropListVM cropListVM;
-	LocalDate newPlantedDate;
+	private LocalDate newPlantedDate;
 
 	private View plantContainer;
 	private ImageView plantImageView;

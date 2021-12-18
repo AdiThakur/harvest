@@ -77,6 +77,7 @@ public class PlantEditVM extends AndroidViewModel
 		toUpdate.name = name;
 		toUpdate.unitWeight = unitWeight;
 		toUpdate.imageFileName = fileName;
+
 		int updateCount = bridge.update(toUpdate);
 
 		if (updateCount == 0) {

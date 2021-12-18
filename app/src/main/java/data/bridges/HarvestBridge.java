@@ -21,12 +21,14 @@ public class HarvestBridge extends BaseBridge<Harvest>
 		this.cropBridge = cropBridge;
 	}
 
+	@Override
 	public Harvest insert(Harvest harvest)
 	{
 		harvest.cropId = harvest.crop.uid;
 		return super.insert(harvest);
 	}
 
+	@Override
 	public Harvest get(long harvestId)
 	{
 		Harvest harvest = super.get(harvestId);
@@ -34,6 +36,7 @@ public class HarvestBridge extends BaseBridge<Harvest>
 		return harvest;
 	}
 
+	@Override
 	public List<Harvest> getAll()
 	{
 		List<Harvest> harvests = super.getAll();

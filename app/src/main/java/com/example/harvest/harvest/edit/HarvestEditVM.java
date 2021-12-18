@@ -53,6 +53,7 @@ public class HarvestEditVM extends AndroidViewModel
 			getHarvest.setValue(harvest);
 		}
 	}
+
 	public void updateHarvest(int unitsHarvested, double totalWeight)
 	{
 		toUpdate.unitsHarvested = unitsHarvested;

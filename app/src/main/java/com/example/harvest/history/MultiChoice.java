@@ -21,7 +21,8 @@ public class MultiChoice<T>
 	private Subject<List<T>> selectedSubject;
 	public Observable<List<T>> selected$;
 
-	public MultiChoice() {
+	public MultiChoice()
+	{
 		selectedSubject = PublishSubject.create();
 		selected$ = selectedSubject.hide();
 	}

@@ -50,7 +50,7 @@ class PlantViewHolder extends RecyclerView.ViewHolder
 
 public class PlantAdapter extends RecyclerView.Adapter<PlantViewHolder>
 {
-	private List<Plant> plants;
+	private final List<Plant> plants;
 	private final Context context;
 	private final OnClickListener listener;
 

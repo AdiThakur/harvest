@@ -68,10 +68,6 @@ public class HomeFragment extends BaseFragment
 		navigateTo(R.id.homeFragment, resId);
 	}
 
-	// TODO: Update Harvests so that Harvest.seasonId and Harvest.dateHarvested.year are always in sync
-	// TODO: Update FiltersFragment so that the filtered results are sorted by date
-	// TODO: Update the code so that Season objects are references by their uid, not season_id
 	// TODO: FilterFragment: Make the Chip text smaller in FiltersFragment
-	// TODO: Make all bridge functions async; show a loading animation while async method executes
 	// TODO: use placeholder string resources in calls to TextView.setText()
 }

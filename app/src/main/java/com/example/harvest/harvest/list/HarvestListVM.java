@@ -13,7 +13,6 @@ import java.util.concurrent.TimeUnit;
 
 import common.BaseFragment;
 import common.Event;
-import common.Helper;
 import data.bridges.BridgeFactory;
 import data.bridges.HarvestBridge;
 import data.models.Crop;

@@ -21,16 +21,4 @@ public class Converters
 		if (date == null) { return null; }
 		return date.toString();
 	}
-
-	@TypeConverter
-	public static Uri uriFromString(String value)
-	{
-		return Uri.parse(value);
-	}
-
-	@TypeConverter
-	public static String uriToString(Uri uri)
-	{
-		return (uri == null) ? null : uri.toString();
-	}
 }

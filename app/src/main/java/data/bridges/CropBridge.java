@@ -17,12 +17,14 @@ public class CropBridge extends BaseBridge<Crop>
 		this.plantBridge = plantBridge;
 	}
 
+	@Override
 	public Crop insert(Crop crop)
 	{
 		crop.plantId = crop.plant.uid;
 		return super.insert(crop);
 	}
 
+	@Override
 	public Crop get(long cropId)
 	{
 		Crop crop = super.get(cropId);
@@ -30,6 +32,7 @@ public class CropBridge extends BaseBridge<Crop>
 		return crop;
 	}
 
+	@Override
 	public List<Crop> getAll()
 	{
 		List<Crop> crops = super.getAll();

@@ -11,6 +11,7 @@ public class Event<T>
 		this.consumed = false;
 	}
 
+	// lol
 	public boolean isFreshPiece()
 	{
 		return !consumed;
