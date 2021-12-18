@@ -151,6 +151,7 @@ public class FiltersVM extends AndroidViewModel
 					.subscribe(
 						harvests -> {
 							filterResult = harvests;
+							Harvest.sort(filterResult);
 							filteredResults.setValue(filterResult);
 							loading.setValue(false);
 						},

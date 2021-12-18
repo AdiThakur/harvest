@@ -78,7 +78,7 @@ public class HarvestListVM extends AndroidViewModel
 			.delay(BaseFragment.UI_DELAY_SHORT, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
 			.subscribe(result -> {
 				harvests = result;
-				sort(harvests);
+				Harvest.sort(harvests);
 				loadHarvests.setValue(harvests);
 				loading.setValue(false);
 			});
@@ -116,12 +116,5 @@ public class HarvestListVM extends AndroidViewModel
 			harvests.remove(harvest);
 			deleteHarvest.setValue(position);
 		}
-	}
-
-	// Private Helpers
-
-	private void sort(List<Harvest> harvests)
-	{
-		harvests.sort((h1, h2) -> Helper.compareDates(h1.dateHarvested, h2.dateHarvested));
 	}
 }

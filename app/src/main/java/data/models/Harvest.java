@@ -6,6 +6,9 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 
 import java.time.LocalDate;
+import java.util.List;
+
+import common.Helper;
 
 @Entity(tableName = "harvest")
 public class Harvest extends BaseEntity
@@ -56,5 +59,10 @@ public class Harvest extends BaseEntity
 			", totalWeight=" + totalWeight +
 			", crop=" + crop +
 			'}';
+	}
+
+	public static void sort(List<Harvest> harvests)
+	{
+		harvests.sort((h1, h2) -> Helper.compareDates(h1.dateHarvested, h2.dateHarvested));
 	}
 }
