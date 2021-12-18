@@ -34,7 +34,7 @@ public class Harvest extends BaseEntity
 
 	@Ignore
 	public Harvest(
-			long seasonId, int unitsHarvested, double totalWeight, LocalDate dateHarvested, Crop crop)
+		long seasonId, int unitsHarvested, double totalWeight, LocalDate dateHarvested, Crop crop)
 	{
 		this.seasonId = seasonId;
 		this.unitsHarvested = unitsHarvested;

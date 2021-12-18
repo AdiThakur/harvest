@@ -123,6 +123,10 @@ public class HarvestEditFragment extends BaseFragment
 			displayWarning("Can't set date of Harvest before the Crop was planted!");
 			return;
 		}
+		if (vm.newHarvestedDate.getYear() != vm.toUpdate.dateHarvested.getYear()) {
+			displayWarning("Can't set date of Harvest to a different year!");
+			return;
+		}
 
 		int unitsHarvested =
 			(unitsHarvestedString.isEmpty()) ? 0 : Integer.parseInt(unitsHarvestedString);
