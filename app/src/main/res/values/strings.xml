@@ -70,4 +70,9 @@
     <string name="filter_data">Filter Data</string>
     <string name="filters">Filters</string>
 
+    <string name="backup_dialog_title">Backup Data</string>
+    <string name="backup_step1">This will generate a CSV report of the harvests made for the selected Crops. Do you wish to continue?</string>
+    <string name="backup_step2">Generating backup data. Please do not exit the application.</string>
+    <string name="backup_step3">Backup data has been generated and stored. Do you wish to email the generated data?</string>
+
 </resources>

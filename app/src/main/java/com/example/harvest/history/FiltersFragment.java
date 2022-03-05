@@ -3,6 +3,9 @@ package com.example.harvest.history;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -45,11 +48,13 @@ public class FiltersFragment extends BaseFragment implements OnClickListener
 	private TextView totalHarvests;
 
 	private RecyclerView rcv;
+	private AlertDialog step2Dialog;
 
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
 		vm = getProvider(R.id.history_nav_graph).get(FiltersVM.class);
 	}
 
@@ -84,6 +89,25 @@ public class FiltersFragment extends BaseFragment implements OnClickListener
 
 		observe();
 		vm.init();
+	}
+
+	@Override
+	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater)
+	{
+		super.onCreateOptionsMenu(menu, inflater);
+		inflater.inflate(R.menu.backup_menu, menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(@NonNull MenuItem item)
+	{
+		int id = item.getItemId();
+
+		if (id == R.id.backupMenu_BackupButton) {
+			showBackupDialogStep1();
+		}
+
+		return true;
 	}
 
 	private void observe()
@@ -121,6 +145,14 @@ public class FiltersFragment extends BaseFragment implements OnClickListener
 			}
 		});
 
+		vm.backupFinished$.observe(getViewLifecycleOwner(), booleanEvent -> {
+			if (booleanEvent.isFreshPiece()) {
+				booleanEvent.consume();
+				step2Dialog.dismiss();
+				showBackupDialogStep3();
+			}
+		});
+
 		vm.error$.observe(getViewLifecycleOwner(), error -> {
 			displayError(getView(), error);
 		});
@@ -151,6 +183,56 @@ public class FiltersFragment extends BaseFragment implements OnClickListener
 		totalWeight.setText(Helper.formatUnitWeight(0, true));
 		totalUnits.setText(Helper.formatData(0));
 		totalHarvests.setText(Helper.formatData(0));
+	}
+
+	private void showBackupDialogStep1()
+	{
+		if (vm.getFilterResult() == null) {
+			displayWarning("Please select some Crops first!");
+			return;
+		}
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+		LayoutInflater inflater = getLayoutInflater();
+		View dialogView = inflater.inflate(R.layout.backup_dialog_step1, null);
+		builder.setView(dialogView);
+		builder.setCancelable(false);
+		builder.setPositiveButton("Yes", (d, i) -> showBackupDialogStep2());
+		builder.setNegativeButton("Cancel", (d, i) -> { return; });
+
+		builder.create().show();
+	}
+
+	private void showBackupDialogStep2()
+	{
+		AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+		LayoutInflater inflater = getLayoutInflater();
+		View dialogView = inflater.inflate(R.layout.backup_dialog_step2, null);
+		builder.setView(dialogView);
+		builder.setCancelable(false);
+
+		step2Dialog = builder.create();
+		step2Dialog.show();
+
+		vm.backupData();
+	}
+
+	private void showBackupDialogStep3()
+	{
+		AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+		LayoutInflater inflater = getLayoutInflater();
+		View dialogView = inflater.inflate(R.layout.backup_dialog_step3, null);
+		builder.setView(dialogView);
+		builder.setCancelable(false);
+		builder.setPositiveButton("Yes", (d, i) -> emailData());
+		builder.setNegativeButton("No", (d, i) -> { return; });
+
+		builder.create().show();
+	}
+
+	private void emailData()
+	{
+		// TODO: Launch an email intent with the newly created file as its sole attachtment
 	}
 
 	// OnClickListener interface overrides for HarvestAdapter

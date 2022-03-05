@@ -2,6 +2,7 @@ package com.example.harvest.history;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -23,6 +24,7 @@ import data.bridges.SeasonBridge;
 import data.models.Crop;
 import data.models.Harvest;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
@@ -38,6 +40,7 @@ public class FiltersVM extends AndroidViewModel
 	private List<Long> selectedYearsList;
 	private List<Crop> selectedCropsList;
 	private List<Harvest> filterResult;
+	private String backupDataCsv;
 
 	private final MutableLiveData<List<String>> selectedYears;
 	public final LiveData<List<String>> selectedYears$;
@@ -50,6 +53,9 @@ public class FiltersVM extends AndroidViewModel
 
 	private final MutableLiveData<Boolean> loading;
 	public final LiveData<Boolean> loading$;
+
+	private final MutableLiveData<Event<Boolean>> backupFinished;
+	public final LiveData<Event<Boolean>> backupFinished$;
 
 	private final MutableLiveData<Event<String>> error;
 	public final LiveData<Event<String>> error$;
@@ -78,6 +84,9 @@ public class FiltersVM extends AndroidViewModel
 
 		loading = new MutableLiveData<>();
 		loading$ = loading;
+
+		backupFinished = new MutableLiveData<>();
+		backupFinished$ = backupFinished;
 
 		error = new MutableLiveData<>();
 		error$ = error;
@@ -108,6 +117,11 @@ public class FiltersVM extends AndroidViewModel
 	public List<Harvest> getFilterResult()
 	{
 		return filterResult;
+	}
+
+	public String getBackupDataCsv()
+	{
+		return backupDataCsv;
 	}
 
 	public SummaryDetails summarizeData(List<Harvest> harvests)
@@ -178,6 +192,27 @@ public class FiltersVM extends AndroidViewModel
 		}
 	}
 
+	public void backupData()
+	{
+		if (filterResult == null || filterResult.isEmpty()) {
+			backupFinished.setValue(new Event<>(true));
+			error.setValue(new Event<>("No Crops selected for backup!"));
+			return;
+		}
+
+		 Observable.just(filterResult)
+			.observeOn(AndroidSchedulers.mainThread())
+			.delay(1000, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
+			.subscribe(
+				harvests -> {
+					backupDataCsv = generateCsv(harvests);
+					backupFinished.setValue(new Event<>(true));
+					// TODO: Write generate CSV to a file in external/shared storage
+					Log.println(Log.DEBUG, "backupData", backupDataCsv);
+				}
+			);
+	}
+
 	@Override
 	protected void onCleared()
 	{
@@ -218,5 +253,21 @@ public class FiltersVM extends AndroidViewModel
 				}
 			)
 		);
+	}
+
+	private String generateCsv(List<Harvest> harvests)
+	{
+		StringBuilder csvBuilder = new StringBuilder();
+		csvBuilder.append("Season,Crop,Units,Weight\n");
+
+		harvests.forEach(harvest -> {
+			csvBuilder.append(harvest.seasonId).append(",");
+			csvBuilder.append(harvest.crop.plant.name).append(",");
+			csvBuilder.append(harvest.unitsHarvested).append(",");
+			csvBuilder.append(harvest.totalWeight).append(",");
+			csvBuilder.append("\n");
+		});
+
+		return csvBuilder.toString();
 	}
 }

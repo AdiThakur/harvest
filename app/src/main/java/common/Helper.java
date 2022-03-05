@@ -22,6 +22,11 @@ public class Helper
 		return date.format(DateTimeFormatter.ofPattern("d MMM yyyy"));
 	}
 
+	public static String dateToISO8601(LocalDate date)
+	{
+		return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+	}
+
 	/**
 	 * Compares the two dates.
 	 *

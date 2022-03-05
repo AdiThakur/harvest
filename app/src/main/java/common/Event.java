@@ -31,4 +31,9 @@ public class Event<T>
 
 		return null;
 	}
+
+	public void consume()
+	{
+		consumed = true;
+	}
 }
