@@ -1,6 +1,8 @@
 package com.example.harvest.history;
 
 import android.app.AlertDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,6 +24,7 @@ import com.example.harvest.harvest.edit.HarvestEditFragment;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -232,7 +235,11 @@ public class FiltersFragment extends BaseFragment implements OnClickListener
 
 	private void emailData()
 	{
-		// TODO: Launch an email intent with the newly created file as its sole attachtment
+		Intent intent = new Intent(Intent.ACTION_SENDTO);
+		intent.setData(Uri.parse("mailto:"));
+		intent.putExtra(Intent.EXTRA_TEXT, vm.getBackupDataCsv());
+		intent.putExtra(Intent.EXTRA_SUBJECT, "Report generated on " + Helper.dateToISO8601(LocalDate.now()) + " by Harvest App");
+		startActivity(intent);
 	}
 
 	// OnClickListener interface overrides for HarvestAdapter
