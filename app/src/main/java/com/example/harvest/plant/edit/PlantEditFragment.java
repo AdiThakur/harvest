@@ -136,7 +136,11 @@ public class PlantEditFragment extends BaseFragment
 
 		// Unit weight is optional
 		if (!plantUnitWeightString.isEmpty()) {
-			plantUnitWeight = Double.parseDouble(plantUnitWeightString);
+			try {
+				plantUnitWeight = Double.parseDouble(plantUnitWeightString);
+			} catch	(NumberFormatException nfe) {
+				plantUnitWeight = 0;
+			}
 		}
 
 		vm.updatePlant(plantName, plantUnitWeight);
