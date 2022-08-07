@@ -53,11 +53,12 @@
 
         <TextView
             android:id="@+id/harvestRcvItem_dateHarvestedTextView"
-            android:layout_width="@dimen/image"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:fontFamily="sans-serif-condensed-light"
             android:gravity="center"
+            android:paddingHorizontal="3dp"
             android:paddingVertical="3dp"
             android:textSize="@dimen/subtitle_font_size"
             android:textStyle="normal"
