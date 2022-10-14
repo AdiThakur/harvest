@@ -35,7 +35,6 @@ public interface CropDao extends IDao<Crop>
 
 	// Crop specific methods
 
-	// TODO: Figure out why the hell we need seasonId here
 	@Query("DELETE FROM crop WHERE season_id = :seasonId AND uid = :cropUid AND NOT EXISTS (SELECT * FROM harvest WHERE harvest.crop_id = :cropUid)")
 	int delete(long seasonId, long cropUid);
 

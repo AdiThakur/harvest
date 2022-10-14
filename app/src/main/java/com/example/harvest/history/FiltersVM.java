@@ -207,7 +207,6 @@ public class FiltersVM extends AndroidViewModel
 				harvests -> {
 					backupDataCsv = generateCsv(harvests);
 					backupFinished.setValue(new Event<>(true));
-					// TODO: Write generate CSV to a file in external/shared storage
 					Log.println(Log.DEBUG, "backupData", backupDataCsv);
 				}
 			);

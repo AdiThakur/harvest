@@ -67,7 +67,4 @@ public class HomeFragment extends BaseFragment
 	{
 		navigateTo(R.id.homeFragment, resId);
 	}
-
-	// TODO: FilterFragment: Make the Chip text smaller in FiltersFragment
-	// TODO: use placeholder string resources in calls to TextView.setText()
 }

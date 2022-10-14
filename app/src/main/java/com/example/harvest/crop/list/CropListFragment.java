@@ -40,7 +40,6 @@ public class CropListFragment extends BaseFragment implements OnClickListener
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 
-		// TODO: Pass some basic data to this fragment that enables/disables the selection feature
 		String caller = getCaller();
 		if (caller.equals("fragment_harvest_add")) {
 			harvestAddVM = getProvider(R.id.harvest_add_nav_graph).get(HarvestAddVM.class);
